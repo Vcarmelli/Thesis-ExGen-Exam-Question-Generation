@@ -1,0 +1,36 @@
+{% extends 'layout/dashboard.html'%}
+
+{% block title %}Home{% endblock %}
+
+{% block content%}
+    <h1>Home</h1>
+    <p>Welcome User!</p>
+
+    <div id="main-container" class="main-container">
+        <h1>Quick Start</h1>
+        <div id="card-container" class="card-container">
+            <div class="card">
+                <a href="#"><h3>Generate Exam</h3></a>
+            </div>
+            <div class="card">
+                <a href="#"><h3>Key Notes</h3></a>
+            </div>
+        </div>
+    </div>
+
+    <h1>Continue</h1>
+    <div class="continue-card-container">
+        <div class="continue-card">
+            <h3>Exam 1</h3>
+        </div>
+        <div class="continue-card">
+            <h3>Exam 2</h3>
+        </div>
+        <div class="continue-card">
+            <h3>Exam 3</h3>
+        </div>
+        <div class="continue-card">
+            <h3>Exam 4</h3>
+        </div>
+    </div>
+{% endblock %}
