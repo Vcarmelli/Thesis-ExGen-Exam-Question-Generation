@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+    <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
+    <title>Upload</title>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>Select Pages</h1>
+        <div class="preview-container-setting">
+            <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
+            <form method="POST" action="" enctype="multipart/form-data" id="upload-form">
+                <div class="input-container">
+                    <div class="input-label">
+                        <label for="ques-type">Question type</label>
+                        <select name="ques-type" id="ques-type">
+                            <option value="identification">Identification</option>
+                            <option value="multiple_choice">Multiple Choice</option>
+                            <option value="true_or_false">True or False</option>
+                        </select>
+                    </div>
+                    <div class="input-label">
+                        <label for="ques-num">Number of Questions</label>
+                        <input type="number" name="ques-num" id="ques-num" placeholder="1-10">
+                    </div>
+                </div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <label for="ques-diff">Difficulty</label>
+                        <select name="ques-diff" id="ques-diff">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="input-label">
+                        <label for="page-num">Page Number</label>
+                        <input type="number" name="page-num" id="page-num" placeholder="1-10">
+                    </div>
+                </div>
+
+                <input type="hidden" name="pages" id="selected-pages">
+
+                <div class="input-container">
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- 
+    <div class="page-thumbnail-container">
+        <div class="preview-container">
+            <div class="preview-main">
+                <div class="thumbnail-container">
+                    {% if thumbnails %}
+                        {% for thumbnail in thumbnails %}
+                            <div class="thumbnail-item">
+                                <img src="{{ url_for('static', filename='thumbnails/' + thumbnail) }}" alt="Thumbnail">
+                                <p>{{ loop.index }}</p>
+                            </div>
+                        {% endfor %}
+                        <div id="end-of-thumbnails">
+                            <div class="preview-loader"></div>
+                        </div>
+                    {% else %}
+                        <p>No thumbnails available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+</body>
+</html>
