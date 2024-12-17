@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+        <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
+        <title>Upload</title>
+    </head>
+    <body>
+        <div class="upload-container">
+            <h1>Select Pages</h1>
+            <div class="preview-container-setting">
+                <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
+                <div class="savefile-container">
+                    <h3>Save to:</h3>
+                    <h5>New file</h5>
+                    <button>Append</button>
+                </div>
+                <div>
+                    <h3>Export to:</h3>
+                    <div class="export-btn-container">
+                        <a class="export-btn">PDF</a>
+                        <a class="export-btn">Docs</a>
+                        <a class="export-btn">Pptx</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-thumbnail-container">
+            {% if generated_questions %}
+            {% for question_set in generated_questions %}
+                <div class="mb-4">
+                    <h2 class="h4 text-primary">{{ question_set.type }} Questions:</h2>
+                    
+                    <!-- Loop through individual questions in the question set -->
+                    {% for question in question_set.questions %}
+                        <div class="question-card">
+                            <div class="question-answer">
+                                <div class="quill-container" id="question-answer-{{ loop.index }}">
+                                    <h4><strong>Question {{ loop.index }}:</strong> {{ question.question }}</h4>
+                                    <ul>
+                                        {% for letter, option in question.options.items() %}
+                                            <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }} ) {{ option }}</span></li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p><strong>Answer:</strong> {{ question.answer }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center text-muted">No questions generated.</p>
+        {% endif %}
+        </div>
+</body>
+</html>

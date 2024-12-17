@@ -39,6 +39,8 @@ def extract_text(file_path, pages):
     return extracted_text
 
 
+
+
 @preview.route('/preview', methods=['GET', 'POST'])
 def preview_page():
     if request.method == 'GET':
@@ -53,10 +55,31 @@ def preview_page():
         return render_template('preview.html', filename=filename, thumbnails=thumbnails)
 
     elif request.method == 'POST':
-        filename = request.form.get('filename')
-        pages_input = request.form.get('pages')
-        pages = [int(num) for part in pages_input.split(',') for num in range(int(part.split('-')[0]), int(part.split('-')[-1]) + 1)]
+        filename = request.args.get('file_name')
+        if filename:
+            session['filename'] = filename
+            print(f"Filename from GET: {filename}")
 
+        pages_input = request.form.get('pages')
+        
+        # Function to convert range to list of pages
+        def parse_pages(pages_input):
+            pages = set()
+            page_ranges = pages_input.split(',')
+
+            for range_str in page_ranges:
+                if '-' in range_str:
+                    start, end = map(int, range_str.split('-'))
+                    pages.update(range(start, end + 1))
+                elif range_str.isdigit():
+                    pages.add(int(range_str))
+
+            return sorted(pages)
+
+        # Parse the pages input
+        pages = parse_pages(pages_input)
+
+        # Collect question types and quantities
         question_types = request.form.getlist('ques-type')
         question_quantities = request.form.getlist('ques-num')
         questions = [
@@ -64,6 +87,7 @@ def preview_page():
             for qt, qn in zip(question_types, question_quantities) if qn.isdigit()
         ]
 
+        # Try to extract text from the selected pages
         try:
             text = extract_text(session['file_path'], pages)
         except KeyError:
@@ -71,5 +95,6 @@ def preview_page():
 
         session['questions'] = questions
         session['text'] = text
-
-        return redirect(url_for('upload.questions'))
+        session['filename'] = filename
+        # return jsonify(session['text'], session['questions'])  # Return text or redirect as needed
+        return redirect(url_for('question.question_page'))
