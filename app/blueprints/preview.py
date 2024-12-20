@@ -82,9 +82,11 @@ def preview_page():
         # Collect question types and quantities
         question_types = request.form.getlist('ques-type')
         question_quantities = request.form.getlist('ques-num')
+        question_difficulties = request.form.getlist('ques-diff')
+
         questions = [
-            {'type': qt, 'quantity': int(qn)} 
-            for qt, qn in zip(question_types, question_quantities) if qn.isdigit()
+            {'type': qt, 'quantity': int(qn), 'difficulty': qd} 
+            for qt, qn, qd in zip(question_types, question_quantities, question_difficulties) if qn.isdigit()
         ]
 
         # Try to extract text from the selected pages

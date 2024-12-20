@@ -24,7 +24,7 @@
                     </div>
                     <div class="input-label">
                         <label for="ques-num">Number of Questions</label>
-                        <input type="number" name="ques-num" id="ques-num" placeholder="1-10">
+                        <input required type="number" name="ques-num" id="ques-num" placeholder="1-10">
                     </div>
                 </div>
                 <div class="input-container">
@@ -57,10 +57,12 @@
                 <div class="thumbnail-container">
                     {% if thumbnails %}
                         {% for thumbnail in thumbnails %}
+                        <div class="thumbnail-wrapper">
                             <div class="thumbnail-item">
                                 <img src="{{ url_for('static', filename='thumbnails/' + thumbnail) }}" alt="Thumbnail">
-                                <p>{{ loop.index }}</p>
                             </div>
+                            <p>{{ loop.index }}</p>
+                        </div>
                         {% endfor %}
                         <div id="end-of-thumbnails">
                             <div class="preview-loader"></div>
