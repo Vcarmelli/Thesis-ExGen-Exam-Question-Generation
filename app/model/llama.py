@@ -1,7 +1,7 @@
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 
 def exam_generate_questions(questions, text):
-    llm = Ollama(model="llama3.2")
+    llm = OllamaLLM(model="llama3.2")
     all_generated_questions = []
     
     # Prompts for each type of question
@@ -65,7 +65,7 @@ def exam_generate_questions(questions, text):
             formatted_prompt = text + prompt
 
             # Invoke the LLM (LangChain model) to generate questions
-            result = llm.invoke(formatted_prompt, temperature=0.5, max_tokens=100)
+            result = llm.invoke(formatted_prompt)
 
             # Split the generated result into individual questions and answers
             question_list = parse_questions_and_answers(result)
