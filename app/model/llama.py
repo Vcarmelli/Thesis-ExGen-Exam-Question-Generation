@@ -1,9 +1,11 @@
 from langchain_ollama import OllamaLLM
+from .summ import summarize
 
 def exam_generate_questions(questions, text):
     llm = OllamaLLM(model="llama3.2")
     all_generated_questions = []
     
+    summary = summarize(text)
     # Prompts for each type of question
     question_prompts = {
         'MCQ': """
@@ -62,7 +64,8 @@ def exam_generate_questions(questions, text):
             prompt = prompt_template.format(number_of_questions=num_questions, difficulty=question_difficulty)
 
             # Combine the text with the prompt
-            formatted_prompt = text + prompt
+            formatted_prompt = summary  + prompt # WITH SUMMARY
+            #formatted_prompt = text  + prompt  # NORMAL FEEDING
 
             # Invoke the LLM (LangChain model) to generate questions
             result = llm.invoke(formatted_prompt)

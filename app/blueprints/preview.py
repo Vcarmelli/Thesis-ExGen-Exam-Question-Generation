@@ -3,6 +3,7 @@ import os
 from PIL import Image
 from pdf2image import convert_from_path
 from langchain_community.document_loaders import PyMuPDFLoader
+from ..model.rag import get_documents_from_vector_db
 
 # Configure the Blueprint
 preview = Blueprint('preview', __name__)
@@ -52,7 +53,16 @@ def preview_page():
         thumbnails = convert_file_to_thumbnail(
             file_path, THUMBNAIL_FOLDER, start_page=0, end_page=10
         )
-        return render_template('preview.html', filename=filename, thumbnails=thumbnails)
+        
+        # Fetch documents
+        documents = get_documents_from_vector_db()
+
+        return render_template(
+            'preview.html', 
+            filename=filename, 
+            thumbnails=thumbnails,
+            documents=documents # Pass the documents to the template to display in html
+        )
 
     elif request.method == 'POST':
         filename = request.args.get('file_name')
@@ -61,7 +71,7 @@ def preview_page():
             print(f"Filename from GET: {filename}")
 
         pages_input = request.form.get('pages')
-        
+
         # Function to convert range to list of pages
         def parse_pages(pages_input):
             pages = set()
