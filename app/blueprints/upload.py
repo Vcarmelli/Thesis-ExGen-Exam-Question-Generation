@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 import os
 from werkzeug.utils import secure_filename
-from ..model.rag import loader, split_documents, get_embedding_function, get_chroma
+from ..model.rag import loader, split_documents, get_embedding_function, get_chroma, get_documents_from_vector_db, get_pages_from_vector_db
 # Configure the Blueprint
 upload = Blueprint('upload', __name__)
 
@@ -39,9 +39,17 @@ def upload_page():
             chunks = split_documents(documents) # Split Document into Chunks with IDs
             vector_db = get_chroma(chunks)
             print(vector_db)
+            pages = get_pages_from_vector_db()
+            documents = get_documents_from_vector_db()
+
+            print(f"Pages: {pages}")
+            print(f"Total Documents: {len(documents)}")
+
+
 
 
             print("Process completed successfully.")
+            print(chunks[0:1])
             print(f"Number of chunks: {len(chunks)}")
 
             # Redirect to preview page
