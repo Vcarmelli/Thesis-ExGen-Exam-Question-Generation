@@ -56,23 +56,24 @@
             <div class="preview-main">
 
                 <!-- ADDITIONAL TEXT IDEA -->
-                <div class="documents-section">
+                <!-- <div class="documents-section">
                     <h2>Documents</h2>
                     {% if documents %}
                         <ul>
                             {% for document in documents %}
                                 <li>
-                                    <strong>From Page:</strong> {{ document.page or "N/A" }} <br>
+                                    <strong>From Page:</strong> {{ document.page or "N/A" }} <br> -->
                                     <!-- <strong>Source:</strong> {{ document.source }} <br>
                                     <strong>Content:</strong>  -->
-                                    <p style="white-space: pre-wrap;">{{ document.content[:500] }}...</p> <!-- Display first 500 characters -->
+                                    <!-- Display first 500 characters -->
+                                    <!-- <p style="white-space: pre-wrap;">{{ document.content[:500] }}...</p> 
                                 </li>
                             {% endfor %}
                         </ul>
                     {% else %}
                         <p>No documents found in the database.</p>
                     {% endif %}
-                </div>
+                </div> -->
                 
                 <div class="thumbnail-container">
                     {% if thumbnails %}

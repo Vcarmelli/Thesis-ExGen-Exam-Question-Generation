@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template,session
-from .preview import extract_text
+# from .preview import extract_text
 from ..model.llama import exam_generate_questions
 from langchain_community.llms import Ollama
 from docx import Document

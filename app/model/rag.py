@@ -73,9 +73,23 @@ def get_chroma(chunks):
 
 ########################################### Retrieve the vector database ###########################################
 
-def create_retriever(vector_db, query):
-    pass
+def create_retriever(documents, pages):
+    # Filter the documents based on the pages provided
+    relevant_documents = [documents[page_num - 1] for page_num in pages if page_num <= len(documents)]
     
+    # Assuming you want to combine the texts of the selected pages
+    retrieved_text = " ".join([doc.page_content for doc in relevant_documents])
+
+    # Return the retrieved text as a simple object or class
+    return Retriever(retrieved_text)
+    
+class Retriever:
+    def __init__(self, text):
+        self.text = text
+
+    def get_text(self):
+        return self.text
+
 
 def get_pages_from_vector_db():
     # Load the existing Chroma database

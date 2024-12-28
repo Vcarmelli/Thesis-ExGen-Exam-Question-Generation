@@ -3,7 +3,7 @@ import os
 from PIL import Image
 from pdf2image import convert_from_path
 from langchain_community.document_loaders import PyMuPDFLoader
-from ..model.rag import get_documents_from_vector_db
+from ..model.rag import get_documents_from_vector_db, loader, create_retriever
 
 # Configure the Blueprint
 preview = Blueprint('preview', __name__)
@@ -28,17 +28,24 @@ def convert_file_to_thumbnail(file_path, thumbnail_path, start_page=0, end_page=
     return [f'thumbnail_{i}.jpg' for i in range(start_page, end_page)]
 
 
-def extract_text(file_path, pages):
-    loader = PyMuPDFLoader(file_path)
-    docs = loader.load()
-    extracted_text = ""
+# def extract_text(file_path, pages):
+#     loader = PyMuPDFLoader(file_path)
+#     docs = loader.load()
+#     extracted_text = ""
 
-    for page_num in pages:
-        if page_num <= len(docs):
-            extracted_text += docs[page_num - 1].page_content
+#     for page_num in pages:
+#         if page_num <= len(docs):
+#             extracted_text += docs[page_num - 1].page_content
 
-    return extracted_text
+#     return extracted_text
 
+
+# Function to retrieve text from the given pages using the retriever
+def retrieve_text_from_pages(file_path, pages):
+    # Use the retriever to get text based on the page numbers
+    documents = loader(file_path)  # Load the document using your loader
+    retriever = create_retriever(documents, pages)  # Pass pages to the retriever
+    return retriever.get_text()  # Assuming retriever has a method to get text
 
 
 
@@ -88,6 +95,7 @@ def preview_page():
 
         # Parse the pages input
         pages = parse_pages(pages_input)
+        print(f"Selected pages: {pages}")
 
         # Collect question types and quantities
         question_types = request.form.getlist('ques-type')
@@ -99,14 +107,17 @@ def preview_page():
             for qt, qn, qd in zip(question_types, question_quantities, question_difficulties) if qn.isdigit()
         ]
 
-        # Try to extract text from the selected pages
+        # Now, instead of extracting text, pass the pages to the retriever
         try:
-            text = extract_text(session['file_path'], pages)
+            # Pass the pages directly to the retriever to get the text
+            text = retrieve_text_from_pages(session['file_path'], pages)
+            print(f"Retrieved text on selected pages:{pages} {text[:100]}...")
         except KeyError:
             return jsonify({'message': 'Return to Upload Page'}), 400
 
         session['questions'] = questions
         session['text'] = text
         session['filename'] = filename
-        # return jsonify(session['text'], session['questions'])  # Return text or redirect as needed
         return redirect(url_for('question.question_page'))
+
+
