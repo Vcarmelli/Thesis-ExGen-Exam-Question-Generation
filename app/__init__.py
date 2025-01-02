@@ -21,8 +21,3 @@ def create_app():
     app.register_blueprint(question)
 
     return app
-
-
-
-
-## TOKEN - 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

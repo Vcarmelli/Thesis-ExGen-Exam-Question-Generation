@@ -40,7 +40,7 @@ def convert_file_to_thumbnail(file_path, thumbnail_path, start_page=0, end_page=
 #     return extracted_text
 
 
-# Function to retrieve text from the given pages using the retriever
+# Function to retrieve text from the given pages using the retriever on the RAG.py
 def retrieve_text_from_pages(file_path, pages):
     # Use the retriever to get text based on the page numbers
     documents = loader(file_path)  # Load the document using your loader

@@ -5,7 +5,7 @@ def exam_generate_questions(questions, text):
     llm = OllamaLLM(model="llama3.2")
     all_generated_questions = []
     
-    summary = summarize(text)
+    summary = summarize(text) # Summarize the text before passing to the generation model
     # Prompts for each type of question
     question_prompts = {
         'MCQ': """

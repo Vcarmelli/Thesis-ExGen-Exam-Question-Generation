@@ -40,7 +40,7 @@ def upload_page():
             vector_db = get_chroma(chunks)
             print(vector_db)
             pages = get_pages_from_vector_db()
-            documents_metadata = get_documents_from_vector_db()
+            #documents_metadata = get_documents_from_vector_db()
 
             print(f"Pages: {pages}")
             print(f"Total Documents: {len(documents)}")

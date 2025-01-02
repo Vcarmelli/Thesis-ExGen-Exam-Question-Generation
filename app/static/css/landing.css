@@ -1,11 +1,49 @@
-body{
-    background-color: #060617;
+*{
+    scroll-behavior: smooth;
+}
+body {
+    /* Static fallback color */
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(20,20,46,1) 35%, rgb(22, 34, 106) 100%);
+    background-size: 400% 400%; /* Adjust size for smoother movement */
+    animation: moveBackground 20s ease infinite;
     font-family: 'Montserrat', sans-serif;
     width: 90%;
     margin: 0 auto;
     padding: 0;
     color: #fff;
 }
+
+/* Keyframe animation for moving background */
+@keyframes moveBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+/* body::-webkit-scrollbar {
+    width: 10px;
+} */
+
+body::-webkit-scrollbar {
+    width: 5px;
+  }
+   
+  body::-webkit-scrollbar-track {
+    background: rgb(9, 6, 41);
+  }
+   
+  body::-webkit-scrollbar-thumb {
+    background: #282872;
+    border-radius: 10px;
+  }
 
 nav{
    .nav-links{
@@ -36,20 +74,27 @@ nav{
 section{
     .landing-first-container{
         display: flex;
-        justify-content: space-between;
-        margin: 5rem 0 5rem 0;
+        flex-direction: column;
+        align-items: center;
+        margin: 10rem 0;
     }
     .landing-text{
         font-size: 6rem;
+        text-align: center;
         margin: 0;
     }
     .landing-first-description{
-        width: 70%;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     .landing-description{
         font-size: 1.1rem;
         line-height: 2.5rem;
         margin: 2rem 0;
+        text-align: center;
+        width: 80%;
         
     }
     .get-started{
@@ -61,6 +106,12 @@ section{
         font-size: 1.2rem;
         margin: 1rem 0;
         text-decoration: none;
+
+        &:hover{
+            background-color: #15bf6f;
+            color: #fff;
+            transition: .8s;
+        }
     }
 
 }
@@ -103,6 +154,7 @@ section{
         .about-us-img{
             width: 100%;
             border-radius: 30px;
+            box-shadow: 0 0 20px #444488a5;
         }
     }
 }
@@ -148,10 +200,11 @@ section{
 
 .join-section{
     .join-container{
-        background-color: #1E1E20;
-        padding: 5rem 5rem;
-        margin: 3rem 0;
+        background-color: #14142e;
+        padding: 3rem 5rem;
+        margin: 5rem 0;
         border-radius: 50px;
+        box-shadow: 0 0 20px #444488a5;
     }
     .join-title{
         font-size: 3rem;

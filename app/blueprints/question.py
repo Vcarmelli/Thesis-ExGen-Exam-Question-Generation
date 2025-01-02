@@ -21,7 +21,7 @@ def question_page():
         question_type = question.get('type')
         num_questions = question.get('quantity')
         question_difficulty = question.get('difficulty')
-        print(f"Preparing to generate {num_questions} {question_type} questions.")
+        print(f"Preparing to generate {num_questions} {question_difficulty} {question_type} questions.")
 
     generated_questions = exam_generate_questions(questions, text)
 

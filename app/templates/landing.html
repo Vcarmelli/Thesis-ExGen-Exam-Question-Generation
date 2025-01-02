@@ -10,15 +10,15 @@
 <body>
     <nav>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="">Home</a></li>
+            <li><a href="#second">About</a></li>
             <!-- <li><img src="../static/assets/Easygen.png"></li> -->
              <li><img class="member-img" src="../static/assets/Logo-white.png" alt=""></li>
-            <li><a href="{{ url_for('home.home_page') }}">Contact Us</a></li>
-            <li><a href="#">Account</a></li>
+            <li><a href="#third">Team</a></li>
+            <li><a href="#fourth">Join Us</a></li>
         </ul>
     </nav>
-    <section class="first-section">
+    <section id="first" class="first-section">
         <div class="landing-first-container">
             <div>
                 <h1 class="landing-text">MAKE YOUR LIFE EASIER</h1>
@@ -29,7 +29,7 @@
             </div>
         </div>
     </section>
-    <section class="about-us-section">
+    <section id="second" class="about-us-section">
         <div class="gradient-container">
             <h1 class="title-about-us">About Us</h1>
             <p class="gradient-box"></p>
@@ -50,7 +50,7 @@
             </div>
         </div>
     </section>
-    <section class="meet-the-team">
+    <section id="third" class="meet-the-team">
         <div class="member-container">
             <h1 class="member-title">The Minds Behind the Innovation</h1>
             <div class="member-box-container">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </section>
-    <section>
+    <section id="fourth">
         <div class="join-section">
             <div class="join-container">
                 <h1 class="join-title">Join Easygen and Simplify Your Learning or Teaching</h1>
