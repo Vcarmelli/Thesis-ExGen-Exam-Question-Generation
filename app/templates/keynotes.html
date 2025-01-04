@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+        <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
+        <title>Upload</title>
+    </head>
+    <body>
+        <div class="upload-container">
+            <h1>Select Pages</h1>
+            <div class="preview-container-setting">
+                <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
+                <div class="savefile-container">
+                    <h3>Save to:</h3>
+                    <h5>New file</h5>
+                    <button>Append</button>
+                </div>
+                <div>
+                    <h3>Export to:</h3>
+                    <div class="export-btn-container">
+                        <a class="export-btn">PDF</a>
+                        <a class="export-btn">Docs</a>
+                        <a class="export-btn">Pptx</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-thumbnail-container">
+            {% if generated_keynotes %}
+                <div class="keynotes-container">
+                    <h2 class="h4 text-primary">Generated Keynotes:</h2>
+                    
+                    <!-- Display the generated keynotes text -->
+                    <div class="keynote-card">
+                        <p>{{ generated_keynotes }}</p>
+                        </div>
+                </div>
+            {% else %}
+                <p class="text-center text-muted">No keynotes generated.</p>
+            {% endif %}
+        </div>
+    </body>
+</html>
