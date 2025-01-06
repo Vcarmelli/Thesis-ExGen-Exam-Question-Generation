@@ -3,16 +3,15 @@ from .summ import summarize
 import time
 
 def keynote_generation(keynotes, text):
-    llm = OllamaLLM(model="llama3.2")
+    llm = OllamaLLM(model="llama3.1")
 
     generated_keynotes = []
 
     keynote_prompt = """
     As a knowledgeable teacher, your task is to create a concise yet comprehensive reviewer for students based on the topic provided. Structure the reviewer as follows:
-    Overview: A brief summary (1-2 sentences).
+    Overview: A brief summary.
     Key Terms: Essential terms with short definitions.
-    Questions: 3 exam-style questions.
-    Tips: 1-2 practical tips for understanding.
+    Tips: 1-3 practical tips for understanding.
     """
     # Combine the prompt with the input text
     prompt_template = keynote_prompt + text
