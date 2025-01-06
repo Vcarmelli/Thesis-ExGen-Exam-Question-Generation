@@ -9,6 +9,10 @@ from app.blueprints.upload import upload
 from app.blueprints.preview import preview
 from app.blueprints.question import question
 
+from app.blueprints.key_preview import key_preview
+from app.blueprints.key_upload import key_upload
+from app.blueprints.keynotes import keynotes
+
 def create_app():
     app = Flask(__name__)
     app.secret_key = '123456'
@@ -19,5 +23,8 @@ def create_app():
     app.register_blueprint(upload)
     app.register_blueprint(preview)
     app.register_blueprint(question)
+    app.register_blueprint(key_preview)
+    app.register_blueprint(key_upload)
+    app.register_blueprint(keynotes)
 
     return app

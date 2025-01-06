@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
+    <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
+    <title>Upload</title>
+</head>
+<body>
+    <div class="upload-container">
+        <h1>Select Pages</h1>
+        <div class="preview-container-setting">
+            <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
+            <h3>Select the page to generate keynotes</h3>
+            <form method="POST" action="" enctype="multipart/form-data" id="upload-form">
+                <div class="input-container">
+                    <div class="input-label">
+                        <label for="page-num">Page Number</label>
+                        <input type="number" name="page-num" id="page-num" placeholder="1-10">
+                    </div>
+                </div>
+
+                <input type="hidden" name="pages" id="selected-pages">
+
+                <div class="input-container">
+                    <button type="submit" class="btn btn-primary">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="page-thumbnail-container">
+        <div class="preview-container">
+            <div class="preview-main">
+                <div class="thumbnail-container">
+                    {% if thumbnails %}
+                        {% for thumbnail in thumbnails %}
+                        <div class="thumbnail-wrapper">
+                            <div class="thumbnail-item">
+                                <img src="{{ url_for('static', filename='thumbnails/' + thumbnail) }}" alt="Thumbnail">
+                            </div>
+                            <p>{{ loop.index }}</p>
+                        </div>
+                        {% endfor %}
+                        <div id="end-of-thumbnails">
+                            <div class="preview-loader"></div>
+                        </div>
+                    {% else %}
+                        <p>No thumbnails available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const selectedPagesInput = document.getElementById('selected-pages');
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    const pageNumInput = document.getElementById('page-num');
+
+    let selectedPages = new Set();
+
+    // Function to format pages into a range string
+    function formatPageRanges(pages) {
+        const sortedPages = Array.from(pages).sort((a, b) => a - b);
+        if (sortedPages.length === 0) return '';
+
+        let ranges = [];
+        let start = sortedPages[0];
+        let end = start;
+
+        for (let i = 1; i < sortedPages.length; i++) {
+            if (sortedPages[i] === end + 1) {
+                end = sortedPages[i];
+            } else {
+                ranges.push(start === end ? `${start}` : `${start}-${end}`);
+                start = end = sortedPages[i];
+            }
+        }
+        ranges.push(start === end ? `${start}` : `${start}-${end}`);
+        return ranges.join(', ');
+    }
+
+    // Update the displayed input fields
+    function updateInputs() {
+        const formattedPages = formatPageRanges(selectedPages);
+        selectedPagesInput.value = formattedPages;
+        pageNumInput.value = formattedPages;
+    }
+
+    // Handle thumbnail clicks
+    thumbnails.forEach((thumbnail, index) => {
+        const pageIndex = index + 1;
+
+        thumbnail.addEventListener('click', () => {
+            if (selectedPages.has(pageIndex)) {
+                selectedPages.delete(pageIndex);
+                thumbnail.classList.remove('selected');
+            } else {
+                selectedPages.add(pageIndex);
+                thumbnail.classList.add('selected');
+            }
+            updateInputs();
+        });
+    });
+
+    // Handle manual page number input
+    pageNumInput.addEventListener('input', () => {
+        const pageNumbers = pageNumInput.value
+            .split(',')
+            .map(num => num.trim())
+            .filter(num => num.match(/^\d+(-\d+)?$/));
+
+        selectedPages.clear();
+
+        pageNumbers.forEach(range => {
+            const [start, end] = range.split('-').map(Number);
+            if (!isNaN(start)) {
+                if (!end || end < start) {
+                    selectedPages.add(start);
+                } else {
+                    for (let i = start; i <= end; i++) {
+                        selectedPages.add(i);
+                    }
+                }
+            }
+        });
+
+        // Update selected thumbnail highlights
+        thumbnails.forEach((thumbnail, index) => {
+            const pageIndex = index + 1;
+            if (selectedPages.has(pageIndex)) {
+                thumbnail.classList.add('selected');
+            } else {
+                thumbnail.classList.remove('selected');
+            }
+        });
+
+        updateInputs();
+    });
+});
+
+
+    </script>
+</body>
+</html>
