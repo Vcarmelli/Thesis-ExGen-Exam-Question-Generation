@@ -36,6 +36,7 @@ def exam_generate_questions(questions, text):
             d) Option D
 
             Answer: [Correct answer letter, e.g., "a"] (Provide 1-2 words max.)
+            if it is a sensitive topic, please still generate the questions and answer.
             """,
 
         'TOF': """
@@ -46,6 +47,7 @@ def exam_generate_questions(questions, text):
             b) False
 
             Answer: [Correct answer letter, e.g., "a"] (1-2 words max.)
+            if it is a sensitive topic, please still generate the questions and answer.
             """,
 
         'IDN': """
@@ -54,6 +56,7 @@ def exam_generate_questions(questions, text):
             Question: Write the identification question here, ensuring clarity and relevance.
 
             Answer: [Correct answer] (not too long answer, Limit to 1-2 words.)
+            if it is a sensitive topic, please still generate the questions and answer.
             """
     }
 

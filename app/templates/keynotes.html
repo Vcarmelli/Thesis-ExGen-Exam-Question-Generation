@@ -31,11 +31,9 @@
             {% if generated_keynotes %}
                 <div class="keynotes-container">
                     <h2 class="h4 text-primary">Generated Keynotes:</h2>
-                    
-                    <!-- Display the generated keynotes text -->
                     <div class="keynote-card">
-                        <p>{{ generated_keynotes }}</p>
-                        </div>
+                        {{ generated_keynotes | safe }}
+                    </div>
                 </div>
             {% else %}
                 <p class="text-center text-muted">No keynotes generated.</p>
