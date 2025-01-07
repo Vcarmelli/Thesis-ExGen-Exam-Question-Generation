@@ -1,6 +1,7 @@
 from langchain_ollama import OllamaLLM
 from .summ import summarize
 import requests, json, time
+import re
 
 
 #API CALL IMPLEMENTATION
@@ -11,6 +12,7 @@ def exam_generate_questions(questions, text):
         # "Authorization": "Bearer YOUR_API_KEY",  # Uncomment if the API requires an authorization key
     }
     all_generated_questions = []
+    num_generated_questions = 0
 
     # Start the timer
     sum_start_time = time.time()
@@ -66,41 +68,50 @@ def exam_generate_questions(questions, text):
 
         print(f"Generating {num_questions} {question_difficulty} {question_type} questions...")
 
-        # Get the corresponding prompt for the current question type
-        prompt_template = question_prompts.get(question_type)
-        if prompt_template:
-            # Format the prompt with the number of questions
-            prompt = prompt_template.format(number_of_questions=num_questions, difficulty=question_difficulty)
+        all_generated_questions.append({
+            'type': question_type,
+            'questions': []
+        })
 
-            # Combine the text with the prompt
-            formatted_prompt = summary + prompt  # WITH SUMMARY
+        while num_questions !=  num_generated_questions:
+            number_of_questions = num_questions - num_generated_questions
 
-            # Prepare the API payload
-            payload = {
-                "model": "llama3.2:3b",
-                "prompt": formatted_prompt
-            }
+            # Get the corresponding prompt for the current question type
+            prompt_template = question_prompts.get(question_type)
+            if prompt_template:
+                # Format the prompt with the number of questions
+                prompt = prompt_template.format(number_of_questions=number_of_questions, difficulty=question_difficulty)
 
-            try:
-                # Make the API request
-                response = requests.post(api_url, headers=headers, json=payload, stream=True)
+                # Combine the text with the prompt
+                formatted_prompt = summary + prompt  # WITH SUMMARY
 
-                # Collect the full response from the API
-                full_response = ""
-                for line in response.iter_lines(decode_unicode=True):
-                    if line:
-                        chunk = json.loads(line)
-                        full_response += chunk.get("response", "")
+                # Prepare the API payload
+                payload = {
+                    "model": "llama3.2:3b",
+                    "prompt": formatted_prompt
+                }
 
-                # Parse the generated questions and append to the list
-                question_list = parse_questions_and_answers(full_response)
-                all_generated_questions.append({
-                    'type': question_type,
-                    'questions': question_list
-                })
+                try:
+                    # Make the API request
+                    response = requests.post(api_url, headers=headers, json=payload, stream=True)
 
-            except Exception as e:
-                print(f"Error generating {question_type} questions: {e}")
+                    # Collect the full response from the API
+                    full_response = ""
+                    for line in response.iter_lines(decode_unicode=True):
+                        if line:
+                            chunk = json.loads(line)
+                            full_response += chunk.get("response", "")
+
+                    # Parse the generated questions and append to the list
+                    question_list = parse_questions_and_answers(full_response)
+                    for item in all_generated_questions:
+                        if item['type'] == question_type:
+                            item['questions'].extend(question_list)
+
+                except Exception as e:
+                    print(f"Error generating {question_type} questions: {e}")
+
+            num_generated_questions = sum(len(item['questions']) for item in all_generated_questions)
 
     # End the timer
     end_time = time.time()
@@ -199,13 +210,12 @@ def parse_questions_and_answers(result):
     # This function processes the result and splits questions, options, and answers
     questions_and_answers = []
     lines = result.split('\n')
-
     current_question = ""
     options = {}
     current_answer = ""
 
     for line in lines:
-        if line.startswith("Question:"):
+        if re.match(r"^Question\s*\d*:", line) or re.match(r"^\d+\.\s*Question:", line) or re.match(r"^\d+\.", line):
             # New question starts
             if current_question:
                 questions_and_answers.append({
@@ -213,7 +223,11 @@ def parse_questions_and_answers(result):
                     'options': options,  # Add options
                     'answer': current_answer.strip()
                 })
-            current_question = line.replace("Question:", "").strip()
+            # Extract the question text
+            if "Question" in line:
+                current_question = line.split(":", 1)[1].strip()
+            else:  # For numbered formats like "1." or "10."
+                current_question = line.split('.', 1)[1].strip()
             options = {}  # Reset options for the new question
             current_answer = ""  # Reset answer for the new question
         elif line.startswith("a)") or line.startswith("b)") or line.startswith("c)") or line.startswith("d)"):
