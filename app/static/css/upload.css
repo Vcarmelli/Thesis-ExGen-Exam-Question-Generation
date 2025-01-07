@@ -243,6 +243,13 @@ body{
     border: 2px solid #007bff;
 }
 
+#end-of-thumbnails {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+}
+
 .preview-container-setting{
     margin: 0 20px 0 20px;
 

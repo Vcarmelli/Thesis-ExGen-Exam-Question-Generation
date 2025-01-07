@@ -77,14 +77,16 @@ def preview_page():
             session['filename'] = filename
             print(f"Filename from GET: {filename}")
 
-        pages_input = request.form.get('pages')
+        pages_input = request.form.get('page-num')
+
 
         # Function to convert range to list of pages
         def parse_pages(pages_input):
             pages = set()
             page_ranges = pages_input.split(',')
-
+            print("Page ranges:", page_ranges)
             for range_str in page_ranges:
+                range_str = range_str.strip()
                 if '-' in range_str:
                     start, end = map(int, range_str.split('-'))
                     pages.update(range(start, end + 1))
@@ -119,5 +121,11 @@ def preview_page():
         session['text'] = text
         session['filename'] = filename
         return redirect(url_for('question.question_page'))
+    
 
-
+# ROUTES FOR FETCHING DATA 
+@preview.route('/selection/<int:page>')
+def load_thumbnails(page):
+    end = page + 10
+    thumbnails = convert_file_to_thumbnail(session['file_path'], THUMBNAIL_FOLDER, start_page=page, end_page=end)
+    return jsonify(thumbnails=thumbnails)
