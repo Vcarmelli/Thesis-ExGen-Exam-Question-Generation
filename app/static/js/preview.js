@@ -118,8 +118,6 @@ function formatPageNumbers(pages) {
 
 
 
-
-
 // FUNCTIONS FOR LOADING THUMBNAIL
 async function fetchThumbnails(startIndex) {
     // Fetch the next set of thumbnails
@@ -159,9 +157,11 @@ const options = {
 
 const loadThumbnails = async (entries) => {
     isVisible = entries[0].isIntersecting;
+    console.log("isVisible:", isVisible);
 
     if (isVisible) {
         const thumbnails = await fetchThumbnails(page);
+        console.log("thumbnails:", thumbnails.length);
         if (thumbnails.length > 0) {
             appendThumbnails(thumbnails, page);
             page += 10;
