@@ -2,7 +2,8 @@ const target = document.querySelector("#end-of-thumbnails");
 const container = document.querySelector(".thumbnail-container");
 const pagesInput = document.getElementById('page-num');
 let selectedPages = [];
-let isVisible = null;
+let isVisible = false;
+let isLoading = false;
 let page = 10; 
 let questionCount = 0;
 
@@ -157,11 +158,11 @@ const options = {
 
 const loadThumbnails = async (entries) => {
     isVisible = entries[0].isIntersecting;
-    console.log("isVisible:", isVisible);
-
-    if (isVisible) {
+    if (!isVisible || isLoading) return; // prevent duplicate pages
+    
+    isLoading = true;
+    try {
         const thumbnails = await fetchThumbnails(page);
-        console.log("thumbnails:", thumbnails.length);
         if (thumbnails.length > 0) {
             appendThumbnails(thumbnails, page);
             page += 10;
@@ -170,6 +171,10 @@ const loadThumbnails = async (entries) => {
             target.style.display = 'none';
             observer.unobserve(target);
         }
+    } catch (error) {
+        console.error("Error fetching thumbnails:", error);
+    } finally {
+        isLoading = false;
     }
 };
 

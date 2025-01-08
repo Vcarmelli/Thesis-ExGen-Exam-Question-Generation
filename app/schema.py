@@ -15,11 +15,3 @@ class Question(db.Model):
     answer = db.Column(db.String(500))
     options = db.Column(db.JSON)  
     question_set_id = db.Column(db.Integer, db.ForeignKey('question_set.id'))
-
-
-# def init_db():
-#     db.create_all()
-
-
-# if __name__ == '__main__':
-#     init_db()

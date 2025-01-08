@@ -4,8 +4,6 @@ import os
 
 
 from app.blueprints.landing import landing
-from app.blueprints.home import home
-from app.blueprints.library import library
 from app.blueprints.upload import upload
 from app.blueprints.preview import preview
 
@@ -22,6 +20,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(app.instance_path, DB_NAME)}'
     db.init_app(app)
 
+    from app.blueprints.home import home
+    from app.blueprints.library import library
     from app.blueprints.question import question
     app.register_blueprint(landing)
     app.register_blueprint(home)
