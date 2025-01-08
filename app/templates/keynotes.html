@@ -20,12 +20,12 @@
                 <div>
                     <h3>Export to:</h3>
                     <div class="export-btn-container">
-                        <a class="export-btn">PDF</a>
-                        <a class="export-btn" href="{{ url_for('export_docs.export_to_docx') }}">Docs</a>
+                        <a class="export-btn" href="{{ url_for('key_export.export_keynotes_pdf') }}">PDF</a>
+                        <a class="export-btn" href="{{ url_for('key_export.export_keynotes_docx') }}">Docs</a>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         <div class="page-thumbnail-container">
             {% if generated_keynotes %}
                 <div class="keynotes-container">

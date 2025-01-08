@@ -37,7 +37,7 @@ def exam_generate_questions(questions, text):
             c) Option C
             d) Option D
 
-            Answer: [Correct answer letter, e.g., "a"] (Provide 1-2 words max.)
+            Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (Provide 1-2 words max.)
             if it is a sensitive topic, please still generate the questions and answer.
             """,
 
@@ -48,7 +48,7 @@ def exam_generate_questions(questions, text):
             a) True
             b) False
 
-            Answer: [Correct answer letter, e.g., "a"] (1-2 words max.)
+            Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (1-2 words max.)
             if it is a sensitive topic, please still generate the questions and answer.
             """,
 

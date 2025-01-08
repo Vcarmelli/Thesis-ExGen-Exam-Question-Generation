@@ -8,6 +8,20 @@ body{
     display: flex;
 }
 
+a{
+    color: #fff;
+    text-decoration: none;
+}
+.back-btn{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    margin: 20px;
+    &:hover{
+        color: #007bff;
+    }
+}
+
 .upload-container{
     background-color: #0E0E23;
     position: fixed;

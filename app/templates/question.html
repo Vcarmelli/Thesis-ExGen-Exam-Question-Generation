@@ -9,6 +9,7 @@
     </head>
     <body>
         <div class="upload-container">
+            <a class="back-btn" href="{{ url_for('preview.preview_page')}}">Back to Preview</a>
             <h1>Select Pages</h1>
             <div class="preview-container-setting">
                 <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
@@ -20,8 +21,8 @@
                 <div>
                     <h3>Export to:</h3>
                     <div class="export-btn-container">
-                        <a class="export-btn">PDF</a>
-                        <a class="export-btn">Docs</a>
+                        <a class="export-btn" href="{{ url_for('export.export_pdf') }}">PDF</a>
+                        <a class="export-btn" href="{{ url_for('export.export_docx') }}">Docs</a>
                         <a class="export-btn">Pptx</a>
                     </div>
                 </div>

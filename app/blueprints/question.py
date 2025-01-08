@@ -24,5 +24,8 @@ def question_page():
         print(f"Preparing to generate {num_questions} {question_difficulty} {question_type} questions.")
 
     generated_questions = exam_generate_questions(questions, text)
+    session['generated_questions'] = generated_questions
+    print(session['generated_questions'])
+    
 
     return render_template('question.html', filename=filename, generated_questions=generated_questions)
