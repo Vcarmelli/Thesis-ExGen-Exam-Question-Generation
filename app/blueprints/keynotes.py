@@ -18,6 +18,8 @@ def keynotes_page():
     
     # Format the keynotes
     formatted_keynotes = format_keynotes(raw_keynotes)
+
+    session['generated_keynotes'] = formatted_keynotes
     
     return render_template('keynotes.html', 
                          filename=filename, 
