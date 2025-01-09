@@ -4,6 +4,9 @@ from ..model.llama import exam_generate_questions
 from langchain_community.llms import Ollama
 from docx import Document
 
+from .. import db
+from ..schema import QuestionSet, Question
+
 
 question = Blueprint('question', __name__)
 
@@ -27,5 +30,22 @@ def question_page():
     session['generated_questions'] = generated_questions
     print(session['generated_questions'])
     
+
+    new_set = QuestionSet(title=filename)
+    db.session.add(new_set)
+    db.session.flush()
+
+    for item in generated_questions:
+        question_type = item["type"]
+        for q in item["questions"]:
+            new_question = Question(
+                type=question_type,
+                question_text=q["question"],
+                options=q["options"],  
+                answer=q["answer"],
+                question_set_id=new_set.id
+            )
+            db.session.add(new_question)
+    db.session.commit()
 
     return render_template('question.html', filename=filename, generated_questions=generated_questions)

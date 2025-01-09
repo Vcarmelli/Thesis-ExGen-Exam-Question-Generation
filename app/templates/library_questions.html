@@ -1,0 +1,37 @@
+{% extends 'layout/dashboard.html'%}
+
+{% block title %}Home{% endblock %}
+
+{% block content%}
+<div class="my-library-container">
+    <h1>My Library</h1>
+    <div class="btn-container">
+        <a class="btn" href="#">Generate Exam</a>
+        <a class="btn" href="#">Generate Keynotes</a>
+    </div>
+</div>
+
+    <div class="continue-card-container">
+
+        {% for question in generated_questions %}
+            <div class="question-card">
+                <div class="continue-card">
+                    <div class="quill-container" id="question-answer-{{ loop.index }}">
+                        <h4><strong>Question {{ loop.index }}:</strong> {{ question.question_text }}</h4>
+                        <ul>
+                            {% for letter, option in question.options.items() %}
+                                <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }} ) {{ option }}</span></li>
+                            {% endfor %}
+                        </ul>
+                        <p><strong>Answer:</strong> {{ question.answer }}</p>
+                    </div>
+                </div>
+                <div class="continue-card">
+                    <div>e</div>
+                    <div>d</div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

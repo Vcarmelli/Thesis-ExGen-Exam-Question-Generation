@@ -123,6 +123,7 @@ def exam_generate_questions(questions, text):
     elapsed_time_minutes = (end_time - start_time) / 60
     print(f"\nTotal Time Taken: {elapsed_time_minutes:.2f} minutes\n")
     print(full_response)
+    print("all:", all_generated_questions)
 
     return all_generated_questions
 
