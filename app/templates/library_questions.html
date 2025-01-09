@@ -15,7 +15,7 @@
 
         {% for question in generated_questions %}
             <div class="question-card">
-                <div class="continue-card">
+                <div class="continue-card action">
                     <div class="quill-container" id="question-answer-{{ loop.index }}">
                         <h4><strong>Question {{ loop.index }}:</strong> {{ question.question_text }}</h4>
                         <ul>
@@ -26,12 +26,113 @@
                         <p><strong>Answer:</strong> {{ question.answer }}</p>
                     </div>
                 </div>
-                <div class="continue-card">
-                    <div>e</div>
-                    <div>d</div>
+                <div class="continue-card action">
+                    <div class="update-question" data-question-id="{{ question.id }}">e</div>
+                    <div class="delete-question" data-question-id="{{ question.id }}">d</div>
                 </div>
             </div>
         {% endfor %}
 
     </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="red-line"></div>
+            <form method="POST">
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Edit Question</h1>
+                        <input type="text" name="question" id="question">
+                    </div>
+                </div>
+                <div class="input-container" id="option-container">
+                    <p>Options</p>
+                    <div class="options-wrapper">
+                        <!-- will be populated when there are options -->
+                    </div>
+                </div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <label for="answer">Answer</label>
+                        <input type="text" name="answer" id="answer">
+                    </div>
+                </div>
+                <input type="hidden" name="question-id" id="question-id">
+                <div class="edit-btn-container">
+                    <button type="submit">Confirm</button>
+                    <button type="button" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('editModal');
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        function deleteQuestion(questionId) {
+            fetch( `/library/delete`, {
+                method: 'POST',
+                body: JSON.stringify({ questionId: questionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const setId = data.setId; 
+                window.location.href = `/library/${setId}`; 
+            });
+        }
+
+        function showModal(questionId) {
+            fetch( `/library/retrieve`, {
+                method: 'POST',
+                body: JSON.stringify({ questionId: questionId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const question = data.question; 
+                const optionsContainer = document.querySelector('#option-container');
+                const optionsWrapper = document.querySelector('.options-wrapper');
+                document.getElementById('question-id').value = question.id;
+                document.getElementById('question').value = question.question_text;
+                document.getElementById('answer').value = question.answer;
+
+                if (question.options) {
+                    optionsWrapper.innerHTML = '';
+                    Object.entries(question.options).forEach(([key, value], index) => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.className = 'input-label';
+
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = 'option';
+                        input.value = `${value}`;
+
+                        optionDiv.appendChild(input);
+                        optionsWrapper.appendChild(optionDiv);
+                        optionsContainer.style.display = 'block';
+                    });
+                }
+
+                console.log(question);
+                modal.style.display = "block";
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const updateBtn = document.querySelectorAll('.update-question');
+            const deleteBtn = document.querySelectorAll('.delete-question');
+            
+            updateBtn.forEach(function(question) {
+                question.addEventListener('click', () => showModal(question.getAttribute('data-question-id')));
+            });
+
+            deleteBtn.forEach(function(question) {
+                question.addEventListener('click', () => deleteQuestion(question.getAttribute('data-question-id')));
+            });
+        });        
+    </script>
 {% endblock %}
