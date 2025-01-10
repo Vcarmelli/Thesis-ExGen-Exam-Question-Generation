@@ -7,6 +7,13 @@ class QuestionSet(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=db.func.current_timestamp())
     questions = db.relationship('Question')
 
+    def get_title(self):
+        return {
+            'id': self.id,
+            'title': self.title
+        }
+
+
 class Question(db.Model):
     __tablename__ = 'question'
     id = db.Column(db.Integer, primary_key=True)
