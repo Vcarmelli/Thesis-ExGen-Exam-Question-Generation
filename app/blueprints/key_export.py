@@ -11,31 +11,34 @@ key_export = Blueprint('key_export', __name__)
 
 @key_export.route('/export-keynotes-pdf')
 def export_keynotes_pdf():
-    """Exports generated keynotes as a PDF file."""
-    # Retrieve keynotes from session
+    # Get generated keynotes from session
     keynotes_html = session.get('generated_keynotes', '')
     
-    # Parse HTML to extract text
+    # Parse HTML content
     soup = BeautifulSoup(keynotes_html, 'html.parser')
     keynotes_text = soup.get_text('\n', strip=True)
     
-    # Create a PDF document
+    # Create PDF object
     pdf = FPDF()
     pdf.add_page()
+    
+    # Add title
     pdf.set_font("Arial", 'B', 16)
     pdf.cell(0, 10, "Generated Keynotes", ln=True, align='C')
-    pdf.ln(10)  # Add space after title
-
-    # Add content line by line
+    pdf.ln(10)
+    
+    # Add content
     pdf.set_font("Arial", size=12)
-    for line in keynotes_text.split('\n'):
-        if line.strip():
+    lines = keynotes_text.split('\n')
+    for line in lines:
+        if line.strip():  # Only process non-empty lines
             pdf.multi_cell(0, 10, line.strip())
             pdf.ln(5)
-
-    # Save the PDF to a temporary file
+    
+    # Create a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp:
         pdf.output(tmp.name)
+        
         response = send_file(
             tmp.name,
             download_name='keynotes.pdf',
@@ -47,29 +50,33 @@ def export_keynotes_pdf():
 
 @key_export.route('/export-keynotes-docx')
 def export_keynotes_docx():
-    """Exports generated keynotes as a DOCX file."""
-    # Retrieve keynotes from session
+    # Get generated keynotes from session
     keynotes_html = session.get('generated_keynotes', '')
     
-    # Parse HTML to extract text
+    # Parse HTML content
     soup = BeautifulSoup(keynotes_html, 'html.parser')
     keynotes_text = soup.get_text('\n', strip=True)
     
-    # Create a DOCX document
+    # Create document object
     doc = Document()
+    
+    # Add title
     title = doc.add_heading('Generated Keynotes', level=0)
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    doc.add_paragraph()  # Add space after the title
-
-    # Add content line by line
-    for line in keynotes_text.split('\n'):
-        if line.strip():
-            paragraph = doc.add_paragraph(line.strip())
-            paragraph.space_after = Pt(12)
-
-    # Save the DOCX to a temporary file
+    doc.add_paragraph()  # Add some space after title
+    
+    # Add content
+    lines = keynotes_text.split('\n')
+    for line in lines:
+        if line.strip():  # Only process non-empty lines
+            paragraph = doc.add_paragraph()
+            paragraph.add_run(line.strip())
+            paragraph.space_after = Pt(12)  # Add space after each paragraph
+    
+    # Create a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix='.docx') as tmp:
         doc.save(tmp.name)
+        
         response = send_file(
             tmp.name,
             download_name='keynotes.docx',
@@ -79,10 +86,9 @@ def export_keynotes_docx():
         response._file_to_cleanup = tmp.name
         return response
 
-# Utility function to clean up temporary files
+# Cleanup function to delete temporary files
 def cleanup_temp_file(filepath):
-    """Deletes a temporary file."""
-    try:    
+    try:
         os.unlink(filepath)
     except Exception as e:
         print(f"Error deleting temporary file: {e}")
