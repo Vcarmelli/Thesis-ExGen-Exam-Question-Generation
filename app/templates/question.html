@@ -10,13 +10,21 @@
     <body>
         <div class="upload-container">
             <a class="back-btn" href="{{ url_for('preview.preview_page')}}">Back to Preview</a>
-            <h1>Select Pages</h1>
-            <div class="preview-container-setting">
-                <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
+            <h1>Publish</h1>
+            <div class="preview-container-setting publish">
                 <div class="savefile-container">
-                    <h3>Save to:</h3>
-                    <h5>New file</h5>
-                    <button>Append</button>
+                    <label for="title">Save to a New File</label>
+                    <input type="text" id="title" name="title" class="filename-container" value="{{ filename }}">
+                    <button type="button" onclick="saveSet()">Save</button>
+                </div>
+                <div class="appendfile-container">
+                    <label for="sets">Add to Existing File</label>
+                    <select name="sets" id="sets">
+                        {% for set in sets_data %}
+                            <option value="{{ set.id }}"> {{ set.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="appendSet()">Append</button>
                 </div>
                 <div>
                     <h3>Export to:</h3>
@@ -56,5 +64,34 @@
             <p class="text-center text-muted">No questions generated.</p>
         {% endif %}
         </div>
-</body>
+    </body>
+
+    <script>
+        function saveSet() {
+            const title = document.getElementById('title').value; 
+
+            fetch( `/question/save`, {
+                method: 'POST',
+                body: JSON.stringify({ title: title })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+        }
+
+        function appendSet() {
+            const setId = document.getElementById('sets').value; 
+            console.log('Selected ID:', setId);
+
+            fetch( `/question/append`, {
+                method: 'POST',
+                body: JSON.stringify({ setId: setId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+        }
+    </script>
 </html>

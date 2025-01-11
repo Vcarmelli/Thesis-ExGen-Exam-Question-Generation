@@ -310,6 +310,27 @@ a{
         border: none;
         border-radius: 12px;
         font-family: 'Montserrat', sans-serif;
+        &:hover{
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+    }
+    &.publish {
+        label{
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            box-sizing: border-box;
+            border: none;
+        }
+        button{
+            background-color: #D45084;
+            color: #fff;
+            margin: 10px 0 20px 0;
+        }
     }
     
 }
