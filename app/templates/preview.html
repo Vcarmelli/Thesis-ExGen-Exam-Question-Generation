@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
     <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
     <title>Upload</title>
 </head>
 <body>
     <div class="upload-container">
-        <a class="back-btn" href="{{ url_for('upload.upload_page')}}">Back to Upload</a>
+        <a class="back-btn" href="{{ url_for('upload.upload_page')}}"><span class="material-symbols-outlined">arrow_back</span></a>
         <h1>Select Pages</h1>
         <div class="preview-container-setting">
             <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
@@ -96,8 +97,26 @@
             </div>
         </div>
     </div>
+    
+    <div class="loader-container">
+        <div class="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="text">
+            <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+            <div>Integer quis vehicula massa. Sed nec elementum risus. Vivamus semper mauris a velit pulvinar, efficitur malesuada erat ullamcorper. Sed ac ante a elit fermentum suscipit sed id ante.</div>
+            <div>Curabitur elit diam, semper sed congue ut, consectetur id massa. Phasellus vulputate finibus suscipit. Nam eu tincidunt eros, sit amet interdum velit. Curabitur mi leo, tristique in lacus ultrices, ullamcorper molestie justo.</div>
+        </div>
+    </div>
 
+
+    </div>
+ 
     <script src="{{ url_for('static', filename='js/preview.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/loader.js') }}"></script>
 
 </body>
 </html>
