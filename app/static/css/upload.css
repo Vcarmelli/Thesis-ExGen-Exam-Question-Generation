@@ -8,6 +8,24 @@ body{
     display: flex;
 }
 
+.library-btn{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    margin: 20px auto;
+    border-radius: 12px;
+    padding: 10px 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    transition: ease-in-out 0.3s;
+    &:hover{
+        color: #5977ff;
+        transition: ease-in-out 0.3s;
+    }
+}
+
 a{
     color: #fff;
     text-decoration: none;
@@ -23,6 +41,7 @@ a{
         transition: ease-in-out 0.3s;
     }
 }
+
 
 .upload-container{
     background-color: #0E0E23;
@@ -180,9 +199,19 @@ a{
     }
     
     .upload-btn button {
-        padding: .62rem 13rem;
+        background-color: #d03875;
+        font-weight: 400;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        padding: 1rem 12.7rem;
         margin: 10px 0 10px 0;
         border-radius: 12px;
+        border: none;
+        &:hover{
+            transition: 0.8s;
+            background-color: #ff5096;
+            color: #fff;
+        }
     }
     
     .validation-message {
@@ -334,6 +363,16 @@ a{
             background-color: #D45084;
             color: #fff;
             margin: 10px 0 20px 0;
+
+            transition: 0.8s;
+            .save-btn{
+                background-color: #4fff3b;
+                transition: 0.8s;
+                &:hover{
+                    transition: 0.8s;
+                    background-color: #81ff72;
+                }
+            }
         }
     }
     

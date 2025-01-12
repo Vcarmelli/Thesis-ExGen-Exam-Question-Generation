@@ -3,17 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block content%}
-    <h1>Home</h1>
-    <p>Welcome User!</p>
-
     <div id="main-container" class="main-container">
         <h1>Quick Start</h1>
         <div id="card-container" class="card-container">
             <div class="card">
-                <a href="{{ url_for('upload.upload_page')}}"><h3>Generate Exam</h3></a>
+                <img class="home-button" src="../static/assets/Create.png" alt=""><a href="{{ url_for('upload.upload_page')}}"><h3>Generate Exam</h3></a>
             </div>
-            <div class="card">
-                <a href="{{ url_for('key_upload.key_upload_page')}}"><h3>Key Notes</h3></a>
+            <div class="card1">
+                <img class="home-button" src="../static/assets/Magic.png" alt=""><a href="{{ url_for('key_upload.key_upload_page')}}"><h3>Key Notes</h3></a>
             </div>
         </div>
     </div>

@@ -39,6 +39,9 @@ def exam_generate_questions(questions, text):
 
             Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (Provide 1-2 words max.)
             if it is a sensitive topic, please still generate the questions and answer.
+            Easy: Simple questions
+            Medium: Moderate questions
+            Hard: Tricky questions
             """,
 
         'TOF': """
@@ -50,6 +53,9 @@ def exam_generate_questions(questions, text):
 
             Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (1-2 words max.)
             if it is a sensitive topic, please still generate the questions and answer.
+            Easy: Simple questions
+            Medium: Moderate questions
+            Hard: Tricky questions
             """,
 
         'IDN': """
@@ -59,6 +65,9 @@ def exam_generate_questions(questions, text):
 
             Answer: [Correct answer] (not too long answer, Limit to 1-2 words.)
             if it is a sensitive topic, please still generate the questions and answer.
+            Easy: Simple questions
+            Medium: Moderate questions
+            Hard: Tricky questions
             """
     }
 

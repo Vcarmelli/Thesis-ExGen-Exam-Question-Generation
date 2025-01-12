@@ -33,18 +33,25 @@ body{
             list-style: none;
             padding: 0;
             margin: 0;
+            a{
+                text-decoration: none;
+                color: #fff;
+                font-size: 1rem;
+                transition: 1s;
+                &:hover{
+                    transition: 1s;
+                    background-color: #1E1E3D;
+                }
+            }
             li{
                 margin: 0 15px 0 0;
                 padding: 10px;
                 border-radius: 12px;
                 transition: 0.3s;
+                transition: 1s;
                 &:hover{
+                    transition: 1s;
                     background-color: #1E1E3D;
-                }
-                a{
-                    text-decoration: none;
-                    color: #fff;
-                    font-size: 1rem;
                 }
             }
         }
@@ -84,16 +91,49 @@ body{
 /* Home page */
 
     .main-container{
-        margin: 50px 0;
+        margin: 20px 0;
+        overflow: auto;
+        .main-container::-webkit-scrollbar{
+            display: none;
+        }
+
         .card-container{
             display: flex;
             margin: 20px 0;
             .card{
-                background-color: #1E1E3D;
                 width: 20%;
                 padding: 40px;
-                margin: 0 20px 0 0;
+                margin: 0 20px 0 20px;
                 border-radius: 12px;
+                background-color: #d03875;
+                display: flex;
+                align-items: center;
+                transition: 1s; 
+                &:hover{
+                    box-shadow: rgba(255, 255, 255, 0.464) 0px 0px 10px 5px;
+                    transition: 1s;
+                    background-color: #ff5096;
+                }
+            }
+            .card1{
+                width: 20%;
+                padding: 40px;
+                margin: 0 20px 0 20px;
+                border-radius: 12px;
+                background-color: #a61b8f;
+                display: flex;
+                align-items: center;
+                transition: 1s; 
+                &:hover{
+                    box-shadow: rgba(255, 255, 255, 0.464) 0px 0px 10px 5px;
+                    transition: 1s;
+                    background-color: #fd30db;
+                }
+            }
+            .home-button{
+                height: 50px;
+                margin: 0 10px;
+            }
                 h3{
                     margin: 0;
                 }
@@ -104,20 +144,11 @@ body{
                     text-decoration: none;
                     color: #fff;
                 }
-                &:nth-child(1){
-                    background-color: #D45084;
-                }
-                &:nth-child(2){
-                    background-color: #8B2279;
-
-                }
-                &:hover{
-                    opacity: 0.8;
-                    transition: 0.3s;
+                i{
+                    color: white;
                 }
             }
         }
-    }   
 
     .continue-card-container{
         margin: 20px 0 0 0;
@@ -127,12 +158,14 @@ body{
             padding: 20px;
             border-radius: 12px;
             margin: 0 0 20px 0;
-            transition: 0.3s;
+            transition: 0.8s;
             &:hover{
+                transition: 0.8s;
                 cursor: pointer;
                 background-color: #1E1E3D;
             }
             &.action:hover{
+                transition: 0.8s;
                 cursor: default;
                 background-color: #0E0E23;
             }
@@ -143,8 +176,11 @@ body{
                 margin: 0;
             }
         }       
-        .question-card{
+        .question-card{            
             display: flex;
+            img{
+                height: 20px;
+            }
             & .update-question:hover,
             & .delete-question:hover{
                 cursor: pointer;
@@ -187,6 +223,7 @@ body{
         }
     }
 }
+
 
 .question-card{
     & .continue-card:nth-child(2){

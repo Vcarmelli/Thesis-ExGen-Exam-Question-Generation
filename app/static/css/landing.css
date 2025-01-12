@@ -3,10 +3,7 @@
 }
 body {
     /* Static fallback color */
-    background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(20,20,46,1) 35%, rgb(22, 34, 106) 100%);
-    background-size: 400% 400%; /* Adjust size for smoother movement */
-    animation: moveBackground 20s ease infinite;
+    background-color: #060617;
     font-family: 'Montserrat', sans-serif;
     width: 90%;
     margin: 0 auto;
@@ -14,18 +11,75 @@ body {
     color: #fff;
 }
 
-/* Keyframe animation for moving background */
-@keyframes moveBackground {
+/* Container for blurry circles */
+.blurry-circles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* Ensure it's behind other elements */
+    pointer-events: none; /* Prevent interactions */
+}
+
+/* Container for blurry circles */
+.blurry-circles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -1; /* Place behind all content */
+    pointer-events: none;
+}
+
+/* Base style for blurry circles */
+.blurry-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: moveCircle 30s infinite ease-in-out alternate;
+}
+
+/* Pink circle */
+.blurry-circle.pink {
+    width: 400px;
+    height: 400px;
+    background-color: #D45084;
+    top: 10%;
+    left: 20%;
+}
+
+/* Blue circle */
+.blurry-circle.blue {
+    width: 500px;
+    height: 500px;
+    background-color: #9998E6;
+    top: 60%;
+    left: 70%;
+}
+
+/* Animation for smooth movement */
+@keyframes moveCircle {
     0% {
-        background-position: 0% 50%;
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(-80px, 100px) scale(1.2);
     }
     50% {
-        background-position: 100% 50%;
+        transform: translate(100px, -50px) scale(1.1) rotate(15deg);
+    }
+    75% {
+        transform: translate(-100px, -80px) scale(1.3);
     }
     100% {
-        background-position: 0% 50%;
+        transform: translate(50px, 50px) scale(1);
     }
 }
+
 
 
 /* body::-webkit-scrollbar {
@@ -54,7 +108,7 @@ nav{
         padding: 0 2rem;
         background-color: none;
         font-size: 1rem;
-        border-bottom: 2px solid #969696;
+        border-bottom: 2px solid #ffffffb8;
         color: #fff;
 
    }
@@ -64,6 +118,11 @@ nav{
    a{
     text-decoration: none;
     color: #fff;
+    transition: 1s; 
+    &:hover{
+        transition: 1s;
+        color: #D45084;
+    }
    }
    img{
     width: 120px;
@@ -106,10 +165,12 @@ section{
         font-size: 1.2rem;
         margin: 1rem 0;
         text-decoration: none;
+        transition: .8s;
 
         &:hover{
-            background-color: #15bf6f;
-            color: #fff;
+            box-shadow: rgba(255, 255, 255, 0.464) 0px 0px 10px 5px;
+            background-color: #4dffac;
+            color: #060617;
             transition: .8s;
         }
     }
@@ -190,6 +251,11 @@ section{
             background-color: #00B1DD;
             border-radius: 20px;
             margin: 10px 0;
+            transition: 1s;
+            &:hover{
+                background-color: #33daff;
+                transition: 1s;
+            }   
         }
     }
     .member-img{
@@ -228,6 +294,11 @@ section{
         padding: 1.2rem 3rem;
         border-radius: 50px;
         font-size: 1.2rem;
+        transition: 1s;
+        &:hover{
+            background-color: #33daff;
+            transition: 1s;
+        }   
 
     }
 }

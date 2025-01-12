@@ -16,7 +16,7 @@
                 <div class="savefile-container">
                     <label for="title">Save to a New File</label>
                     <input type="text" id="title" name="title" class="filename-container" value="{{ filename }}">
-                    <button type="button" onclick="saveSet()">Save</button>
+                    <button class="save-btn" type="button" onclick="saveSet()">Save</button>
                 </div>
                 <div class="appendfile-container">
                     <label for="sets">Add to Existing File</label>
@@ -32,7 +32,6 @@
                     <div class="export-btn-container">
                         <a class="export-btn" href="{{ url_for('export.export_pdf') }}">PDF</a>
                         <a class="export-btn" href="{{ url_for('export.export_docx') }}">Docs</a>
-                        <a class="export-btn">Pptx</a>
                     </div>
                 </div>
             </div>
@@ -59,6 +58,7 @@
                             </div>
                         </div>
                     {% endfor %}
+                    <a class="library-btn" href="{{ url_for('library.library_page')}}">Go to Library</a>
                 </div>
             {% endfor %}
         {% else %}
