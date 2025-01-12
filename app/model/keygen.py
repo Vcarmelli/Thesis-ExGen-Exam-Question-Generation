@@ -63,8 +63,6 @@ def keynote_generation(keynotes, text):
     keynote_prompt = """
     Objective: You are a Teacher. Create a concise and comprehensive student reviewer for the following topic:
 
-    Structure:
-
     Learning Objectives:
 
     Clearly state 2-3 learning objectives students should achieve after reviewing this material.
@@ -144,7 +142,7 @@ def format_keynotes(text):
             continue
             
         # Handle main section headers
-        if any(header in line for header in ["Learning Objectives:", "Overview:", "Key Concepts or Summary:", 
+        if any(header in line for header in ["Learning Objectives:", "Title","Overview:", "Key Concepts or Summary:", 
                "Concise Summary", "Key Terms and Definitions:", "Examples:", "Tips:", "Additional Resources:"]):
             # Close the previous section, if any
             if current_section:

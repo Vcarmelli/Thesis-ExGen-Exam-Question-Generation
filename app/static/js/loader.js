@@ -1,0 +1,112 @@
+// Get form and loader elements
+const form = document.getElementById('upload-form');
+const loaderContainer = document.querySelector('.loader-container');
+
+// Define loading messages
+const loadingMessages = [
+    "Studies reveal that active recall is 50% more effective than passive review when learning new material.",
+    "Spaced repetition is one of the most effective learning patterns, using intervals of time to reinforce memory retention.",
+    "Sleep plays a vital role in learning patterns, as the brain consolidates new information during the REM sleep stage.",
+    "The 10-minute rule suggests that attention spans wane after about 10 minutes of lecture, making it crucial to break up lessons with engaging activities.",
+    "Gamification of learning, using game elements like points or levels, can increase motivation and engagement, especially in younger learners.",
+    "Research shows that students learn better when information is presented in both visual and verbal formats, leveraging dual coding theory.",
+    "The Feynman technique, which involves teaching a concept to someone else, is an effective way to reinforce learning and identify gaps in understanding.",
+    "Mind mapping is a powerful tool for organizing information visually, making it easier to understand complex concepts and see connections between ideas.",
+    "Chunking involves breaking down information into smaller, manageable chunks, making it easier to remember and process.",
+    "Inquiry-based learning, where students ask questions and explore answers, fosters critical thinking and deeper understanding.",
+    "Finalizing your quiz..."
+];
+
+// Create text elements dynamically
+const textContainer = loaderContainer.querySelector('.text');
+textContainer.innerHTML = ''; // Clear existing text divs
+loadingMessages.forEach(message => {
+    const div = document.createElement('div');
+    div.textContent = message;
+    textContainer.appendChild(div);
+});
+
+// Hide loader initially
+loaderContainer.classList.add('hidden');
+
+// Add form submit handler
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Validate form fields
+    const questionNum = document.getElementById('ques-num').value;
+    const pageNum = document.getElementById('page-num').value;
+
+    if (!questionNum || !pageNum) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    // Show loader
+    loaderContainer.classList.remove('hidden');
+
+    // Initialize text animation
+    let currentTextIndex = 0;
+    const textElements = textContainer.querySelectorAll('div');
+    
+    // Initially hide all text elements except the first one
+    textElements.forEach((el, index) => {
+        if (index === 0) {
+            el.style.opacity = '1';
+            el.style.visibility = 'visible';
+        } else {
+            el.style.opacity = '0';
+            el.style.visibility = 'hidden';
+        }
+    });
+
+    // Function to smoothly transition to next text
+    function showNextText() {
+        const currentElement = textElements[currentTextIndex];
+        const nextIndex = (currentTextIndex + 1) % textElements.length;
+        const nextElement = textElements[nextIndex];
+
+        // Make next element visible but transparent
+        nextElement.style.visibility = 'visible';
+        nextElement.style.opacity = '0';
+
+        // Fade out current text while fading in next text
+        requestAnimationFrame(() => {
+            currentElement.style.opacity = '0';
+            nextElement.style.opacity = '1';
+            
+            // After transition is complete, hide the old element
+            setTimeout(() => {
+                currentElement.style.visibility = 'hidden';
+            }, 1000);
+        });
+
+        currentTextIndex = nextIndex;
+    }
+
+    // Calculate timings
+    const messageInterval = 12000; // 12 seconds per message
+    const totalDuration = 120000; // 2 minutes total
+    
+    // Start text rotation
+    const textInterval = setInterval(showNextText, messageInterval);
+
+    // Loop the messages if needed to fill the 2-minute duration
+    setTimeout(() => {
+        clearInterval(textInterval);
+        currentTextIndex = 0; // Reset to first message
+        
+        // Start a new interval for the remaining time if needed
+        if (messageInterval * loadingMessages.length < totalDuration) {
+            const remainingInterval = setInterval(showNextText, messageInterval);
+            
+            // Clear the remaining interval and submit form after 2 minutes
+            setTimeout(() => {
+                clearInterval(remainingInterval);
+                form.submit();
+            }, totalDuration - (messageInterval * loadingMessages.length));
+        } else {
+            form.submit();
+        }
+    }, Math.min(messageInterval * loadingMessages.length, totalDuration));
+});

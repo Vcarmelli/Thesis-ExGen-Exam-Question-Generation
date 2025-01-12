@@ -167,6 +167,7 @@ body{
     .btn-container{
         margin: 20px 0;
         .btn{
+            z-index: 9999;
             background-color: #1E1E3D;
             padding: 10px 20px;
             border-radius: 12px;
