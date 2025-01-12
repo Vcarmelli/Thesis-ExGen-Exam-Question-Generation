@@ -69,10 +69,10 @@ def keynote_generation(keynotes, text):
     Overview:
 
     Title and Overview: Clearly state the subject name and provide an outline of the topics covered.
-    Key Concepts or Summary: Present the main points of each topic in bullet points, tables, or charts. Include essential definitions, formulas, or dates.
+    Summary:
 
     Provide a concise and engaging summary of the topic.
-    Key Terms and Definitions:
+    Key Terms and Definitions: Present the main points of each topic in bullet points, tables, or charts. Include essential definitions, formulas, name, or dates.
 
     List and define key terms relevant to the topic. Definitions should be concise and student-friendly.
     Examples:
@@ -81,6 +81,7 @@ def keynote_generation(keynotes, text):
     Tips:
 
     Offer practical tips for understanding, remembering, or applying the material(mnemonics).
+    No yapping, just keynotes.
     """
     # Combine the prompt with the input text
     prompt_template = keynote_prompt + text

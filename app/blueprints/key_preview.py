@@ -3,6 +3,7 @@ import os
 from PIL import Image
 from pdf2image import convert_from_path
 from langchain_community.document_loaders import PyMuPDFLoader
+from ..model.summ import summarize
 
 # Configure the Blueprint
 key_preview = Blueprint('key_preview', __name__)
@@ -78,24 +79,13 @@ def key_preview_page():
 
         # Parse the pages input
         pages = parse_pages(pages_input)
-
-        # Collect question types and quantities
-        question_types = request.form.getlist('ques-type')
-        question_quantities = request.form.getlist('ques-num')
-        question_difficulties = request.form.getlist('ques-diff')
-
-        questions = [
-            {'type': qt, 'quantity': int(qn), 'difficulty': qd} 
-            for qt, qn, qd in zip(question_types, question_quantities, question_difficulties) if qn.isdigit()
-        ]
-
         # Try to extract text from the selected pages
         try:
-            text = extract_text(session['file_path'], pages)
+            extract = extract_text(session['file_path'], pages)
+            text = summarize(extract)
         except KeyError:
             return jsonify({'message': 'Return to Upload Page'}), 400
 
-        session['questions'] = questions
         session['text'] = text
         session['filename'] = filename
         # return jsonify(session['text'], session['questions'])  # Return text or redirect as needed

@@ -19,11 +19,11 @@
                 <div class="input-container">
                     <div class="input-label">
                         <label for="page-num">Page Number</label>
-                        <input type="number" name="page-num" id="page-num" placeholder="1-10">
+                        <input type="number" name="page-num" id="page-num" placeholder="1-10" min="0">
                     </div>
                 </div>
 
-                <input type="hidden" name="pages" id="selected-pages">
+                <input type="hidden" name="pages" id="selected-pages" min="0">
 
                 <div class="input-container">
                     <button type="submit" class="btn btn-primary">Confirm</button>
@@ -57,5 +57,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/pages.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/preview.js') }}"></script>
 </body>
-</html>
+</html> 

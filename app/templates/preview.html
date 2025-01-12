@@ -40,11 +40,11 @@
                     </div>
                     <div class="input-label">
                         <label for="page-num">Page Number</label>
-                        <input type="text" name="page-num" id="page-num" placeholder="1-10" pattern="[0-9, \-]+" title="Only numbers, commas, spaces, and hyphens are allowed.">
+                        <input type="text" name="page-num" id="page-num" placeholder="1-10" pattern="[0-9, \-]+" min="0" title="Only numbers, commas, spaces, and hyphens are allowed.">
                     </div>
                 </div>
 
-                <input type="hidden" name="pages" id="selected-pages">
+                <input type="hidden" name="pages" id="selected-pages" min="0">
 
                 <div class="input-container">
                     <button type="submit" class="btn btn-primary">Confirm</button>
@@ -106,9 +106,7 @@
             <div></div>
         </div>
         <div class="text">
-            <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-            <div>Integer quis vehicula massa. Sed nec elementum risus. Vivamus semper mauris a velit pulvinar, efficitur malesuada erat ullamcorper. Sed ac ante a elit fermentum suscipit sed id ante.</div>
-            <div>Curabitur elit diam, semper sed congue ut, consectetur id massa. Phasellus vulputate finibus suscipit. Nam eu tincidunt eros, sit amet interdum velit. Curabitur mi leo, tristique in lacus ultrices, ullamcorper molestie justo.</div>
+
         </div>
     </div>
  

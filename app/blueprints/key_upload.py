@@ -8,7 +8,7 @@ key_upload = Blueprint('key_upload', __name__)
 # Define folders and allowed file types
 UPLOAD_FOLDER = 'app/static/uploads'
 THUMBNAIL_FOLDER = 'app/static/thumbnails'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'docx', 'doc', 'pptx', 'ppt'}
+ALLOWED_EXTENSIONS = {'pdf'}
 
 # Ensure directories exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -16,7 +16,7 @@ os.makedirs(THUMBNAIL_FOLDER, exist_ok=True)
 
 # Check if the file type is allowed
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
 
 @key_upload.route('/key_upload', methods=['GET', 'POST'])
 def key_upload_page():
@@ -29,6 +29,9 @@ def key_upload_page():
         if file.filename == '':
             return render_template('upload.html', error="File name is empty")
         
+        if not file.content_type == 'application/pdf':
+            return render_template('upload.html', error="Only PDF files are allowed")
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
