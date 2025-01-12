@@ -21,7 +21,8 @@ body{
     background-color: #007bff;
     transition: ease-in-out 0.3s;
     &:hover{
-        color: #5977ff;
+        background-color: #429dff;
+        color: white;
         transition: ease-in-out 0.3s;
     }
 }
@@ -207,6 +208,7 @@ a{
         margin: 10px 0 10px 0;
         border-radius: 12px;
         border: none;
+        transition: 0.8s;
         &:hover{
             transition: 0.8s;
             background-color: #ff5096;
@@ -222,16 +224,19 @@ a{
 
     .export-btn-container{
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         margin: 20px 0 0 0;
         
         .export-btn {
             padding: 10px 50px;
+            margin: auto 10px;
             background-color: #007bff;
             color: #fff;
             border-radius: 12px;
             cursor: pointer;
+            transition: 0.8s;
             &:hover{
+                transition: 0.8s;
                 background-color: #8B2279;
                 color: #fff;
             }
@@ -343,10 +348,11 @@ a{
         border: none;
         border-radius: 12px;
         font-family: 'Montserrat', sans-serif;
+        transition: 0.8s;
         &:hover{
             cursor: pointer;
             opacity: 0.8;
-            transition: 0.3s;
+            transition: 0.8s;
         }
     }
     &.publish {
@@ -363,19 +369,36 @@ a{
             background-color: #D45084;
             color: #fff;
             margin: 10px 0 20px 0;
-
-            transition: 0.8s;
+        }
             .save-btn{
-                background-color: #4fff3b;
+                
+                background-color: #34af26;
                 transition: 0.8s;
                 &:hover{
                     transition: 0.8s;
-                    background-color: #81ff72;
+                    background-color: #43f230;
                 }
             }
-        }
     }
     
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 8rem;
+    color: #ff4444;
+}
+
+.delete-btn:hover {
+    color: #ff0000;
+}
+
+.file-name {
+    display: flex;
+    align-items: center;
 }
 
 

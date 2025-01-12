@@ -5,34 +5,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileSelector = document.querySelector('.file-selector');
     const fileSelectorInput = document.querySelector('.file-selector-input');
     const message = document.querySelector('.validation-message');
-    const Upload = document.querySelector('#upload');
+    const uploadButton = document.querySelector('#upload');
 
     fileSelector.onclick = () => fileSelectorInput.click();
     fileSelectorInput.onchange = () => handleFiles(fileSelectorInput.files);
-    //Upload.onclick = () => submitFile();
 
     // Drag-and-drop events
     dropArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropArea.classList.add('drag-over-effect');
     });
+    
     dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over-effect'));
+    
     dropArea.addEventListener('drop', (e) => {
         e.preventDefault();
         dropArea.classList.remove('drag-over-effect');
-        fileSelectorInput.files = e.dataTransfer.files;
-        handleFiles(fileSelectorInput.files);
+        
+        // Only take the first file if multiple files are dropped
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileSelectorInput.files = new DataTransfer().files;
+            handleFiles([files[0]]);
+        }
     });
 
     function handleFiles(files) {
-        [...files].forEach((file) => {
+        // Clear existing files
+        listContainer.innerHTML = '';
+        uploadButton.disabled = true;
+        
+        // Only process the first file
+        if (files.length > 0) {
+            const file = files[0];
             if (typeValidation(file.type)) {
-                console.log("file:", file);
                 uploadFile(file);
+                uploadButton.disabled = false;
             } else {
-                showMessage("Invalid file type.");
+                showMessage("Invalid file type. Please upload a PDF, DOC, or DOCX file.");
             }
-        });
+        }
     }
 
     function typeValidation(type) {
@@ -51,13 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-
-    let totalFiles = 0;
-    let completedFiles = 0;
-
     function uploadFile(file) {
         listSection.style.display = 'block';
-        totalFiles += 1;
     
         // Create list item for displaying the file
         let li = document.createElement('li');
@@ -66,14 +73,28 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="col">
                 <div class="file-name">
                     <span class="name">${file.name}</span>
+                    <button type="button" class="delete-btn">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
                 </div>
                 <div class="file-progress">
                     <span></span>
                 </div>
             </div>
         `;
-        listContainer.prepend(li);
-        Upload.innerText = "Submit";
+
+        // Add delete functionality
+        const deleteBtn = li.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', () => {
+            li.remove();
+            fileSelectorInput.value = ''; // Clear the file input
+            listSection.style.display = 'none';
+            uploadButton.disabled = true;
+            showMessage("File removed");
+        });
+
+        listContainer.innerHTML = ''; // Clear any existing files
+        listContainer.appendChild(li);
+        uploadButton.innerText = "Submit";
     }
-    
 });

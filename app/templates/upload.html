@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}">
     <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back,delete" />
     <title>Upload</title>
 </head>
 <body>
@@ -23,19 +23,19 @@
                             <a class="file-selector">Click to upload</a>
                             <span>or drag and drop.</span>
                         </div>
-                        <input type="file" class="file-selector-input" name="input_file">
+                        <input type="file" class="file-selector-input" name="input_file" accept=".pdf">
                     </div>
                     <div class="col">
                         <div class="drop-here">Drop file here</div>
                     </div>
-                </div>
-                <div class="list-section" style="display: block;">
+                </div>  
+                <div class="list-section" style="display: none;">
                     <ul class="list"></ul>
                 </div>
                 <div class="validation-message">
                 </div>
             </div>
-            <div class="upload-btn"><button id="upload" class="btn btn-primary" type="submit">Upload</button></div>
+            <div class="upload-btn"><button id="upload" class="btn btn-primary" type="submit" disabled>Upload</button></div>
         </form>
     </div>
     <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
