@@ -6,8 +6,8 @@
 <div class="my-library-container">
     <h1>My Library</h1>
     <div class="btn-container">
-        <a class="btn" href="#">Generate Exam</a>
-        <a class="btn" href="#">Generate Keynotes</a>
+        <a class="btn" href="{{ url_for('upload.upload_page')}}">Generate Exam</a>
+        <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
     </div>
 </div>
 
@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <div class="continue-card action">
-                    <div class="update-question" data-question-id="{{ question.id }}">e</div>
-                    <div class="delete-question" data-question-id="{{ question.id }}">d</div>
+                    <div class="update-question" data-question-id="{{ question.id }}"><span class="material-symbols-outlined">edit</span></div>
+                    <div class="delete-question" data-question-id="{{ question.id }}"><span class="material-symbols-outlined">delete</span></div>
                 </div>
             </div>
         {% endfor %}

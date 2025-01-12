@@ -9,3 +9,4 @@
 __pycache__/
 *.pyc
 app/static/thumbnails/
+instance/database.db
