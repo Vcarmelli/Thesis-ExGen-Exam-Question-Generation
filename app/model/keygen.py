@@ -50,43 +50,34 @@ import time, requests, json
 
 #     return result
 
-
 def keynote_generation(keynotes, text):
     api_url = "https://ollama-y2elcua3ga-uc.a.run.app/api/generate"
     headers = {
         "Content-Type": "application/json",
-        # "Authorization": "Bearer YOUR_API_KEY",  # Uncomment if the API requires an authorization key
     }
 
-    generated_keynotes = []
-
     keynote_prompt = """
-    Objective: You are a Teacher. Create a concise and comprehensive student reviewer for the following topic:
-
-    Learning Objectives:
-
-    Clearly state 2-3 learning objectives students should achieve after reviewing this material.
-    Overview:
-
-    Title and Overview: Clearly state the subject name and provide an outline of the topics covered.
-    Summary:
-
-    Provide a concise and engaging summary of the topic.
-    Key Terms and Definitions: Present the main points of each topic in bullet points, tables, or charts. Include essential definitions, formulas, name, or dates.
-
-    List and define key terms relevant to the topic. Definitions should be concise and student-friendly.
-    Examples:
-
-    Include relevant examples to illustrate key concepts or applications of the topic.
-    Tips:
-
-    Offer practical tips for understanding, remembering, or applying the material(mnemonics).
-    No yapping, just keynotes.
+    **Objective:** You are a Teacher. Create a concise and comprehensive reviewer for students based on the following guidelines:
+    1. **Learning Objectives:**
+    * Identify 2–3 clear learning objectives students should achieve after studying this material.
+    2. **Overview:**
+    * Provide the subject name and an outline of the topics covered.
+    3. **Summary:**
+    * Write a concise, engaging summary of the topic.
+    * Highlight the main points in bullet points, tables, or charts where applicable.
+    * Include key definitions, formulas, names, or dates.
+    4. **Key Terms and Definitions:**
+    * List essential terms relevant to the topic with concise, student-friendly definitions.
+    5. **Examples:**
+    * Provide relevant examples to illustrate key concepts or their applications.
+    6. **Tips:**
+    * Share practical tips to help students understand, remember, or apply the material (e.g., mnemonics or memory aids).
+    Focus on brevity and clarity. Use **bullets**, not numbers, for keynotes. Avoid unnecessary elaboration.
     """
+    
     # Combine the prompt with the input text
     prompt_template = keynote_prompt + text
 
-    # Start the timer
     start_time = time.time()
 
     payload = {
@@ -102,32 +93,65 @@ def keynote_generation(keynotes, text):
                 chunk = json.loads(line)
                 result += chunk.get("response", "")
     except Exception as e:
-                    print(f"Error generating keynotes")
-    # Debugging output for the result
-    print("Generated Keynotes:", result)
+        print(f"Error generating keynotes")
 
-    # End the timer
     end_time = time.time()
-    elapsed_time_minutes = (end_time - start_time) / 60
+    elapsed_time_minutes = (end_time - start_time) / 60 
+    print("generated keynotes:", result)
     print(f"Total Time Taken: {elapsed_time_minutes:.2f} minutes")
+    
 
     return result
 
 def clean_text(text):
-    #Removes unnecessary formatting symbols such as ** and ## from the text.
-    return text.replace("**", "").replace("##", "")
-
+    """
+    Clean the text by removing AI-generated preambles and formatting artifacts.
+    """
+    # List of common preamble phrases to remove
+    preambles = [
+        "I see that the text provided",
+        "However, if you would like",
+        "Here is a rewritten version:",
+        "I can help create",
+        "Let me create",
+        "Here's a student reviewer",
+        "Based on the guidelines provided",
+        "I'll create a review"
+    ]
+    
+    # Split text into lines
+    lines = text.split('\n')
+    cleaned_lines = []
+    content_started = False
+    
+    for line in lines:
+        # Skip empty lines
+        if not line.strip():
+            continue
+            
+        # Skip lines containing preamble phrases
+        if any(preamble in line for preamble in preambles):
+            continue
+            
+        # Start capturing content when we see a section header or "Subject:"
+        if ("Subject:" in line or 
+            any(header in line for header in ["Learning Objectives:", "Overview:", 
+                                            "Summary:", "Key Terms and Definitions:", 
+                                            "Examples:", "Tips:"])):
+            content_started = True
+            
+        if content_started:
+            cleaned_lines.append(line)
+            
+    return '\n'.join(cleaned_lines)
 
 def format_keynotes(text):
     """
     Parse and format the LLM-generated keynotes text into structured HTML.
-    Args:
-        text (str): Raw text from LLM
-    Returns:
-        str: Formatted HTML string
     """
-    # Preprocess the text to remove unwanted symbols
+    # Clean the text first
     text = clean_text(text)
+    text = text.replace('**', '')  # Remove all ** symbols
     
     sections = []
     current_section = ""
@@ -143,48 +167,22 @@ def format_keynotes(text):
             continue
             
         # Handle main section headers
-        if any(header in line for header in ["Learning Objectives:", "Title","Overview:", "Key Concepts or Summary:", 
-               "Concise Summary", "Key Terms and Definitions:", "Examples:", "Tips:", "Additional Resources:"]):
-            # Close the previous section, if any
+        if any(header in line for header in ["Learning Objectives:", "Overview:", 
+               "Summary:", "Key Terms and Definitions:", "Examples:", "Tips:"]):
             if current_section:
                 sections.append(current_section + '</div></div>')
                 current_section = ""
-            
-            # Start a new section
             current_section = f'<div class="section"><h3 class="section-title">{line}</h3><div class="section-content">'
         
-        # Handle numbered lists (Learning Objectives, Tips)
-        elif line[0].isdigit() and '. ' in line:
-            number, content = line.split('. ', 1)
-            current_section += f'<div class="numbered-item"><span class="number">{number}.</span> {content}</div>'
-        
-        # Handle bullet points
-        elif line.startswith('* '):
-            content = line[2:]
-            current_section += f'<div class="bullet-item">{content}</div>'
-        
-        # # Handle tables
-        # elif '|' in line:
-        #     if '---' not in line:  # Skip table separator lines
-        #         cells = [cell.strip() for cell in line.split('|') if cell.strip()]
-        #         if len(cells) >= 2:
-        #             if current_section.endswith('</table>') is False:  # Start a new table
-        #                 current_section += '<table class="keynotes-table">'
-        #             if "Key Points" in line:  # Table header
-        #                 current_section += '<tr>'
-        #                 for cell in cells:
-        #                     current_section += f'<th>{cell}</th>'
-        #                 current_section += '</tr>'
-        #             else:  # Table content
-        #                 current_section += '<tr>'
-        #                 for cell in cells:
-        #                     current_section += f'<td>{cell}</td>'
-        #                 current_section += '</tr>'
-        
-        # Handle key terms
-        elif ': ' in line and not line.startswith('Title:'):
-            term, definition = line.split(': ', 1)
-            current_section += f'<div class="key-term"><span class="term">{term}:</span> {definition}</div>'
+        # Handle bullet points (convert all list markers to bullets)
+        elif line.startswith(('-', '+', '*', '•')) or (len(line) > 2 and line[0].isdigit() and line[1] == '.'):
+            content = line.lstrip('-+*• 0123456789.')
+            # Check if the line contains a term definition
+            if ': ' in content and not content.startswith('Title:'):
+                term, definition = content.split(': ', 1)
+                current_section += f'<div class="bullet-item"><strong>{term}</strong>: {definition}</div>'
+            else:
+                current_section += f'<div class="bullet-item">{content}</div>'
         
         # Handle regular text
         else:

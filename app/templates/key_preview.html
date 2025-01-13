@@ -19,7 +19,7 @@
                 <div class="input-container">
                     <div class="input-label">
                         <label for="page-num">Page Number</label>
-                        <input type="number" name="page-num" id="page-num" placeholder="1-10" min="0">
+                        <input type="text" name="page-num" id="page-num" placeholder="1-10" pattern="[0-9, \-]+" min="0" title="Only numbers, commas, spaces, and hyphens are allowed.">
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-
+    <script src="{{ url_for('static', filename='js/loader.js') }}"></script>
     <script src="{{ url_for('static', filename='js/pages.js') }}"></script>
     <script src="{{ url_for('static', filename='js/preview.js') }}"></script>
 </body>

@@ -1,20 +1,35 @@
 // Get form and loader elements
 const form = document.getElementById('upload-form');
-const loaderContainer = document.querySelector('.loader-container');
+const loaderContainer = document.createElement('div');
+loaderContainer.className = 'loader-container';
 
-// Define loading messages
+// Add loader container to body
+document.body.appendChild(loaderContainer);
+
+// Create loader HTML structure
+loaderContainer.innerHTML = `
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="text"></div>
+`;
+
+// Define loading messages specific to keynotes generation
 const loadingMessages = [
-    "Studies reveal that active recall is 50% more effective than passive review when learning new material.",
-    "Spaced repetition is one of the most effective learning patterns, using intervals of time to reinforce memory retention.",
-    "Sleep plays a vital role in learning patterns, as the brain consolidates new information during the REM sleep stage.",
-    "The 10-minute rule suggests that attention spans wane after about 10 minutes of lecture, making it crucial to break up lessons with engaging activities.",
-    "Gamification of learning, using game elements like points or levels, can increase motivation and engagement, especially in younger learners.",
-    "Research shows that students learn better when information is presented in both visual and verbal formats, leveraging dual coding theory.",
-    "The Feynman technique, which involves teaching a concept to someone else, is an effective way to reinforce learning and identify gaps in understanding.",
-    "Mind mapping is a powerful tool for organizing information visually, making it easier to understand complex concepts and see connections between ideas.",
-    "Chunking involves breaking down information into smaller, manageable chunks, making it easier to remember and process.",
-    "Inquiry-based learning, where students ask questions and explore answers, fosters critical thinking and deeper understanding.",
-    "Finalizing your quiz..."
+    "Analyzing document content and structure...",
+    "Natural Language Processing helps identify key concepts and main ideas in your text.",
+    "Text summarization algorithms work to extract the most important information.",
+    "Machine learning models help identify topic hierarchies and relationships.",
+    "Advanced algorithms identify important definitions, examples, and supporting details.",
+    "Knowledge graphs help establish connections between related concepts.",
+    "Semantic analysis ensures accurate understanding of context and meaning.",
+    "Organizing information into a clear, hierarchical structure...",
+    "Formatting your keynotes for optimal readability and understanding...",
+    "Adding visual markers and emphasis to highlight key points...",
+    "Finalizing your keynotes..."
 ];
 
 // Create text elements dynamically
@@ -33,12 +48,11 @@ loaderContainer.classList.add('hidden');
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Validate form fields
-    const questionNum = document.getElementById('ques-num').value;
+    // Validate form field
     const pageNum = document.getElementById('page-num').value;
 
-    if (!questionNum || !pageNum) {
-        alert('Please fill in all required fields');
+    if (!pageNum) {
+        alert('Please enter a page number');
         return;
     }
 
