@@ -194,6 +194,9 @@ a{
     .list-section li .file-size {
         font-weight: 700;
     }
+    #upload{
+        margin: 10px 0 10px 1.5rem;
+    }
     
     .upload-btn button {
         background-color: #d03875;
@@ -206,6 +209,7 @@ a{
         border: none;
         transition: 0.8s;
         &:hover{
+            cursor: pointer;
             transition: 0.8s;
             background-color: #ff5096;
             color: #fff;
