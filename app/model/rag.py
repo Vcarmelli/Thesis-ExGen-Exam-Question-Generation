@@ -138,12 +138,12 @@ def get_documents_from_vector_db():
     
     # Print each document's details
     print("\nDocuments in the database:")
-    for doc in documents:
-        print(f"Page: {doc['page']}")
-        print(f"Source: {doc['source']}")
-        print("Content Preview:")
-        print(doc['content'][:500])  # Print the first 500 characters for brevity
-        print("-" * 80)  # Separator for clarity)
+    # for doc in documents:
+    #     print(f"Page: {doc['page']}")
+    #     print(f"Source: {doc['source']}")
+    #     print("Content Preview:")
+    #     print(doc['content'][:500])  # Print the first 500 characters for brevity
+    #     print("-" * 80)  # Separator for clarity)
     
     return documents
 

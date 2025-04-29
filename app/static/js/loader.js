@@ -99,8 +99,8 @@ form.addEventListener('submit', function(e) {
     }
 
     // Calculate timings
-    const messageInterval = 12000; // 12 seconds per message
-    const totalDuration = 120000; // 2 minutes total
+    const messageInterval = 120; // 12 seconds per message   ////////////// NAG MINUS 2 ZEROES ME
+    const totalDuration = 1200; // 2 minutes total
     
     // Start text rotation
     const textInterval = setInterval(showNextText, messageInterval);

@@ -75,9 +75,12 @@ def preview_page():
         filename = request.args.get('file_name')
         if filename:
             session['filename'] = filename
-            print(f"Filename from GET: {filename}")
 
         pages_input = request.form.get('page-num')
+        question_type = request.form.get('ques-type')
+        question_quantity = request.form.get('ques-num')
+        bloom_level = request.form.get('blooms')
+        print("bloom_level:", bloom_level)
 
 
         # Function to convert range to list of pages
@@ -99,15 +102,12 @@ def preview_page():
         pages = parse_pages(pages_input)
         print(f"Selected pages: {pages}")
 
-        # Collect question types and quantities
-        question_types = request.form.getlist('ques-type')
-        question_quantities = request.form.getlist('ques-num')
-        question_difficulties = request.form.getlist('ques-diff')
-
-        questions = [
-            {'type': qt, 'quantity': int(qn), 'difficulty': qd} 
-            for qt, qn, qd in zip(question_types, question_quantities, question_difficulties) if qn.isdigit()
-        ]
+        question = {
+            'type': question_type, 
+            'quantity': int(question_quantity), 
+            'bloom': bloom_level
+        } 
+        print(f"questions: {question}")
 
         # Now, instead of extracting text, pass the pages to the retriever
         try:
@@ -117,7 +117,7 @@ def preview_page():
         except KeyError:
             return jsonify({'message': 'Return to Upload Page'}), 400
 
-        session['questions'] = questions
+        session['question'] = question
         session['text'] = text
         session['filename'] = filename
         return redirect(url_for('question.question_page'))

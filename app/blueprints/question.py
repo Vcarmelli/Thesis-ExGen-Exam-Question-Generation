@@ -19,23 +19,19 @@ def retrieve_question_sets():
 
 @question.route('/question')
 def question_page():
-    questions = session.get('questions', [])
+    question = session.get('question', {})
     text = session.get('text', '')
     filename = session.get('filename', 'No file selected')
     
     # Debugging output
     print(f"Filename: {filename}")
     print(f"Text: {text}")
+    print(f"Questions: {question}")
+    print(f"Preparing to generate {question['quantity']} {question['type']} in {question['bloom']} bloom's taxonomy level.")
     
-    for question in questions:
-        question_type = question.get('type')
-        num_questions = question.get('quantity')
-        question_difficulty = question.get('difficulty')
-        print(f"Preparing to generate {num_questions} {question_difficulty} {question_type} questions.")
-    
-    generated_questions = exam_generate_questions(questions, text)
+    generated_questions = exam_generate_questions(question, text)
     session['generated_questions'] = generated_questions
-    print(session['generated_questions'])
+    print("GENERATED:", session['generated_questions'])
 
     sets_data = retrieve_question_sets()
     return render_template('question.html', filename=filename, generated_questions=generated_questions, sets_data=sets_data)

@@ -5,12 +5,14 @@ import re
 
 
 #API CALL IMPLEMENTATION
-def exam_generate_questions(questions, text):
+def exam_generate_questions(question, text):
+    print("questions:", question)
     api_url = "https://ollama-y2elcua3ga-uc.a.run.app/api/generate"
     headers = {
         "Content-Type": "application/json",
         # "Authorization": "Bearer YOUR_API_KEY",  # Uncomment if the API requires an authorization key
     }
+
     all_generated_questions = []
     num_generated_questions = 0
 
@@ -29,7 +31,7 @@ def exam_generate_questions(questions, text):
     # Prompts for each type of question
     question_prompts = {
         'MCQ': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} multiple-choice questions. Each question should have four options (a, b, c, d), with the correct answer specified at the end. The questions should not be overly simplistic. Follow this format:
+            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} multiple-choice questions. Each question should have four options (a, b, c, d), with the correct answer specified at the end. The questions should not be overly simplistic. Follow this format:
 
             Question: Write the question here, ensuring it is clear, specific, and not too common.
             a) Option A
@@ -45,7 +47,7 @@ def exam_generate_questions(questions, text):
             """,
 
         'TOF': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} true or false questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
+            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} true or false questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
 
             Question: Write the true or false statement here.
             a) True
@@ -59,7 +61,7 @@ def exam_generate_questions(questions, text):
             """,
 
         'IDN': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} identification questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
+            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} identification questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
 
             Question: Write the identification question here, ensuring clarity and relevance.
 
@@ -71,59 +73,50 @@ def exam_generate_questions(questions, text):
             """
     }
 
-    for question in questions:
-        question_type = question.get('type')
-        question_type = exam_abbreviate(question_type)
+    ######################################################################################################## access bloom level by question['bloom']
+    question_type = exam_abbreviate(question['type'])
+    print(f"Generating {question['quantity']} {question['bloom']} {question_type} questions...")
 
-        num_questions = question.get('quantity')
-        question_difficulty = question.get('difficulty')
 
-        print(f"Generating {num_questions} {question_difficulty} {question_type} questions...")
+    while question['quantity'] !=  num_generated_questions:
+        number_of_questions = question['quantity'] - num_generated_questions
 
-        all_generated_questions.append({
-            'type': question_type,
-            'questions': []
-        })
+        # Get the corresponding prompt for the current question type
+        prompt_template = question_prompts.get(question_type)
+        if prompt_template:
+            # Format the prompt with the number of questions
+            prompt = prompt_template.format(number_of_questions=number_of_questions)
 
-        while num_questions !=  num_generated_questions:
-            number_of_questions = num_questions - num_generated_questions
+            # Combine the text with the prompt
+            formatted_prompt = summary + prompt  # WITH SUMMARY
 
-            # Get the corresponding prompt for the current question type
-            prompt_template = question_prompts.get(question_type)
-            if prompt_template:
-                # Format the prompt with the number of questions
-                prompt = prompt_template.format(number_of_questions=number_of_questions, difficulty=question_difficulty)
+            # Prepare the API payload
+            payload = {
+                "model": "llama3.2:3b",
+                "prompt": formatted_prompt
+            }
 
-                # Combine the text with the prompt
-                formatted_prompt = summary + prompt  # WITH SUMMARY
+            try:
+                # Make the API request
+                response = requests.post(api_url, headers=headers, json=payload, stream=True)
+                print("response:", response)
 
-                # Prepare the API payload
-                payload = {
-                    "model": "llama3.2:3b",
-                    "prompt": formatted_prompt
-                }
+                # Collect the full response from the API
+                full_response = ""
+                for line in response.iter_lines(decode_unicode=True):
+                    if line:
+                        chunk = json.loads(line)
+                        full_response += chunk.get("response", "")
 
-                try:
-                    # Make the API request
-                    response = requests.post(api_url, headers=headers, json=payload, stream=True)
+                # Parse the generated questions and append to the list
+                question_list = parse_questions_and_answers(full_response)
+                all_generated_questions.extend(question_list)
+                print("gen:", all_generated_questions)
 
-                    # Collect the full response from the API
-                    full_response = ""
-                    for line in response.iter_lines(decode_unicode=True):
-                        if line:
-                            chunk = json.loads(line)
-                            full_response += chunk.get("response", "")
+            except Exception as e:
+                print(f"Error generating {question['type']} questions: {e}")
 
-                    # Parse the generated questions and append to the list
-                    question_list = parse_questions_and_answers(full_response)
-                    for item in all_generated_questions:
-                        if item['type'] == question_type:
-                            item['questions'].extend(question_list)
-
-                except Exception as e:
-                    print(f"Error generating {question_type} questions: {e}")
-
-            num_generated_questions = sum(len(item['questions']) for item in all_generated_questions)
+        num_generated_questions = len(all_generated_questions)
 
     # End the timer
     end_time = time.time()
@@ -225,6 +218,7 @@ def parse_questions_and_answers(result):
     current_question = ""
     options = {}
     current_answer = ""
+    print("raw:", result)
 
     for line in lines:
         if re.match(r"^Question\s*\d*:", line) or re.match(r"^\d+\.\s*Question:", line) or re.match(r"^\d+\.", line):
@@ -261,4 +255,8 @@ def parse_questions_and_answers(result):
     return questions_and_answers
 
 def exam_abbreviate(q_type):
-    return {'identification': 'IDN', 'multiple_choice': 'MCQ', 'true_or_false': 'TOF'}.get(q_type.lower(), 'UNKNOWN')
+    return {
+        'identification': 'IDN',
+        'multiple_choice': 'MCQ',
+        'true_false': 'TOF',
+        }.get(q_type.lower(), 'TOF') # default true or false

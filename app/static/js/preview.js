@@ -1,13 +1,49 @@
 const target = document.querySelector("#end-of-thumbnails");
 const container = document.querySelector(".thumbnail-container");
 const pagesInput = document.getElementById('page-num');
+
+const bloomOptions = document.querySelectorAll(".bloom-option");
+const selectedBloom = document.getElementById("selected-bloom");
+const typeDropdown = document.getElementById("ques-type");
+
 let selectedPages = [];
 let isVisible = false;
 let isLoading = false;
 let page = 10; 
 let questionCount = 0;
+    
+const quesTypes = {
+    remember: ["Multiple Choice", "True/False", "Identification"],
+    understand: ["Multiple Choice", "True/False", "Short Answer"],
+    apply: ["Multiple Choice", "Situation-based Questions"],
+    analyze: ["Multiple Choice", "Essay"],
+    evaluate: ["Multiple Choice", "True/False"],
+    create: ["Essay", "Situation-based Questions"]
+};
 
 addThumbnailListeners();
+
+// to populate question type dropdown based on taxonomy
+function populateTypes(bloomLevel) {
+    const types = quesTypes[bloomLevel] || [];
+    typeDropdown.innerHTML = ""; 
+    types.forEach(type => {
+        const option = document.createElement("option");
+        option.value = type.toLowerCase().replace(/[\s\/-]+/g, "_");
+        option.textContent = type;
+        typeDropdown.appendChild(option);
+    });
+}
+
+// Listen for bloom clicks
+bloomOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        bloomOptions.forEach(opt => opt.classList.remove("selected"));
+        option.classList.add("selected");
+        selectedBloom.value = option.dataset.value;
+        populateTypes(option.dataset.value);
+    });
+});
 
 
 // Listen for manual input changes

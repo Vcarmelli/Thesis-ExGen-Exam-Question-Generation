@@ -77,9 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="material-symbols-outlined">delete</span>
                     </button>
                 </div>
-                <div class="file-progress">
-                    <span></span>
-                </div>
             </div>
         `;
 
