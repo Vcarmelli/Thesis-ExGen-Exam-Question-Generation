@@ -10,6 +10,10 @@ DB_NAME = 'database.db'
 def create_app():
     app = Flask(__name__)
     app.secret_key = '123456'
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(app.instance_path, DB_NAME)}'
     
     # Initialize db with app
