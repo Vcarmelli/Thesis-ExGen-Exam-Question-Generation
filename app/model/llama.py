@@ -13,9 +13,6 @@ def exam_generate_questions(question, text):
         # "Authorization": "Bearer YOUR_API_KEY",  # Uncomment if the API requires an authorization key
     }
 
-    all_generated_questions = []
-    num_generated_questions = 0
-
     # Start the timer
     sum_start_time = time.time()
     
@@ -30,101 +27,153 @@ def exam_generate_questions(question, text):
     start_time = time.time()
     # Prompts for each type of question
     question_prompts = {
-        'MCQ': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} multiple-choice questions. Each question should have four options (a, b, c, d), with the correct answer specified at the end. The questions should not be overly simplistic. Follow this format:
+        'MCQ': """Generate {number_of_questions} multiple-choice questions at the {bloom_level} level of Bloom's Taxonomy.  
 
-            Question: Write the question here, ensuring it is clear, specific, and not too common.
-            a) Option A
-            b) Option B
-            c) Option C
-            d) Option D
+        **Bloom's Level & Key Verbs:**  
+        - **Remembering (EASY):** Define, List, Recall, Identify  
+        - **Understanding (MEDIUM):** Explain, Compare, Summarize, Interpret  
+        - **Applying/Analyzing (HARD):** Apply, Solve, Analyze, Differentiate  
+        - **Evaluating/Creating (VERY_HARD):** Justify, Critique, Design, Propose  
 
-            Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (Provide 1-2 words max.)
-            if it is a sensitive topic, please still generate the questions and answer.
-            Easy: Simple questions
-            Medium: Moderate questions
-            Hard: Tricky questions
-            """,
+        **Format:**  
+        Question [#]: [Question using appropriate Bloom's verb]  
+        a) [Option]  
+        b) [Option]  
+        c) [Option]  
+        d) [Option]  
+        Correct: [letter]""",  
 
-        'TOF': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} true or false questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
+        'IDN': """Generate {number_of_questions} identification questions at the {bloom_level} level of Bloom's Taxonomy.  
 
-            Question: Write the true or false statement here.
-            a) True
-            b) False
+        **Bloom's Level & Key Verbs:**  
+        - **Remembering (EASY):** Name, Identify, Label, Match  
+        - **Understanding (MEDIUM):** Describe, Classify, Exemplify  
+        - **Applying (HARD):** Use, Demonstrate, Modify  
+        - **Analyzing (VERY_HARD):** Examine, Break down, Infer  
 
-            Answer: [Correct answer letter, e.g., "a" dont place the answer in the same letter most at the time] (1-2 words max.)
-            if it is a sensitive topic, please still generate the questions and answer.
-            Easy: Simple questions
-            Medium: Moderate questions
-            Hard: Tricky questions
-            """,
+        **Format:**  
+        Question [#]: [Question using appropriate Bloom's verb]  
+        Answer: [Exact term]""",  
 
-        'IDN': """
-            You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} identification questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
+        'TOF': """Generate {number_of_questions} true/false statements at the {bloom_level} level of Bloom's Taxonomy.  
 
-            Question: Write the identification question here, ensuring clarity and relevance.
+        **Bloom's Level & Key Verbs:**  
+        - **Remembering (EASY):** Recall, Recognize  
+        - **Understanding (MEDIUM):** Summarize, Interpret  
+        - **Applying/Analyzing (HARD):** Apply, Investigate  
+        - **Evaluating (VERY_HARD):** Judge, Defend  
 
-            Answer: [Correct answer] (not too long answer, Limit to 1-2 words.)
-            if it is a sensitive topic, please still generate the questions and answer.
-            Easy: Simple questions
-            Medium: Moderate questions
-            Hard: Tricky questions
-            """
+        **Format:**  
+        Statement [#]: [Statement using appropriate Bloom's verb]  
+        a) True  
+        b) False  
+        Correct: [letter]""",  
+
+        'SHA': """Generate {number_of_questions} short-answer questions at the {bloom_level} level of Bloom's Taxonomy.  
+
+        **Bloom's Level & Key Verbs:**  
+        - **Understanding (EASY):** Explain, Paraphrase  
+        - **Applying (MEDIUM):** Solve, Demonstrate  
+        - **Analyzing (HARD):** Compare, Contrast  
+        - **Evaluating/Creating (VERY_HARD):** Argue, Propose  
+
+        **Format:**  
+        Question [#]: [Question using appropriate Bloom's verb]  
+        Model Answer: [2-3 sentence response demonstrating the level]""",  
+
+        'SBQ': """Generate {number_of_questions} scenario-based questions at the {bloom_level} level of Bloom's Taxonomy.  
+
+        **Bloom's Level & Key Verbs:**  
+        - **Applying (EASY):** Implement, Operate  
+        - **Analyzing (MEDIUM):** Examine, Categorize  
+        - **Evaluating (HARD):** Justify, Assess  
+        - **Creating (VERY_HARD):** Design, Construct  
+
+        **Format:**  
+        Scenario [#]: [Brief real-world situation]  
+        Question: [Question using appropriate Bloom's verb]  
+        Model Response: [3-5 sentence answer demonstrating the level]""",  
+
+        'ESS': """Generate {number_of_questions} essay questions at the {bloom_level} level of Bloom's Taxonomy.  
+
+        **Bloom's Level & Key Verbs:**  
+        - **Analyzing:** Compare, Investigate  
+        - **Evaluating:** Critique, Defend  
+        - **Creating:** Develop, Formulate  
+
+        **Format:**  
+        Essay Prompt [#]: [Question using appropriate Bloom's verb]  
+        Key Skills: [Specific cognitive skill, e.g., "Compare theories (Analyzing)"]  
+        Evaluation Criteria:  
+        1) [Relevance to Bloom's level]  
+        2) [Depth of analysis/creativity]  
+        3) [Clarity & coherence]  
+        Expected Length: [Word range]  
+        Model Answer: [3-5 sentence exemplar]"""  
     }
 
-    ######################################################################################################## access bloom level by question['bloom']
+    # Get the question type abbreviation
     question_type = exam_abbreviate(question['type'])
-    print(f"Generating {question['quantity']} {question['bloom']} {question_type} questions...")
+    bloom_level = question['bloom']
+    required_count = question['quantity']
+    
+    print(f"Generating {required_count} {bloom_level} {question_type} questions...")
 
+    # Get the corresponding prompt for the question type
+    prompt_template = question_prompts.get(question_type)
+    if not prompt_template:
+        print(f"No prompt template found for question type: {question_type}")
+        return []
 
-    while question['quantity'] !=  num_generated_questions:
-        number_of_questions = question['quantity'] - num_generated_questions
+    # Format the prompt with the required number and bloom level
+    prompt = prompt_template.format(number_of_questions=required_count, bloom_level=bloom_level)
 
-        # Get the corresponding prompt for the current question type
-        prompt_template = question_prompts.get(question_type)
-        if prompt_template:
-            # Format the prompt with the number of questions
-            prompt = prompt_template.format(number_of_questions=number_of_questions)
+    # Combine the text with the prompt
+    formatted_prompt = summary + "\n\n" + prompt  # WITH SUMMARY
+    print("formatted_prompt:", formatted_prompt)
 
-            # Combine the text with the prompt
-            formatted_prompt = summary + prompt  # WITH SUMMARY
+    # Prepare the API payload
+    payload = {
+        "model": "llama3.2:3b",
+        "prompt": formatted_prompt
+    }
 
-            # Prepare the API payload
-            payload = {
-                "model": "llama3.2:3b",
-                "prompt": formatted_prompt
-            }
+    try:
+        # Make the API request
+        response = requests.post(api_url, headers=headers, json=payload, stream=True)
+        print("response status:", response.status_code)
 
-            try:
-                # Make the API request
-                response = requests.post(api_url, headers=headers, json=payload, stream=True)
-                print("response:", response)
+        # Collect the full response from the API
+        full_response = ""
+        for line in response.iter_lines(decode_unicode=True):
+            if line:
+                try:
+                    chunk = json.loads(line)
+                    full_response += chunk.get("response", "")
+                except json.JSONDecodeError:
+                    print(f"Could not decode JSON: {line}")
 
-                # Collect the full response from the API
-                full_response = ""
-                for line in response.iter_lines(decode_unicode=True):
-                    if line:
-                        chunk = json.loads(line)
-                        full_response += chunk.get("response", "")
+        # Parse the generated questions
+        all_generated_questions = parse_questions_and_answers(full_response)
+        
+        # Ensure we have exactly the required number of questions
+        if len(all_generated_questions) > required_count:
+            all_generated_questions = all_generated_questions[:required_count]
+        
+        # If we don't have enough questions, log the issue
+        if len(all_generated_questions) < required_count:
+            print(f"Warning: Generated only {len(all_generated_questions)} of {required_count} requested questions")
 
-                # Parse the generated questions and append to the list
-                question_list = parse_questions_and_answers(full_response)
-                all_generated_questions.extend(question_list)
-                print("gen:", all_generated_questions)
+        # End the timer
+        end_time = time.time()
+        # Calculate the elapsed time in minutes
+        elapsed_time_minutes = (end_time - start_time) / 60
+        print(f"\nTotal Time Taken: {elapsed_time_minutes:.2f} minutes\n")
+        print(f"Generated {len(all_generated_questions)} questions")
 
-            except Exception as e:
-                print(f"Error generating {question['type']} questions: {e}")
-
-        num_generated_questions = len(all_generated_questions)
-
-    # End the timer
-    end_time = time.time()
-
-    # Calculate the elapsed time in minutes
-    elapsed_time_minutes = (end_time - start_time) / 60
-    print(f"\nTotal Time Taken: {elapsed_time_minutes:.2f} minutes\n")
-    print("all:", all_generated_questions)
+    except Exception as e:
+        print(f"Error generating {question_type} questions: {e}")
+        all_generated_questions = []
 
     return all_generated_questions
 
@@ -210,47 +259,159 @@ def exam_generate_questions(question, text):
 #     return all_generated_questions
 
 
-
+#parsing depends on the question type
 def parse_questions_and_answers(result):
-    # This function processes the result and splits questions, options, and answers
+    """
+    Process the LLM result text and extract questions, options, and answers based on question type.
+    Returns a list of dictionaries with question, options, and answer.
+    """
     questions_and_answers = []
     lines = result.split('\n')
-    current_question = ""
-    options = {}
-    current_answer = ""
-    print("raw:", result)
+    current_question = {}
+    current_type = ""
+    
+    # Identify question type based on content patterns
+    if "a)" in result and "b)" in result and "c)" in result and "d)" in result:
+        current_type = "MCQ"
+    elif "a) True" in result and "b) False" in result:
+        current_type = "TOF"
+    elif "Essay Prompt" in result:
+        current_type = "ESS"
+    elif "Scenario" in result:
+        current_type = "SBQ"
+    elif "Model Answer:" in result and not "Key Skills:" in result:
+        current_type = "SHA"
+    else:
+        current_type = "IDN"  # Default to identification if no clear pattern
 
-    for line in lines:
-        if re.match(r"^Question\s*\d*:", line) or re.match(r"^\d+\.\s*Question:", line) or re.match(r"^\d+\.", line):
-            # New question starts
+    # Regular expressions for different question types
+    question_patterns = {
+        "standard": r"^(?:Question\s*\d*:|^\d+\.\s*Question:|^\d+\.)",
+        "mcq": r"^(?:Question\s*\d*:|^\d+\.\s*Question:|^\d+\.)",
+        "tof": r"^(?:Statement\s*\d*:|^\d+\.\s*Statement:|^\d+\.)",
+        "essay": r"^(?:Essay Prompt\s*\d*:|^\d+\.\s*Essay Prompt:|^\d+\.)",
+        "scenario": r"^(?:Scenario\s*\d*:|^\d+\.\s*Scenario:|^\d+\.)"
+    }
+
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        
+        # Skip empty lines
+        if not line:
+            i += 1
+            continue
+            
+        # Detect start of a new question based on question type
+        if current_type == "MCQ" and (line.startswith("Question") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': '', 'options': {}, 'answer': ''}
+            
+            # Extract question text
+            if ":" in line:
+                current_question['question'] = line.split(":", 1)[1].strip()
+            else:
+                current_question['question'] = line.split(".", 1)[1].strip()
+                
+        elif current_type == "TOF" and (line.startswith("Statement") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': '', 'options': {'a': 'True', 'b': 'False'}, 'answer': ''}
+            
+            # Extract question text
+            if ":" in line:
+                current_question['question'] = line.split(":", 1)[1].strip()
+            else:
+                current_question['question'] = line.split(".", 1)[1].strip()
+                
+        elif current_type == "ESS" and (line.startswith("Essay Prompt") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': '', 'options': {}, 'answer': ''}
+            
+            # Extract question text
+            if ":" in line:
+                current_question['question'] = line.split(":", 1)[1].strip()
+            else:
+                current_question['question'] = line.split(".", 1)[1].strip()
+                
+        elif current_type == "SBQ" and (line.startswith("Scenario") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': 'Scenario: ', 'options': {}, 'answer': ''}
+            
+            # Extract scenario text
+            if ":" in line:
+                current_question['question'] += line.split(":", 1)[1].strip() + "\n"
+            else:
+                current_question['question'] += line.split(".", 1)[1].strip() + "\n"
+            
+            # Move to the next line to get the question
+            i += 1
+            if i < len(lines) and lines[i].strip().startswith("Question:"):
+                current_question['question'] += "Question: " + lines[i].strip().split(":", 1)[1].strip()
+                
+        elif current_type == "IDN" and (line.startswith("Question") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': '', 'options': {}, 'answer': ''}
+            
+            # Extract question text
+            if ":" in line:
+                current_question['question'] = line.split(":", 1)[1].strip()
+            else:
+                current_question['question'] = line.split(".", 1)[1].strip()
+                
+        elif current_type == "SHA" and (line.startswith("Question") or re.match(r"^\d+\.", line)):
+            if current_question and 'question' in current_question:
+                questions_and_answers.append(current_question)
+            current_question = {'question': '', 'options': {}, 'answer': ''}
+            
+            # Extract question text
+            if ":" in line:
+                current_question['question'] = line.split(":", 1)[1].strip()
+            else:
+                current_question['question'] = line.split(".", 1)[1].strip()
+        
+        # Parse options for MCQ questions
+        elif current_type == "MCQ" and re.match(r"^[a-d]\)", line):
+            option_letter = line[0]
+            option_text = line[2:].strip()
             if current_question:
-                questions_and_answers.append({
-                    'question': current_question.strip(),
-                    'options': options,  # Add options
-                    'answer': current_answer.strip()
-                })
-            # Extract the question text
-            if "Question" in line:
-                current_question = line.split(":", 1)[1].strip()
-            else:  # For numbered formats like "1." or "10."
-                current_question = line.split('.', 1)[1].strip()
-            options = {}  # Reset options for the new question
-            current_answer = ""  # Reset answer for the new question
-        elif line.startswith("a)") or line.startswith("b)") or line.startswith("c)") or line.startswith("d)"):
-            # Capture options a), b), c), d)
-            option_letter = line[0]  # a, b, c, d
-            option_text = line[3:].strip()  # Extract the option text
-            options[option_letter] = option_text  # Save it as part of the options dictionary
-        elif line.startswith("Answer:"):
-            current_answer = line.replace("Answer:", "").strip()
+                current_question['options'][option_letter] = option_text
+        
+        # Parse answers for all question types
+        elif line.startswith("Answer:") or line.startswith("Correct:") or line.startswith("Model Answer:") or line.startswith("Model Response:"):
+            if current_question:
+                if ":" in line:
+                    answer_text = line.split(":", 1)[1].strip()
+                    # For T/F and MCQ, we only need the letter
+                    if current_type in ["MCQ", "TOF"] and "–" in answer_text:
+                        answer_letter = answer_text.split("–")[0].strip()
+                        current_question['answer'] = answer_letter
+                    else:
+                        current_question['answer'] = answer_text
+                        
+                # Continue collecting multi-line answers
+                i += 1
+                while i < len(lines) and not (
+                    lines[i].startswith("Question") or 
+                    lines[i].startswith("Statement") or
+                    lines[i].startswith("Essay Prompt") or
+                    lines[i].startswith("Scenario") or
+                    re.match(r"^\d+\.", lines[i])
+                ):
+                    if lines[i].strip() and not lines[i].startswith("Key Skills:") and not lines[i].startswith("Evaluation Criteria:"):
+                        current_question['answer'] += " " + lines[i].strip()
+                    i += 1
+                i -= 1  # Go back one line since we'll increment i at the end of the loop
+        
+        i += 1
 
     # Add the last question
-    if current_question:
-        questions_and_answers.append({
-            'question': current_question.strip(),
-            'options': options,  # Add options
-            'answer': current_answer.strip()
-        })
+    if current_question and 'question' in current_question:
+        questions_and_answers.append(current_question)
 
     return questions_and_answers
 
@@ -259,4 +420,7 @@ def exam_abbreviate(q_type):
         'identification': 'IDN',
         'multiple_choice': 'MCQ',
         'true_false': 'TOF',
+        'situation_based_questions': 'SBQ',
+        'essay': 'ESS',
+        'short_answer': 'SHA',
         }.get(q_type.lower(), 'TOF') # default true or false

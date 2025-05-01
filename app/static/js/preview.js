@@ -13,12 +13,12 @@ let page = 10;
 let questionCount = 0;
     
 const quesTypes = {
-    remember: ["Multiple Choice", "True/False", "Identification"],
-    understand: ["Multiple Choice", "True/False", "Short Answer"],
-    apply: ["Multiple Choice", "Situation-based Questions"],
-    analyze: ["Multiple Choice", "Essay"],
-    evaluate: ["Multiple Choice", "True/False"],
-    create: ["Essay", "Situation-based Questions"]
+    remember: ["Multiple-Choice", "True/False", "Identification"],
+    understand: ["Multiple-Choice", "True/False", "Short-Answer"],
+    apply: ["Multiple-Choice", "Situation-based-Questions"],
+    analyze: ["Multiple-Choice", "Essay"],
+    evaluate: ["Multiple-Choice", "True/False"],
+    create: ["Essay", "Situation-based-Questions"]
 };
 
 addThumbnailListeners();
