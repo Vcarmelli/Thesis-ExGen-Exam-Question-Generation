@@ -191,6 +191,80 @@ body{
                 transition: 0.3s;
             }
         }
+        .blooms-counts {
+            display: flex;
+            gap: 25px;
+            padding: 20px 0;
+            justify-content: space-between;
+        }
+        .blooms-counts > div {
+            font-family: 'Montserrat', sans-serif;
+            flex-direction: column;
+            width: 7.2em;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            background-color: #0E0E23;
+            padding: 1.3em;
+            text-align: left;
+        }
+        .bloom {
+            display: flex;
+        }
+        .bloom:hover {
+            box-shadow: rgba(0, 0, 0, 0.9) 0px 0px 10px 5px;
+        }
+        .bloom-icons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .bloom-icons button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        .bloom-icons button:hover {
+            opacity: 1;
+            transition: 0.7s;
+        }
+        .bloom-icons i {
+            width: 1em;
+            font-size: 1.5em;
+        }
+        .bloom-count {
+            padding-top: 35px;
+        }
+        .bloom-count h3 {
+            margin: 0;
+            font-size: 2em;
+        }
+        .bloom-count p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .blooms-counts .bloom:nth-child(1) {
+            background-color: #B33951; 
+        }
+        
+        .blooms-counts .bloom:nth-child(2) {
+            background-color: #D86F45; 
+        }
+        
+        .blooms-counts .bloom:nth-child(3) {
+            background-color: #D9B23D; 
+        }
+        
+        .blooms-counts .bloom:nth-child(4) {
+            background-color: #4C9A2A;
+        }
+        
+        .blooms-counts .bloom:nth-child(5) {
+            background-color: #2D74DA; 
+        }
+        
+        .blooms-counts .bloom:nth-child(6) {
+            background-color: #5C4D9D;
+        }  
     }
 }
 

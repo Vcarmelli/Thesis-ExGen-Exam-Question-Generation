@@ -53,14 +53,16 @@ a{
     border-radius: 12px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 90%;
     
-      h1{
+    h1 {
         margin: 0;
         padding: 1rem 0;
         margin: 0 20px;
-      }
+    }
 
-      .container {
+    .container {
         margin: 0 20px 0 20px;
     }
     
@@ -214,6 +216,17 @@ a{
 
 }
 
+.upload-container::-webkit-scrollbar {
+    width: 8px;
+}
+.upload-container::-webkit-scrollbar-thumb {
+    background-color: #1E1E3D;
+    border-radius: 4px;
+}
+.upload-container::-webkit-scrollbar-track {
+    background-color: #0E0E23;
+}
+
 .page-thumbnail-container{
     margin: 30px 0 0 600px;
     width: 100%;
@@ -265,8 +278,16 @@ a{
     transition: border-color 0.3s;
 }
 
+.thumbnail-item img {
+    border-radius: 15px;
+}
+.thumbnail-item:hover{
+    border-radius: 15px;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 10px 5px;
+}
 .thumbnail-item.selected {
-    border: 2px solid #007bff;
+    border-radius: 15px;
+    border: 2px solid #2D74DA;
 }
 
 #end-of-thumbnails {
@@ -297,6 +318,7 @@ a{
         margin: 0 10px 0 0;
     }
     .blooms {
+        margin-top: 10px;
         flex-wrap: wrap;
         justify-content: start;
     }
@@ -312,13 +334,46 @@ a{
         margin: 0.5em 1em;
     }
     .bloom-option:hover {
-        background-color: #D45084;
         cursor: pointer;
     }
 
-    .bloom-option.selected {
-        background-color: #D45084;
+    /* Remember */
+    .bloom-option:nth-child(2):hover,
+    .bloom-option:nth-child(2).selected {
+        background-color: #B33951; 
     }
+
+    /* Understand */
+    .bloom-option:nth-child(3):hover,
+    .bloom-option:nth-child(3).selected {
+        background-color: #D86F45;
+    }
+
+    /* Apply */
+    .bloom-option:nth-child(4):hover,
+    .bloom-option:nth-child(4).selected {
+        background-color: #D9B23D; 
+        color: #0E0E23;
+    }
+
+    /* Analyze */
+    .bloom-option:nth-child(5):hover,
+    .bloom-option:nth-child(5).selected {
+        background-color: #4C9A2A; 
+    }
+
+    /* Evaluate */
+    .bloom-option:nth-child(6):hover,
+    .bloom-option:nth-child(6).selected {
+        background-color: #2D74DA;
+    }
+
+    /* Create */
+    .bloom-option:nth-child(7):hover,
+    .bloom-option:nth-child(7).selected {
+        background-color: #8B2279; 
+    }
+
     input, select{
         font-family: 'Montserrat', sans-serif;
         width: auto;

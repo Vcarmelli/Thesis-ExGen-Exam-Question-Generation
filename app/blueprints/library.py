@@ -16,7 +16,7 @@ def library_questions(setId):
     if request.method == 'GET':
         question_set = QuestionSet.query.get(setId)
         if not question_set:
-            return jsonify({'error': 'Question set not found'}), 404
+            return render_template('404.html', message="Question set not found."), 404
         
         questions = [
             {
@@ -78,5 +78,5 @@ def retrieve_question():
         }
         return jsonify({'question': question_data})
     else:
-        return jsonify({'error': 'Question not found'}), 404
+        return render_template('404.html', message="Question set not found."), 404
     

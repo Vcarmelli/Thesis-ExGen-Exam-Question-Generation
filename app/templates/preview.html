@@ -15,6 +15,16 @@
         <div class="preview-container-setting">
             <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
             <form method="POST" action="" enctype="multipart/form-data" id="upload-form">
+                <div class="input-container blooms">
+                    <p class="blooms-label">Select Bloom's Level</p>
+                    <div class="bloom-option" data-value="remember">Level 1: Remember</div>
+                    <div class="bloom-option" data-value="understand">Level 2: Understand</div>
+                    <div class="bloom-option" data-value="apply">Level 3: Apply</div>
+                    <div class="bloom-option" data-value="analyze">Level 4: Analyze</div>
+                    <div class="bloom-option" data-value="evaluate">Level 5: Evaluate</div>
+                    <div class="bloom-option" data-value="create">Level 6: Create</div>
+                    <input type="hidden" name="blooms" id="selected-bloom">
+                </div>
                 <div class="input-container">
                     <div class="input-label">
                         <label for="ques-type">Question Type</label>
@@ -34,18 +44,6 @@
                         <input type="text" name="page-num" id="page-num" placeholder="1-10" pattern="[0-9, \-]+" min="1" title="Only numbers, commas, spaces, and hyphens are allowed.">
                     </div>
                 </div>
-
-                <div class="input-container blooms">
-                    <p class="blooms-label">Select Bloom's Level</p>
-                    <div class="bloom-option" data-value="remember">Level 1: Remember</div>
-                    <div class="bloom-option" data-value="understand">Level 2: Understand</div>
-                    <div class="bloom-option" data-value="apply">Level 3: Apply</div>
-                    <div class="bloom-option" data-value="analyze">Level 4: Analyze</div>
-                    <div class="bloom-option" data-value="evaluate">Level 5: Evaluate</div>
-                    <div class="bloom-option" data-value="create">Level 6: Create</div>
-                    <input type="hidden" name="blooms" id="selected-bloom">
-                </div>
-
                 <div class="input-container upload-btn">
                     <button type="submit" class="preview">Confirm</button>
                 </div>

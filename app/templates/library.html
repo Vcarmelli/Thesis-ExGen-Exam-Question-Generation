@@ -3,21 +3,95 @@
 {% block title %}Home{% endblock %}
 
 {% block content%}
-<div class="my-library-container">
-    <h1>My Library</h1>
-    <div class="btn-container">
-        <a class="btn" href="{{ url_for('upload.upload_page')}}">Generate Exam</a>
-        <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+    <div class="my-library-container">
+        <h1>My Library</h1>
+        <div class="btn-container">
+            <a class="btn" href="{{ url_for('upload.upload_page')}}">Generate Exam</a>
+            <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+        </div>
     </div>
-</div>
 
     <div class="continue-card-container">
-
         {% for set in question_sets %}
         <div class="continue-card" data-set-id="{{ set.id }}">
             <h3>{{ set.title }}</h3>
         </div>
         {% endfor %}
+
+        <div class="blooms-counts">
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Remember</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-brain"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Understand</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Apply</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Analyze</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Evaluate</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bloom">
+                <div class="bloom-icons">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <button><img src="../static/assets/up-right-arrow.png"></button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>127</h3>
+                        <p>Create</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
