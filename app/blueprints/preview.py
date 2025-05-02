@@ -54,6 +54,7 @@ def preview_page():
     if request.method == 'GET':
         filename = request.args.get('file_name')
         file_path = session.get('file_path')
+        print(f"File path in session: {file_path}")
         if not file_path:
             return render_template('upload.html', error="No file uploaded.")
 
@@ -80,8 +81,6 @@ def preview_page():
         question_type = request.form.get('ques-type')
         question_quantity = request.form.get('ques-num')
         bloom_level = request.form.get('blooms')
-        print("bloom_level:", bloom_level)
-
 
         # Function to convert range to list of pages
         def parse_pages(pages_input):
@@ -107,7 +106,7 @@ def preview_page():
             'quantity': int(question_quantity), 
             'bloom': bloom_level
         } 
-        print(f"questions: {question}")
+        print(f"question: {question}")
 
         # Now, instead of extracting text, pass the pages to the retriever
         try:

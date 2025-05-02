@@ -6,7 +6,6 @@ import re
 
 #API CALL IMPLEMENTATION
 def exam_generate_questions(question, text):
-    print("questions:", question)
     api_url = "https://ollama-y2elcua3ga-uc.a.run.app/api/generate"
     headers = {
         "Content-Type": "application/json",

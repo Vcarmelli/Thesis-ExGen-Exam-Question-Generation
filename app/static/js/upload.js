@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploadFile(file);
                 uploadButton.disabled = false;
             } else {
-                showMessage("Invalid file type. Please upload a PDF, DOC, or DOCX file.");
+                showMessage("Invalid file type. Please upload a PDF file.");
             }
         }
     }

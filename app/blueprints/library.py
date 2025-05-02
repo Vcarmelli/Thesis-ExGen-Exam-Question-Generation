@@ -1,14 +1,25 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .. import db
 from ..schema import QuestionSet, Question
+from sqlalchemy import func
 import json
 
 library = Blueprint('library', __name__)
 
+
+def get_bloom_counts():
+    bloom_data = (db.session.query(Question.bloom, func.count(Question.id)).group_by(Question.bloom).all())
+    bloom_levels = ['remember', 'understand', 'apply', 'analyze', 'evaluate', 'create']
+    data_dict = dict(bloom_data)
+    bloom_counts = {level: data_dict.get(level, 0) for level in bloom_levels}
+    print(bloom_counts) 
+    return bloom_counts
+
 @library.route('/library')
 def library_page():
     question_sets = QuestionSet.query.all()
-    return render_template('library.html', question_sets=question_sets) 
+    counts = get_bloom_counts()
+    return render_template('library.html', question_sets=question_sets, counts=counts) 
 
 
 @library.route('/library/<int:setId>', methods=['GET', 'POST'])
@@ -21,14 +32,15 @@ def library_questions(setId):
         questions = [
             {
                 'id': question.id,
-                'type': question.type,
+                'bloom': question.bloom, # for class assigned colors
+                'bloom_level': question.get_bloom_level(), # for text display
                 'question_text': question.question_text,
                 'answer': question.answer,
                 'options': question.options
             }
             for question in question_set.questions
         ]
-        return render_template('library_questions.html', generated_questions=questions) 
+        return render_template('library_questions.html', generated_questions=questions, filename=question_set.title) 
     
     elif request.method == 'POST':
         # FOR UPDATING QUESTION IN DATABASE
@@ -46,7 +58,8 @@ def library_questions(setId):
             db.session.commit()
             print('Updated Question:', questionId)
         
-        return redirect(url_for('library.library_questions', setId=question_data.question_set_id))
+        counts = get_bloom_counts()
+        return redirect(url_for('library.library_questions', setId=question_data.question_set_id, counts=counts))
 
 
 # FOR DELETING QUESTION IN DATABASE
@@ -62,7 +75,7 @@ def delete_question():
     return jsonify({'setId': question.question_set_id})
 
 
-# FOR RETRIEVING QUESTION IN DATABASE
+# FOR RETRIEVING ONE QUESTION IN DATABASE
 @library.route('/library/retrieve', methods=['POST'])
 def retrieve_question():
     question = json.loads(request.data)
@@ -71,7 +84,6 @@ def retrieve_question():
     if question:
         question_data = {
             'id': question.id,
-            'type': question.type,
             'question_text': question.question_text,
             'answer': question.answer,
             'options': question.options

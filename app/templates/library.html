@@ -12,88 +12,183 @@
     </div>
 
     <div class="continue-card-container">
+        
+        <div class="blooms-counts">
+            {% set icon = {
+                'remember': 'fa-lightbulb',
+                'understand': 'fa-brain',
+                'apply': 'fa-comment-dots',
+                'analyze': 'fa-magnifying-glass-chart',
+                'evaluate': 'fa-scale-balanced',
+                'create': 'fa-pen-nib'
+            } %}
+            
+            {% for bloom, count in counts.items() %}
+            <div class="bloom {{ bloom }}">
+                <div class="bloom-icons">
+                    <i class="fa-solid {{ icon.get(bloom, 'fa-circle-question') }}"></i>
+                    <button type="button" onclick="showBloomInfo('{{ bloom }}')">
+                        <img src="../static/assets/up-right-arrow.png">
+                    </button>
+                </div>
+                <div class="bloom-count">
+                    <div class="card">
+                        <h3>{{ count }}</h3>
+                        <p>{{ bloom|capitalize }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
         {% for set in question_sets %}
-        <div class="continue-card" data-set-id="{{ set.id }}">
+        <div class="continue-card set" data-set-id="{{ set.id }}">
             <h3>{{ set.title }}</h3>
+            <span>{{ set.question_count() }}</span>
         </div>
         {% endfor %}
+    </div>
 
-        <div class="blooms-counts">
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-lightbulb"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Remember</p>
-                    </div>
-                </div>
+    <!-- BLOOM'S TAXONOMY INFORMATION MODALS -->
+    <!-- Remember Modal -->
+    <div id="rememberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line remember"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
             </div>
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-brain"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Understand</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-comment-dots"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Apply</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-magnifying-glass-chart"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Analyze</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-scale-balanced"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Evaluate</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bloom">
-                <div class="bloom-icons">
-                    <i class="fa-solid fa-pen-nib"></i>
-                    <button><img src="../static/assets/up-right-arrow.png"></button>
-                </div>
-                <div class="bloom-count">
-                    <div class="card">
-                        <h3>127</h3>
-                        <p>Create</p>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Remember</h1>
+                        <div class="bloom-info">
+                            <p><strong>Remembering:</strong> Retrieving, recognizing, and recalling relevant knowledge from long‐term memory.</p>
+                            <p>💡 Did you know? The "Remember" level is the foundation of Bloom's Taxonomy—without it, higher thinking levels can't exist! It's like the memory card of your brain, storing facts like the capital of France or the formula for water.</p>                   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Understand Modal -->
+    <div id="understandModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line understand"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Understand</h1>
+                        <div class="bloom-info">
+                            <p><strong>Understanding:</strong> Constructing meaning from oral, written, and graphic messages through interpreting, exemplifying, classifying, summarizing, inferring, comparing, and explaining.</p>
+                            <p>🧠 Fun Fact: Understanding is more than just memorizing—you’re making sense of what you learn. When you explain a meme to someone and they get it, you just helped them reach this level!</p>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apply Modal -->
+    <div id="applyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line apply"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Apply</h1>
+                        <div class="bloom-info">
+                            <p><strong>Applying:</strong> Carrying out or using a procedure for executing or implementing.</p>
+                            <p>💭 Trivia: Application is about doing—turning knowledge into action. Whether you're solving a math problem or cooking a recipe you just learned, you're in Apply mode!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analyze Modal -->
+    <div id="analyzeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line analyz"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Analyze</h1>
+                        <div class="bloom-info">
+                            <p><strong>Analyzing:</strong> Breaking material into constituent parts and determining how the parts relate to one another and to an overall structure or purpose through differentiating, organizing, and attributing.</p>
+                            <p>🔍 Did you know? When Sherlock Holmes breaks down clues to solve a case, he's at the Analyze level. It’s all about breaking things apart to understand the whole better.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluate Modal -->
+    <div id="evaluateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line evaluate"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Evaluate</h1>
+                        <div class="bloom-info">
+                            <p><strong>Evaluating:</strong> Making judgments based on criteria and standards through checking and critiquing.</p>
+                            <p>⚖️ Fact Check: Evaluate is where you become a critic! Whether you’re judging a book, debating in class, or picking the best movie—this is where your reasoning shines.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Modal -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="red-line create"></div>
+                <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div>
+                <div class="input-container">
+                    <div class="input-label">
+                        <h1>Create</h1>
+                        <div class="bloom-info">
+                            <p><strong>Creating:</strong> Putting elements together to form a coherent or functional whole; reorganizing elements into a new pattern or structure through generating, planning, or producing.</p>
+                            <p>✒️ Did you know? “Create” was actually added later during Bloom’s Taxonomy revision in 2001. It’s the peak—designing, inventing, composing. If you’re building something original, you’re already here!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
     <script>
+        let modal;
+        function showBloomInfo(level) {
+            modal = document.getElementById(`${level}Modal`);
+            modal.style.display = "block";
+        }
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const cards = document.querySelectorAll('.continue-card');
             

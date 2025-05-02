@@ -51,6 +51,7 @@
         {% for question_set in generated_questions %}
             <div class="mb-4">
                 <h2 class="h4 text-primary">{{ question_set.type }} Questions:</h2>
+                <h4> Bloom's Taxonomy {{ bloom_level }} </h4>
                 
                 <!-- Loop through individual questions in the question set -->
                 {% for question in question_set.questions %}
@@ -63,7 +64,7 @@
                                 {% if question_set.type == 'MCQ' or question_set.type == 'TOF' %}
                                     <ul>
                                         {% for letter, option in question.options.items() %}
-                                            <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }}) {{ option }}</span></li>
+                                            <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }} {% if option %}) {{ option }} {% endif %}</span></li>
                                         {% endfor %}
                                     </ul>
                                 {% endif %}

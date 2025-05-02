@@ -154,7 +154,6 @@ body{
         margin: 20px 0 0 0;
         .continue-card{
             background-color: #0E0E23;
-            width: 100%;
             padding: 20px;
             border-radius: 12px;
             margin: 0 0 20px 0;
@@ -178,7 +177,14 @@ body{
             .material-symbols-outlined{
                 color: #060617;
             }
-        }       
+        }
+        .continue-card.set {
+            display: flex;
+            justify-content: space-between;
+        }
+        .continue-card.action.library {
+            width: 100%;
+        }      
         .question-card{            
             display: flex;
             img{
@@ -194,7 +200,7 @@ body{
         .blooms-counts {
             display: flex;
             gap: 25px;
-            padding: 20px 0;
+            padding: 20px 0 50px 0;
             justify-content: space-between;
         }
         .blooms-counts > div {
@@ -204,7 +210,6 @@ body{
             color: #fff;
             border: none;
             border-radius: 12px;
-            background-color: #0E0E23;
             padding: 1.3em;
             text-align: left;
         }
@@ -241,37 +246,20 @@ body{
         }
         .bloom-count p {
             color: rgba(255, 255, 255, 0.8);
+        }    
+        .bloom-option {
+            font-size: 0.8em;
+            border: 1px solid white;
+            border-radius: 25px;
+            padding: 0.5em 1.2em;
+            margin: 0.5em 1em;
+            width: max-content;
         }
-        .blooms-counts .bloom:nth-child(1) {
-            background-color: #B33951; 
-        }
-        
-        .blooms-counts .bloom:nth-child(2) {
-            background-color: #D86F45; 
-        }
-        
-        .blooms-counts .bloom:nth-child(3) {
-            background-color: #D9B23D; 
-        }
-        
-        .blooms-counts .bloom:nth-child(4) {
-            background-color: #4C9A2A;
-        }
-        
-        .blooms-counts .bloom:nth-child(5) {
-            background-color: #2D74DA; 
-        }
-        
-        .blooms-counts .bloom:nth-child(6) {
-            background-color: #5C4D9D;
-        }  
     }
 }
 
 
 /* Library page */
-
-
 .my-library-container{
     display: flex;  
     justify-content: space-between;
@@ -341,7 +329,7 @@ body{
 
     .modal-content{
         background-color: #1D1D49;
-        margin: 3% auto;
+        margin: 4% auto;
         padding: 25px;
         width: 40%; 
         border-radius: 12px;
@@ -368,10 +356,34 @@ body{
 
         .red-line{
             background: #FF5858;
-            width: 30px;
+            width: 50px;
             height: 10px;
             border-radius: 12px;
             margin: 0 0 20px 0;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+        .modal-header button {
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+        .modal-header button:hover {
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+        .modal-header i {
+            font-size: 2em;
+            color: #fff
+        }
+        .bloom-info {
+            padding: 2em 1em;
+            line-height: 1.5em;
         }
         .input-container,
         .input-label{
@@ -414,3 +426,34 @@ body{
         }
     }
 }
+
+.bloom.remember,
+.bloom-option.remember,
+.red-line.remember {
+    background-color: #B33951;
+}
+.bloom.understand,
+.bloom-option.understand,
+.red-line.understand {
+    background-color: #D86F45;
+}
+.bloom.apply,
+.bloom-option.apply,
+.red-line.apply {
+    background-color: #D9B23D;
+}
+.bloom.analyze,
+.bloom-option.analyze,
+.red-line.analyze {
+    background-color: #4C9A2A;
+}
+.bloom.evaluate,
+.bloom-option.evaluate,
+.red-line.evaluate {
+    background-color: #2D74DA;
+}
+.bloom.create,
+.bloom-option.create,
+.red-line.create {
+    background-color: #5C4D9D;
+}     

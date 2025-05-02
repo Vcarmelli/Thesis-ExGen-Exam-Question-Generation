@@ -11,10 +11,39 @@ from ..schema import QuestionSet, Question
 
 question = Blueprint('question', __name__)
 
+
 def retrieve_question_sets():
-    question_sets = QuestionSet.query.all()
-    sets_title = [qs.get_title() for qs in question_sets]
-    return sets_title
+    """Get all question sets from the database"""
+    try:
+        question_sets = QuestionSet.query.all()
+        sets_data = [{'id': qs.id, 'title': qs.title} for qs in question_sets]
+        return sets_data
+    except Exception as e:
+        print(f"Error retrieving question sets: {e}")
+        return []
+    
+
+# Helper function to get the abbreviated question type
+def exam_abbreviate(q_type):
+    print("exam_abbreviate called with:", q_type) 
+    return {
+        'identification': 'IDN',
+        'multiple_choice': 'MCQ',
+        'true_false': 'TOF',
+        'situation_based_questions': 'SBQ',
+        'essay': 'ESS',
+        'short_answer': 'SHA',
+    }.get(q_type.lower(), 'TOF')  # default true or false
+
+def get_bloom_level(bloom):
+    return {
+        'remember': 'Level 1: Remember',
+        'understand': 'Level 2: Understand',
+        'apply': 'Level 3: Apply',
+        'analyze': 'Level 4: Analyze',
+        'evaluate': 'Level 5: Evaluate',
+        'create': 'Level 6: Create'
+    }.get(bloom.lower(), 'Level 1: Remember') 
 
 
 @question.route('/question')
@@ -23,6 +52,8 @@ def question_page():
     text = session.get('text', '')
     filename = session.get('filename', 'No file selected')
     
+    if not text:
+        return render_template('404.html', message="Cannot retrieve text from the file."), 404
     # Debugging output
     print(f"Filename: {filename}")
     print(f"Text length: {len(text)} characters")
@@ -43,13 +74,15 @@ def question_page():
         
         # Format the questions for the template
         question_type = exam_abbreviate(question['type'])
+        bloom_level = get_bloom_level(question['bloom'])
         
         formatted_questions = [{
+            'bloom': question['bloom'],
             'type': question_type,
             'questions': all_generated_questions
         }]
         
-        session['generated_questions'] = formatted_questions
+        session['generated_questions'] = formatted_questions  # this session variable will be saved in db
         print(f"GENERATED {len(all_generated_questions)} questions successfully")
         
         # Get existing question sets for the append option
@@ -58,6 +91,7 @@ def question_page():
         return render_template('question.html', 
                               filename=filename, 
                               generated_questions=formatted_questions, 
+                              bloom_level=bloom_level,
                               sets_data=sets_data)
     
     except Exception as e:
@@ -71,26 +105,6 @@ def question_page():
                               sets_data=retrieve_question_sets(),
                               error=f"An error occurred: {str(e)}")
 
-def retrieve_question_sets():
-    """Get all question sets from the database"""
-    try:
-        question_sets = QuestionSet.query.all()
-        sets_data = [{'id': qs.id, 'title': qs.title} for qs in question_sets]
-        return sets_data
-    except Exception as e:
-        print(f"Error retrieving question sets: {e}")
-        return []
-
-# Helper function to get the abbreviated question type
-def exam_abbreviate(q_type):
-    return {
-        'identification': 'IDN',
-        'multiple_choice': 'MCQ',
-        'true_false': 'TOF',
-        'situation_based_questions': 'SBQ',
-        'essay': 'ESS',
-        'short_answer': 'SHA',
-    }.get(q_type.lower(), 'TOF')  # default true or false
 
 @question.route('/question/save', methods=['POST'])
 def save_questions():
@@ -103,11 +117,12 @@ def save_questions():
         db.session.add(new_set)
         db.session.flush()
         
+        print("TO SAVE:", generated_questions)
         for item in generated_questions:
-            question_type = item["type"]
             for q in item["questions"]:
                 new_question = Question(
-                    type=question_type,
+                    bloom=item["bloom"],
+                    type=item["type"],
                     question_text=q["question"],
                     options=q["options"],
                     answer=q["answer"],
@@ -133,11 +148,12 @@ def append_questions():
         setId = data.get('setId')
         generated_questions = session.get('generated_questions', [])
         
+        print(f"TO APPEND IN ID {setId}: {generated_questions}")
         for item in generated_questions:
-            question_type = item["type"]
             for q in item["questions"]:
                 new_question = Question(
-                    type=question_type,
+                    bloom=item["bloom"],
+                    type=item["type"],
                     question_text=q["question"],
                     options=q["options"],
                     answer=q["answer"],

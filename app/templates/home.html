@@ -14,23 +14,14 @@
             </div>
         </div>
     </div>
-    <h1>Continue</h1>
+    {% if question_sets %}<h1>Continue</h1>{% endif %}
     <div class="continue-card-container">
         {% for set in question_sets %}
-        <div class="continue-card" data-set-id="{{ set.id }}">
+        <div class="continue-card set" data-set-id="{{ set.id }}">
             <h3>{{ set.title }}</h3>
+            <span>{{ set.question_count() }}</span>
         </div>
         {% endfor %}
-        
-        <!-- <div class="continue-card">
-            <h3>Exam 1</h3>
-        </div>
-        <div class="continue-card">
-            <h3>Exam 2</h3>
-        </div>
-        <div class="continue-card">
-            <h3>Exam 3</h3>
-        </div> -->
     </div>
 
     <script>

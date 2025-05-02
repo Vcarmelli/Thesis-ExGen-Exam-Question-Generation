@@ -128,7 +128,6 @@ a{
     }
     
     .drop-section a {
-        font-family: 'Poppins', sans-serif;
         align-items: center;
         cursor: pointer;
         text-decoration: underline;

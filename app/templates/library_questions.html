@@ -3,36 +3,36 @@
 {% block title %}Home{% endblock %}
 
 {% block content%}
-<div class="my-library-container">
-    <h1>My Library</h1>
-    <div class="btn-container">
-        <a class="btn" href="{{ url_for('upload.upload_page')}}">Generate Exam</a>
-        <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+    <div class="my-library-container">
+        <h1>My Library</h1>
+        <div class="btn-container">
+            <a class="btn" href="{{ url_for('preview.preview_page', file_name=filename) }}">Add New Questions</a>
+            <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+        </div>
     </div>
-</div>
 
     <div class="continue-card-container">
-
         {% for question in generated_questions %}
             <div class="question-card">
-                <div class="continue-card action">
+                <div class="continue-card action library">
                     <div class="quill-container" id="question-answer-{{ loop.index }}">
+                        <div class="bloom-option {{ question.bloom }}">{{ question.bloom_level }}</div>
+
                         <h4><strong>Question {{ loop.index }}:</strong> {{ question.question_text }}</h4>
                         <ul>
                             {% for letter, option in question.options.items() %}
-                                <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }} ) {{ option }}</span></li>
+                                <li style="list-style-type: none; font-size: 1rem;"><span>{{ letter }} {% if option %}) {{ option }} {% endif %}</span></li>
                             {% endfor %}
                         </ul>
                         <p><strong>Answer:</strong> {{ question.answer }}</p>
                     </div>
                 </div>
                 <div class="continue-card action">
-                    <div class="update-question" data-question-id="{{ question.id }}"><img class="edit-delete-btn" src="../static/assets/Edit.png" alt=""></div>
-                    <div class="delete-question" data-question-id="{{ question.id }}"><img class="edit-delete-btn" src="../static/assets/Delete.png" alt=""></div>
+                    <div class="update-question" data-question-id="{{ question.id }}"><img class="edit-delete-btn" src="../static/assets/Edit.png"></div>
+                    <div class="delete-question" data-question-id="{{ question.id }}"><img class="edit-delete-btn" src="../static/assets/Delete.png"></div>
                 </div>
             </div>
         {% endfor %}
-
     </div>
 
     <!-- Edit Modal -->
