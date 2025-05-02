@@ -36,11 +36,11 @@ def exam_generate_questions(question, text):
         - **Evaluating/Creating (VERY_HARD):** Justify, Critique, Design, Propose  
 
         **Format:**  
-        Question [#]: [Question using appropriate Bloom's verb]  
-        a) [Option]  
-        b) [Option]  
-        c) [Option]  
-        d) [Option]  
+        Question [#]:[Full question here] 
+        a) [Short Option]  
+        b) [Short Option]  
+        c) [Short Option]  
+        d) [Short Option]  
         Correct: [letter]""",  
 
         'IDN': """Generate {number_of_questions} identification questions at the {bloom_level} level of Bloom's Taxonomy.  
@@ -52,7 +52,7 @@ def exam_generate_questions(question, text):
         - **Analyzing (VERY_HARD):** Examine, Break down, Infer  
 
         **Format:**  
-        Question [#]: [Question using appropriate Bloom's verb]  
+        Question [#]: [Full question here] 
         Answer: [Exact term]""",  
 
         'TOF': """Generate {number_of_questions} true/false statements at the {bloom_level} level of Bloom's Taxonomy.  
@@ -64,7 +64,7 @@ def exam_generate_questions(question, text):
         - **Evaluating (VERY_HARD):** Judge, Defend  
 
         **Format:**  
-        Statement [#]: [Statement using appropriate Bloom's verb]  
+        Statement [#]: [Full statement here]
         a) True  
         b) False  
         Correct: [letter]""",  
@@ -78,7 +78,7 @@ def exam_generate_questions(question, text):
         - **Evaluating/Creating (VERY_HARD):** Argue, Propose  
 
         **Format:**  
-        Question [#]: [Question using appropriate Bloom's verb]  
+        Question [#]: [Full question here] 
         Model Answer: [2-3 sentence response demonstrating the level]""",  
 
         'SBQ': """Generate {number_of_questions} scenario-based questions at the {bloom_level} level of Bloom's Taxonomy.  
@@ -91,7 +91,7 @@ def exam_generate_questions(question, text):
 
         **Format:**  
         Scenario [#]: [Brief real-world situation]  
-        Question: [Question using appropriate Bloom's verb]  
+        Question: [Full question here] 
         Model Response: [3-5 sentence answer demonstrating the level]""",  
 
         'ESS': """Generate {number_of_questions} essay questions at the {bloom_level} level of Bloom's Taxonomy.  
@@ -102,7 +102,7 @@ def exam_generate_questions(question, text):
         - **Creating:** Develop, Formulate  
 
         **Format:**  
-        Essay Prompt [#]: [Question using appropriate Bloom's verb]  
+        Essay question [#]: [Full question here] 
         Key Skills: [Specific cognitive skill, e.g., "Compare theories (Analyzing)"]  
         Evaluation Criteria:  
         1) [Relevance to Bloom's level]  
@@ -170,7 +170,7 @@ def exam_generate_questions(question, text):
         elapsed_time_minutes = (end_time - start_time) / 60
         print(f"\nTotal Time Taken: {elapsed_time_minutes:.2f} minutes\n")
         print(f"Generated {len(all_generated_questions)} questions")
-
+        print("Generated Questions:", all_generated_questions)
     except Exception as e:
         print(f"Error generating {question_type} questions: {e}")
         all_generated_questions = []
