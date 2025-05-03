@@ -42,11 +42,11 @@
         {% endfor %}
     </div>
 
-    <!-- Edit Modal -->
-    <div id="editModal" class="modal">
+     <!-- Edit Modal -->
+     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="red-line"></div>
-            <form method="POST">
+            <form method="POST" id="editForm">
                 <div class="input-container">
                     <div class="input-label">
                         <h1>Edit Question</h1>
@@ -56,7 +56,6 @@
                 <div class="input-container" id="option-container">
                     <p>Options</p>
                     <div class="options-wrapper">
-                        <!-- will be populated when there are options -->
                     </div>
                 </div>
                 <div class="input-container">
@@ -67,22 +66,67 @@
                 </div>
                 <input type="hidden" name="question-id" id="question-id">
                 <div class="edit-btn-container">
-                    <button type="submit">Confirm</button>
+                    <button type="button" onclick="confirmEdit()">Confirm</button>
                     <button type="button" onclick="closeModal()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Confirmation Modal for Delete -->
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="red-line"></div>
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete this question? This action cannot be undone.</p>
+            <div class="edit-btn-container">
+                <button type="button" onclick="confirmDelete()">Delete</button>
+                <button type="button" onclick="closeDeleteModal()">Cancel</button>
+            </div>
+            <input type="hidden" id="delete-question-id">
+        </div>
+    </div>
+
+    <!-- Confirmation Modal for Edit -->
+    <div id="editConfirmModal" class="modal">
+        <div class="modal-content">
+            <div class="red-line"></div>
+            <h2>Confirm Changes</h2>
+            <p>Are you sure you want to save these changes?</p>
+            <div class="edit-btn-container">
+                <button type="button" onclick="submitEditForm()">Save Changes</button>
+                <button type="button" onclick="closeEditConfirmModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const modal = document.getElementById('editModal');
+        const deleteModal = document.getElementById('deleteConfirmModal');
+        const editConfirmModal = document.getElementById('editConfirmModal');
 
         function closeModal() {
             modal.style.display = "none";
         }
 
+        function closeDeleteModal() {
+            deleteModal.style.display = "none";
+        }
+        
+        function closeEditConfirmModal() {
+            editConfirmModal.style.display = "none";
+        }
+
         function deleteQuestion(questionId) {
-            fetch( `/library/delete`, {
+            document.getElementById('delete-question-id').value = questionId;
+            deleteModal.style.display = "block";
+        }
+        
+        function confirmDelete() {
+            const questionId = document.getElementById('delete-question-id').value;
+            closeDeleteModal();
+           
+            fetch(`/library/delete`, {
                 method: 'POST',
                 body: JSON.stringify({ questionId: questionId })
             })
@@ -91,6 +135,16 @@
                 const setId = data.setId; 
                 window.location.href = `/library/${setId}`; 
             });
+        }
+        
+        function confirmEdit() {
+            editConfirmModal.style.display = "block";
+        }
+        
+        function submitEditForm() {
+            closeEditConfirmModal();
+
+            document.getElementById('editForm').submit();
         }
 
         function showModal(questionId) {
