@@ -3,107 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Easygen - Transform study materials into comprehensive exams and keynotes instantly">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
     <link rel="icon" type="image/x-icon" href="../static/assets/logo-illustration.png">
-    <title>Easygen</title>
+    <title>Easygen - AI-Powered Exam Creation</title>
 </head>
 <body>
-    <div class="blurry-circles-container">
+    <div class="blurry-circles-container" aria-hidden="true">
         <div class="blurry-circle pink"></div>
         <div class="blurry-circle blue"></div>
     </div>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="">Home</a></li>
-            <li><a href="#second">About</a></li>
-            <!-- <li><img src="../static/assets/Easygen.png"></li> -->
-             <li><img class="member-img" src="../static/assets/Logo-white.png" alt=""></li>
-            <li><a href="#third">Team</a></li>
-            <li><a href="#fourth">Join Us</a></li>
-        </ul>
-    </nav>
-    <section id="first" class="first-section">
-        <div class="landing-first-container">
-            <div>
-                <h1 class="landing-text">MAKE YOUR LIFE EASIER</h1>
-            </div>
-            <div class="landing-first-description">
-                <p class="landing-description">Transform study materials into comprehensive exams and insightful keynotes instantly. Easygen simplifies the process.</p>
-                <a class="get-started" href="{{ url_for('home.home_page') }}">Get Started</a>
-            </div>
-        </div>
-    </section>
-    <section id="second" class="about-us-section">
-        <div class="gradient-container">
-            <h1 class="title-about-us">About Us</h1>
-            <p class="gradient-box"></p>
-        </div>
-        <div class="about-us-container">
-            <div class="text-container">
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#first">Home</a></li>
+                <li><a href="#second">About</a></li>
+                <li>
+                    <a href="#first" aria-label="Easygen Home">
+                        <img class="member-img" src="../static/assets/Logo-white.png" alt="Easygen Logo">
+                    </a>
+                </li>
+                <li><a href="#third">Team</a></li>
+                <li><a href="#fourth">Join Us</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="first" class="first-section">
+            <div class="landing-first-container">
                 <div>
-                    <h2 class="about-title">Story</h2>
-                    <p class="about-description">At Easygen, we recognize the challenges teachers face in creating efficient and effective exams. Crafting exams can be time-consuming, often leaving teachers with limited resources. Easygen streamlines this process, offering AI-powered solutions to generate high-quality exams and keynotes with ease.</p>
+                    <h1 class="landing-text">MAKE YOUR LIFE EASIER</h1>
                 </div>
-                <div>
-                    <h2 class="about-title">Our Mission</h2>
-                    <p class="about-description">Our mission is to enhance teaching by making exam creation more efficient and personalized. Easygen empowers teachers to save valuable time while delivering high-quality assessments.</p>
-                </div>
-            </div>
-            <div>
-                <img class="about-us-img" src="../static/assets/about-us.png" alt="">
-            </div>
-        </div>
-    </section>
-    <section id="third" class="meet-the-team">
-        <div class="member-container">
-            <h1 class="member-title">The Minds Behind the Innovation</h1>
-            <div class="member-box-container">
-                <div class="member-box">
-                    <img class="member-img" src="../static/assets/placeholder.jpg" alt="">
-                    <h4>Jamie Jasmine Sano</h4>
-                    <p>Leader</p>
-                    <a href="#">CONTACT</a>
-                </div>
-                <div class="member-box">
-                    <img class="member-img" src="../static/assets/placeholder.jpg" alt="">
-                    <h4>Paul Adrian Torres</h4>
-                    <p>Developer</p>
-                    <a href="#">CONTACT</a>
-                </div>
-                <div class="member-box">
-                    <img class="member-img" src="../static/assets/placeholder.jpg" alt="">
-                    <h4>Vashti Karmelli Camu</h4>
-                    <p>Developer</p>
-                    <a href="#">CONTACT</a>
-                </div>
-                <div class="member-box">
-                    <img class="member-img" src="../static/assets/placeholder.jpg" alt="">
-                    <h4>Diane Mae Corcino</h4>
-                    <p>Developer</p>
-                    <a href="#">CONTACT</a>
-                </div>
-                <div class="member-box">
-                    <img class="member-img" src="../static/assets/placeholder.jpg" alt="">
-                    <h4>Patrick Nacario</h4>
-                    <p>Developer</p>
-                    <a href="#">CONTACT</a>
+                <div class="landing-first-description">
+                    <p class="landing-description">Transform study materials into comprehensive exams and insightful keynotes instantly. Easygen simplifies the process.</p>
+                    <a class="get-started" href="{{ url_for('home.home_page') }}">Get Started</a>
                 </div>
             </div>
-        </div>
-    </section>
-    <section id="fourth">
-        <div class="join-section">
-            <div class="join-container">
-                <h1 class="join-title">Join Easygen and Simplify Your Learning or Teaching</h1>
-                <p class="join-description">Sign up now to create exams and generate keynotes effortlessly.</p>
-                <a class="join-button" href="#">GET STARTED</a>
+        </section>
+        
+        <section id="second" class="about-us-section">
+            <div class="gradient-container">
+                <h2 class="title-about-us">About Us</h2>
+                <div class="gradient-box"></div>
             </div>
-        </div>
-    </section>
-    <section class="footer-section">
+            <div class="about-us-container">
+                <div class="text-container">
+                    <article>
+                        <h3 class="about-title">Story</h3>
+                        <p class="about-description">At Easygen, we recognize the challenges teachers face in creating efficient and effective exams. Crafting exams can be time-consuming, often leaving teachers with limited resources. Easygen streamlines this process, offering AI-powered solutions to generate high-quality exams and keynotes with ease.</p>
+                    </article>
+                    <article>
+                        <h3 class="about-title">Our Mission</h3>
+                        <p class="about-description">Our mission is to enhance teaching by making exam creation more efficient and personalized. Easygen empowers teachers to save valuable time while delivering high-quality assessments.</p>
+                    </article>
+                </div>
+                <figure>
+                    <img class="about-us-img" src="../static/assets/about-us.png" alt="People collaborating on educational content">
+                </figure>
+            </div>
+        </section>
+        
+        <section id="third" class="meet-the-team">
+            <div class="member-container">
+                <h2 class="member-title">The Minds Behind the Innovation</h2>
+                <div class="member-box-container">
+                    <div class="member-box">
+                        <img class="member-img" src="../static/assets/jamie.jpg" alt="Jamie Jasmine Sano" width="200" height="200">
+                        <h4>Jamie Jasmine Sano</h4>
+                        <p>Leader</p>
+                        <a href="#contact" class="contact-btn">CONTACT</a>
+                    </div>
+                    <div class="member-box">
+                        <img class="member-img" src="../static/assets/placeholder.jpg" alt="Paul Adrian Torres" width="200" height="200">
+                        <h4>Paul Adrian Torres</h4>
+                        <p>Developer</p>
+                        <a href="#contact" class="contact-btn">CONTACT</a>
+                    </div>
+                    <div class="member-box">
+                        <img class="member-img" src="../static/assets/vash.jpg" alt="Vashti Karmelli Camu" width="200" height="200">
+                        <h4>Vashti Karmelli Camu</h4>
+                        <p>Developer</p>
+                        <a href="#contact" class="contact-btn">CONTACT</a>
+                    </div>
+                    <div class="member-box">
+                        <img class="member-img" src="../static/assets/diane.jpg" alt="Diane Mae Corcino" width="200" height="200">
+                        <h4>Diane Mae Corcino</h4>
+                        <p>Developer</p>
+                        <a href="#contact" class="contact-btn">CONTACT</a>
+                    </div>
+                    <div class="member-box">
+                        <img class="member-img" src="../static/assets/pat.jpg" alt="Patrick Nacario" width="200" height="200">
+                        <h4>Patrick Nacario</h4>
+                        <p>Developer</p>
+                        <a href="#contact" class="contact-btn">CONTACT</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="fourth" class="join-us-section">
+            <div class="join-section">
+                <div class="join-container">
+                    <h2 class="join-title">Join Easygen and Simplify Your Learning or Teaching</h2>
+                    <p class="join-description">Sign up now to create exams and generate keynotes effortlessly.</p>
+                    <a class="join-button" href="{{ url_for('home.home_page') }}">GET STARTED</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer id="contact" class="footer-section">
         <div class="footer-container">
             <div class="footer-box">
-                <h1 class="footer-title">Keep In Touch</h1>
+                <h2 class="footer-title">Keep In Touch</h2>
                 <h3>Easygen</h3>
                 <p class="footer-description">Whether you have questions, feedback, or need support, we're here to help.</p>
             </div>
@@ -113,15 +126,21 @@
                     <a href="mailto:easygen@gmail.com">easygen@gmail.com</a>
                 </div>
                 <div class="contact-container">
-                    <p>Email</p>
-                    <a href="mailto:easygen@gmail.com">easygen@gmail.com</a>
+                    <p>Phone</p>
+                    <a href="tel:+123456789">+1 (234) 567-89</a>
                 </div>
                 <div class="contact-container">
-                    <p>Email</p>
-                    <a href="mailto:easygen@gmail.com">easygen@gmail.com</a>
+                    <p>Follow Us</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/easygen" target="_blank" rel="noopener noreferrer" aria-label="Twitter">Twitter</a>
+                        <a href="https://linkedin.com/company/easygen" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">LinkedIn</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="copyright">
+            <p>&copy; 2025 Easygen. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
-</html> 
+</html>

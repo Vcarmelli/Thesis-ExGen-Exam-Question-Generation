@@ -4,7 +4,12 @@
 
 {% block content%}
     <div class="my-library-container">
-        <h1>My Library</h1>
+        <div class="header-container">
+            <a class="btn back-btn" href="{{ url_for('library.library_page') }}">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1>My Library</h1>
+        </div>
         <div class="btn-container">
             <a class="btn" href="{{ url_for('preview.preview_page', file_name=filename) }}">Add New Questions</a>
             <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>

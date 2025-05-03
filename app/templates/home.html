@@ -3,37 +3,217 @@
 {% block title %}Home{% endblock %}
 
 {% block content%}
-    <div id="main-container" class="main-container">
-        <h1>Quick Start</h1>
-        <div id="card-container" class="card-container">
-            <div class="card">
-                <img class="home-button" src="../static/assets/Create.png" alt=""><a href="{{ url_for('upload.upload_page')}}"><h3>Generate Exam</h3></a>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Welcome!</h1>
+            <div class="action-buttons">
+                <a class="btn primary" href="{{ url_for('upload.upload_page')}}">
+                    <i class="fa-solid fa-plus"></i>Generate Exam</a>
+                <a class="btn secondary" href="{{ url_for('key_upload.key_upload_page')}}">
+                    <i class="fa-solid fa-key"></i>Generate Keynotes</a>
             </div>
-            <div class="card1">
-                <img class="home-button" src="../static/assets/Magic.png" alt=""><a href="{{ url_for('key_upload.key_upload_page')}}"><h3>Key Notes</h3></a>
+        </header>
+        
+        <!-- Dashboard Stats Summary -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <div class="stat-value">{{ counts.values()|sum }}</div>
+                <div class="stat-label">Total Questions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-folder"></i>
+                </div>
+                <div class="stat-value">{{ question_sets|length }}</div>
+                <div class="stat-label">Question Sets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="stat-value">
+                    {% if counts.values()|sum > 0 %}
+                        {{ ((counts.get('create', 0) + counts.get('evaluate', 0) + counts.get('analyze', 0)) / counts.values()|sum * 100)|round|int }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </div>
+                <div class="stat-label">Higher Order Questions</div>
             </div>
         </div>
-    </div>
-    {% if question_sets %}<h1>Continue</h1>{% endif %}
-    <div class="continue-card-container">
-        {% for set in question_sets %}
-        <div class="continue-card set" data-set-id="{{ set.id }}">
-            <h3>{{ set.title }}</h3>
-            <span>{{ set.question_count() }}</span>
+    
+        <!-- Bloom's Taxonomy Section - Card Layout -->
+        <div class="bloom-section">
+            <h2>Bloom's Taxonomy</h2>
+            
+            {% set icon = {
+                'create': 'fa-pen-nib',
+                'evaluate': 'fa-scale-balanced',
+                'analyze': 'fa-magnifying-glass-chart',
+                'apply': 'fa-comment-dots',
+                'understand': 'fa-brain',
+                'remember': 'fa-lightbulb'
+            } %}
+            
+            {% set bloom_levels = ['create', 'evaluate', 'analyze', 'apply', 'understand', 'remember'] %}
+            
+            {% set bloom_descriptions = {
+                'remember': 'Retrieving, recognizing, and recalling relevant knowledge from long‐term memory.',
+                'understand': 'Constructing meaning from oral, written, and graphic messages.',
+                'apply': 'Using a procedure for executing or implementing.',
+                'analyze': 'Breaking material into parts and determining relationships.',
+                'evaluate': 'Making judgments through checking and critiquing.',
+                'create': 'Putting elements together to form a whole; generating new patterns.'
+            } %}
+            
+            {% set bloom_verbs = {
+                'remember': ['Define', 'List', 'Recall', 'Name', 'Identify'],
+                'understand': ['Explain', 'Summarize', 'Paraphrase', 'Describe', 'Compare'],
+                'apply': ['Use', 'Solve', 'Implement', 'Demonstrate', 'Calculate'],
+                'analyze': ['Differentiate', 'Organize', 'Compare', 'Outline', 'Deconstruct'],
+                'evaluate': ['Judge', 'Critique', 'Justify', 'Defend', 'Assess'],
+                'create': ['Design', 'Develop', 'Formulate', 'Author', 'Construct']
+            } %}
+            
+            <!-- Bloom's Card Layout -->
+            <div class="bloom-cards-container">
+                {% for bloom in bloom_levels %}
+                <div class="bloom-card {{ bloom }}" data-level="{{ bloom }}">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fa-solid {{ icon.get(bloom, 'fa-circle-question') }}"></i>
+                        </div>
+                        <h3 class="card-title">{{ bloom|capitalize }}</h3>
+                        <div class="card-count">{{ counts.get(bloom, 0) }}</div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: {% if counts.values()|sum > 0 %}{{ (counts.get(bloom, 0) / counts.values()|sum * 100)|round|int }}{% else %}0{% endif %}%"></div>
+                    </div>
+                    <div class="card-description">
+                        {{ bloom_descriptions.get(bloom, '') }}
+                    </div>
+                    <div class="verb-tags">
+                        {% for verb in bloom_verbs.get(bloom, []) %}
+                        <span class="verb-tag">{{ verb }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Mobile Bar Chart as fallback for very small screens -->
+            <div class="bloom-bars-mobile">
+                {% for bloom in bloom_levels|reverse %}
+                    <div class="bloom-bar-container">
+                        <div class="bar-label">
+                            <i class="fa-solid {{ icon.get(bloom, 'fa-circle-question') }}"></i>
+                            <span>{{ bloom|capitalize }}</span>
+                        </div>
+                        <div class="bar-outer">
+                            <div class="bar-inner {{ bloom }}" style="width: {% if counts.values()|sum > 0 %}{{ (counts.get(bloom, 0) / counts.values()|sum * 100)|round|int }}{% else %}0{% endif %}%"></div>
+                        </div>
+                        <div class="bar-count">{{ counts.get(bloom, 0) }}</div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
+
+        <!-- Two-column layout for Continue Learning and Recent Activity -->
+        <div class="two-column-section">
+            <!-- Continue Learning Section - Limited to 3 items -->
+            {% if question_sets %}
+            <div class="recent-sets">
+                <h2>Continue Learning</h2>
+                <div class="continue-card-container">
+                    {% for set in question_sets[:3] %}
+                    <div class="continue-card" data-set-id="{{ set.id }}">
+                        <div class="set-info">
+                            <h3>{{ set.title }}</h3>
+                            <span class="question-count">{{ set.question_count() }} questions</span>
+                        </div>
+                        <div class="set-actions">
+                            <a href="{{ url_for('library.library_questions', setId=set.id) }}" class="continue-btn">
+                                Continue
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Recent Activity Section -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div class="activity-list">
+                    {% if recent_exams %}
+                        {% for exam in recent_exams %}
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">{{ exam.title }}</div>
+                                <div class="activity-time">Generated {{ exam.created_at.strftime('%b %d, %I:%M %p') }}</div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <p>No recent exams generated</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const cards = document.querySelectorAll('.continue-card');
+            const bloomCards = document.querySelectorAll('.bloom-card');
             
-            cards.forEach(function(card) {
+            // Apply staggered animation delay
+            bloomCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index);
+            });
+            
+            // Add click event to cards
+            bloomCards.forEach(card => {
                 card.addEventListener('click', function() {
-                    const setId = card.getAttribute('data-set-id');
-                    window.location.href = `/library/${setId}`;
+                    const isExpanded = this.classList.contains('expanded');
+                    
+                    // First collapse all cards
+                    bloomCards.forEach(c => {
+                        c.classList.remove('expanded', 'active');
+                    });
+                    
+                    // Then expand clicked card if it wasn't expanded already
+                    if (!isExpanded) {
+                        this.classList.add('expanded', 'active');
+                    }
                 });
             });
-        });        
+            
+            // Card click event for Continue Learning section
+            const continueCards = document.querySelectorAll('.continue-card');
+            continueCards.forEach(function(card) {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.continue-btn')) {
+                        const continueBtnLink = this.querySelector('.continue-btn').getAttribute('href');
+                        if (continueBtnLink) {
+                            window.location.href = continueBtnLink;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 {% endblock %}

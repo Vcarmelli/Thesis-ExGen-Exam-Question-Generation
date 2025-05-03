@@ -376,3 +376,17 @@ section{
     }
     
 }
+
+.member-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+nav .member-img {
+    width: 150px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 0;
+}
