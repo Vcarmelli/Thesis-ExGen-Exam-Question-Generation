@@ -4,9 +4,11 @@ class QuestionSet(db.Model):
     __tablename__ = 'question_set'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150))
+    path = db.Column(db.String(500))
+    filename = db.Column(db.String(150))
     created_at = db.Column(db.DateTime(timezone=True), default=db.func.current_timestamp())
     questions = db.relationship('Question')
-
+    
     def get_title(self):
         return {
             'id': self.id,

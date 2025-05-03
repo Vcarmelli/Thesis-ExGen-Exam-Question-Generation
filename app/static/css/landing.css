@@ -157,21 +157,21 @@ section{
         
     }
     .get-started{
-        background-color: #21F291;
+        background-color: #8B2279;
         border: none;
-        color: #060617;
+        color: #fff;
         padding: .5rem 3rem;
         border-radius: 50px;
         font-size: 1.2rem;
         margin: 1rem 0;
         text-decoration: none;
-        transition: .8s;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
 
         &:hover{
-            box-shadow: rgba(255, 255, 255, 0.464) 0px 0px 10px 5px;
-            background-color: #4dffac;
-            color: #060617;
-            transition: .8s;
+            opacity: 0.8;
+            transition: 0.8s;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
     }
 
@@ -188,7 +188,7 @@ section{
         font-size: 3rem;
     }
     .gradient-box{
-        background: linear-gradient(90deg, #21F291 0%, #138C54 100%);
+        background: linear-gradient(90deg, rgba(255,255,255, 0.7) 0%, #8B2279 100%);
         padding: 2rem 35%;
         border-radius: 50px;
         color: #fff;
@@ -247,20 +247,19 @@ section{
             text-decoration: none;
             font-size: .75rem;
             color: #fff;
-            padding: 0.5rem 1rem;
-            background-color: #00B1DD;
+            padding: 0.7rem 1.2rem;
+            background-color: #9998E6;
             border-radius: 20px;
             margin: 10px 0;
-            transition: 1s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
             &:hover{
-                background-color: #33daff;
-                transition: 1s;
-            }   
+                opacity: 0.8;
+                transition: 0.8s;
+                transform: translateY(-5px);
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            } 
         }
-    }
-    .member-img{
-        border-radius: 50%;
-        width: 90%;
     }
 }
 
@@ -288,17 +287,20 @@ section{
         color: #2d2d2d;
     }
     .join-button{
-        background-color: #00B1DD;
+        background-color: #9998E6;
         border: none;
         color: #fff;
         padding: 1.2rem 3rem;
         border-radius: 50px;
         font-size: 1.2rem;
-        transition: 1s;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
         &:hover{
-            background-color: #33daff;
-            transition: 1s;
-        }   
+            opacity: 0.8;
+            transition: 0.8s;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        } 
 
     }
 }

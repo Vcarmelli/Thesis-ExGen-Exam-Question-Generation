@@ -112,8 +112,10 @@ def save_questions():
         data = json.loads(request.data)
         title = data.get('title')
         generated_questions = session.get('generated_questions', [])
+        file_name = session.get('filename', '')
+        file_path = session.get('file_path', '')
 
-        new_set = QuestionSet(title=title)
+        new_set = QuestionSet(title=title, filename=file_name, path=file_path)
         db.session.add(new_set)
         db.session.flush()
         

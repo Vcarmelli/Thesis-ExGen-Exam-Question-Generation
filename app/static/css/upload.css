@@ -183,6 +183,8 @@ a{
             transition: 0.8s;
             background-color: #ff5096;
             color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
     }
     

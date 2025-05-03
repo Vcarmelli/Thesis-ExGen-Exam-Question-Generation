@@ -11,8 +11,10 @@
             <h1>My Library</h1>
         </div>
         <div class="btn-container">
-            <a class="btn" href="{{ url_for('preview.preview_page', file_name=filename) }}">Add New Questions</a>
-            <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+            <a class="btn primary" href="{{ url_for('preview.load_file', setId=setId) }}">
+                <i class="fa-solid fa-plus"></i>New Questions</a>
+            <a class="btn secondary" href="{{ url_for('key_upload.key_upload_page')}}">
+                <i class="fa-solid fa-key"></i>Generate Keynotes</a>
         </div>
     </div>
 
@@ -128,6 +130,15 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+
+            const quesCards = document.querySelectorAll('.question-card');
+            // Apply staggered animation delay
+            quesCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index);
+            });
+
             const updateBtn = document.querySelectorAll('.update-question');
             const deleteBtn = document.querySelectorAll('.delete-question');
             

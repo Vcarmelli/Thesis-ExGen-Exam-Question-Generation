@@ -6,8 +6,10 @@
     <div class="my-library-container">
         <h1>My Library</h1>
         <div class="btn-container">
-            <a class="btn" href="{{ url_for('upload.upload_page')}}">Generate Exam</a>
-            <a class="btn" href="{{ url_for('key_upload.key_upload_page')}}">Generate Keynotes</a>
+            <a class="btn primary" href="{{ url_for('upload.upload_page')}}">
+                <i class="fa-solid fa-plus"></i>Generate Exam</a>
+            <a class="btn secondary" href="{{ url_for('key_upload.key_upload_page')}}">
+                <i class="fa-solid fa-key"></i>Generate Keynotes</a>
         </div>
     </div>
 
@@ -41,12 +43,29 @@
             {% endfor %}
         </div>
 
-        {% for set in question_sets %}
-        <div class="continue-card set" data-set-id="{{ set.id }}">
-            <h3>{{ set.title }}</h3>
-            <span>{{ set.question_count() }}</span>
+        <div class="two-column-section">
+            <div class="recent-sets">
+                <h2>Exams</h2>
+                {% for set in question_sets %}
+                <div class="continue-card set" data-set-id="{{ set.id }}">
+                    <h3>{{ set.title }}</h3>
+                    <span class="question-count">{{ set.question_count() }} questions</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="recent-sets">
+                <h2>Keynotes</h2>
+
+                <div class="continue-card set" data-set-id=" ">
+                    <h3>Sample key note</h3>
+                    <span class="question-count">1 questions</span>
+                </div>
+                <div class="continue-card set" data-set-id=" ">
+                    <h3>Sample key note</h3>
+                    <span class="question-count">1 questions</span>
+                </div>
+            </div>
         </div>
-        {% endfor %}
     </div>
 
     <!-- BLOOM'S TAXONOMY INFORMATION MODALS -->
@@ -190,8 +209,24 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+
+            const bloomCards = document.querySelectorAll('.bloom');
+            // Apply staggered animation delay
+            bloomCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index);
+            });
+
+            const setCards = document.querySelectorAll('.continue-card.set');
+            // Apply staggered animation delay
+            setCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100 * index);
+            });
+
             const cards = document.querySelectorAll('.continue-card');
-            
             cards.forEach(function(card) {
                 card.addEventListener('click', function() {
                     const setId = card.getAttribute('data-set-id');

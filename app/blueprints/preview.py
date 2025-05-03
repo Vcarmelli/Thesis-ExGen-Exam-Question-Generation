@@ -4,6 +4,8 @@ from PIL import Image
 from pdf2image import convert_from_path
 from langchain_community.document_loaders import PyMuPDFLoader
 from ..model.rag import get_documents_from_vector_db, loader, create_retriever
+from .. import db
+from ..schema import QuestionSet, Question
 
 # Configure the Blueprint
 preview = Blueprint('preview', __name__)
@@ -128,3 +130,10 @@ def load_thumbnails(page):
     end = page + 10
     thumbnails = convert_file_to_thumbnail(session['file_path'], THUMBNAIL_FOLDER, start_page=page, end_page=end)
     return jsonify(thumbnails=thumbnails)
+
+
+@preview.route('/preview/<int:setId>')
+def load_file(setId):
+    question_set = QuestionSet.query.get(setId)
+    session['file_path'] = question_set.path
+    return redirect(url_for('preview.preview_page', file_name=question_set.filename))

@@ -40,7 +40,7 @@ def library_questions(setId):
             }
             for question in question_set.questions
         ]
-        return render_template('library_questions.html', generated_questions=questions, filename=question_set.title) 
+        return render_template('library_questions.html', generated_questions=questions, setId=setId) 
     
     elif request.method == 'POST':
         # FOR UPDATING QUESTION IN DATABASE
