@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, session
-# from .preview import extract_text
 from ..model.llama import exam_generate_questions
-from langchain_community.llms import Ollama
-from docx import Document
+from ..model.functions import retrieve_text, retrieve_question_sets, get_bloom_level, exam_abbreviate
 import json
 
 from .. import db
@@ -12,44 +10,10 @@ from ..schema import QuestionSet, Question
 question = Blueprint('question', __name__)
 
 
-def retrieve_question_sets():
-    """Get all question sets from the database"""
-    try:
-        question_sets = QuestionSet.query.all()
-        sets_data = [{'id': qs.id, 'title': qs.title} for qs in question_sets]
-        return sets_data
-    except Exception as e:
-        print(f"Error retrieving question sets: {e}")
-        return []
-    
-
-# Helper function to get the abbreviated question type
-def exam_abbreviate(q_type):
-    print("exam_abbreviate called with:", q_type) 
-    return {
-        'identification': 'IDN',
-        'multiple_choice': 'MCQ',
-        'true_false': 'TOF',
-        'situation_based_questions': 'SBQ',
-        'essay': 'ESS',
-        'short_answer': 'SHA',
-    }.get(q_type.lower(), 'TOF')  # default true or false
-
-def get_bloom_level(bloom):
-    return {
-        'remember': 'Level 1: Remember',
-        'understand': 'Level 2: Understand',
-        'apply': 'Level 3: Apply',
-        'analyze': 'Level 4: Analyze',
-        'evaluate': 'Level 5: Evaluate',
-        'create': 'Level 6: Create'
-    }.get(bloom.lower(), 'Level 1: Remember') 
-
-
 @question.route('/question')
 def question_page():
     question = session.get('question', {})
-    text = session.get('text', '')
+    text = retrieve_text()
     filename = session.get('filename', 'No file selected')
     
     if not text:

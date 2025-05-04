@@ -1,16 +1,15 @@
 from flask import Blueprint, render_template,session
-from .key_preview import extract_text
 from ..model.keygen import keynote_generation, format_keynotes
-from langchain_community.llms import Ollama
-from docx import Document
+from ..model.functions import retrieve_text
 
 
 keynotes = Blueprint('keynotes', __name__)
 
+
 @keynotes.route('/keynotes')
 def keynotes_page():
     questions = session.get('questions', [])
-    text = session.get('text', '')
+    text = retrieve_text()
     filename = session.get('filename', 'No file selected')
     
     # Generate keynotes

@@ -310,7 +310,7 @@ body{
             border-left-color: #D45084;
         }
         .recent-sets:nth-child(2) {
-            border-left-color: #8B2279;
+            border-left-color: rgb(72, 34, 139);
         }
     }
 }
@@ -329,7 +329,7 @@ body{
             background-color: #1E1E3D;
             padding: 12px 25px;
             border-radius: 12px;
-            color: #fff;
+            color: white;
             text-decoration: none;
             margin: 0 20px 0 0;
             display: flex;
@@ -337,10 +337,10 @@ body{
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             font-weight: 600;
             &:nth-child(1){
-                background-color: #D45084;
+                background: linear-gradient(145deg, rgba(212, 80, 132, 1) 0%, rgba(29, 21, 56, 1) 100%);
             }
             &:nth-child(2){
-                background-color: #8B2279;
+                background: linear-gradient(145deg, rgba(72, 34, 139, 1) 0%, rgba(14, 14, 35, 1) 100%);
             }
             &:hover{
                 opacity: 0.8;
