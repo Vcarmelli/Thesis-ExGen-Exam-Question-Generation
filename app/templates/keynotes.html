@@ -16,6 +16,9 @@
                 <div class="filename-container"><strong>File Name:</strong> {{ filename }}</div>
                 <div class="savefile-container">
                     <h3>Save to:</h3>
+                    <label for="title">Save to a New File</label>
+                    <input type="text" id="title" name="title" class="filename-container" value="{{ filename }}">
+                    <button class="save-btn" type="button" onclick="saveKeynotes()">Save</button>
                     <h5>New file</h5>
                     <button>Append</button>
                 </div>
@@ -36,9 +39,63 @@
                         {{ generated_keynotes | safe }}
                     </div>
                 </div>
+                
             {% else %}
                 <p class="text-center text-muted">No keynotes generated.</p>
             {% endif %}
+            <a class="library-btn" href="{{ url_for('library.library_page')}}">Go to Library</a>
         </div>
+        
+        <!-- Add a status message element -->
+        <div id="status-message" style="text-align: center; margin-top: 20px; color: green; display: none;"></div>
     </body>
 </html>
+
+<script>
+    function saveKeynotes() {
+        const title = document.getElementById('title').value; 
+        
+        if (!title || title.trim() === '') {
+            alert('Please enter a title for your keynotes');
+            return;
+        }
+
+        // Show saving indicator
+        const statusMessage = document.getElementById('status-message');
+        statusMessage.textContent = "Saving keynotes...";
+        statusMessage.style.display = "block";
+
+        fetch('/keynotes/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ keynote_title: title })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                statusMessage.textContent = data.message;
+                statusMessage.style.color = "green";
+                
+                // Optional: redirect after a delay
+                // setTimeout(() => {
+                //     window.location.href = '/library';
+                // }, 2000);
+            } else {
+                statusMessage.textContent = data.message;
+                statusMessage.style.color = "red";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            statusMessage.textContent = 'An error occurred while saving the keynotes.';
+            statusMessage.style.color = "red";
+        });
+    }   
+</script>

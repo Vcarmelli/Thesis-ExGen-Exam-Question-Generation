@@ -1,1 +1,34 @@
-The Philippine government aims to change the mindset of Filipinos from wanting to be employees to being business owners. The Youth Entrepreneurship Act of 2015 aims to promote the sustained development of young Filipino entrepreneurs. "Entrepreneur" originates from the French word "entreprendre," meaning "to undertake" Richard Cantillon, a French economist, coined this term. Entrepreneurship involves creating or extracting value, often viewed as change. A sound business idea is an economic opportunity, essentially a plan or concept. Parcel delivery services like DHL, FedEx, and LBC adapted business ideas to address the  poor service of postal services. Business ideas can be based on work, hobbies, acquaintances, chance events, or a list of ideas. The list of business ideas can then be narrowed down to one or more ideas. A hobby can create the necessary skills and experience needed to excel in a new venture. An encountered event can act as a catalyst for a business venture (e.g., trading tomatoes)
+The Internet of Things is, without a doubt, a revolutionary kind of technological 
+infrastructure. Refers to a condition whereby physical objects are equipped with sensors, software, 
+and other technologies, making it possible to exchange data through the in ternet. This has been 
+coined by Kevin Ashton in 2009 to describe an approach assigning unique identifiers to objects 
+that could then be integrated into a global, interconnected network. This system will make easy 
+communication between devices, humans, and the environment. Thus, this will facilitate smart 
+solutions across industries like health care, agriculture, urban planning, and manufacturing. 
+IoT architecture consists of many critical components. Gateway is one critical component 
+that manages bi -directional data traffic between the networks and provides protocol 
+interoperability. The core is built from smart devices and sensors, which collect and send data from 
+their environment by means of Bluetooth, Zigbee, or Wi-Fi technologies. This enormous influx of 
+information is processed and retained in the IoT cloud, utilizing high-performance servers as well 
+as distributed databases to deliver actionable insights. Since user interfaces are designed for simple 
+interactions, it becomes simpler and more engaging for people to access and control these systems 
+of IoT. 
+IoT applications are diverse and expanding. With IoT, agriculture can enhance precision 
+farming and smart irrigation systems in agriculture to make it more efficient and sustainable. Smart 
+homes use IoT through incorporating devices such as thermostats, security systems, and kitchen 
+appliances to give comfort and energy sav ings. IoT optimizes energy usage, maintenance, and 
+occupant comfort in smart buildings by centralizing automation and using advanced analytics. The 
+IoT integrates into self -driving vehicles for real -time sensing of the environment and making 
+decisions that will eventually advance transportation and mobility. IoT is an integral part of our 
+daily lives; for instance, the concept 'Tech Ecosystem' exemplifies it: you are surrounded by a 
+network of devices from a certain brand of tech. For instance, your smartwa tch, wireless 
+earphones, and other wearables connect very seamlessly to your smartphone to make 
+communication between devices smooth. This ecosystem not only adds convenience but also 
+brands as users tend to favor a cohesive functionality of integrated devices. 
+Despite its huge potential, the internet of things (IoT) has drawbacks, including security 
+flaws, data privacy issues, and the requirement for standardized protocols. However, with 
+developments in artificial intelligence (AI), 5G, and edge computing, the IoT ecosystem is set to 
+expand further, integrating intelligence into various sectors and daily life. Its potential to combine 
+the digital and physical worl ds predicts new heights of interconnectivity and innovation in this 
+field.  
+ 

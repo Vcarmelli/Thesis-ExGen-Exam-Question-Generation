@@ -1,4 +1,5 @@
 from . import db
+from datetime import datetime
 
 class QuestionSet(db.Model):
     __tablename__ = 'question_set'
@@ -38,3 +39,16 @@ class Question(db.Model):
             'evaluate': 'Level 5: Evaluate',
             'create': 'Level 6: Create'
         }.get(self.bloom.lower(), 'Level 1: Remember') 
+
+class Keynote(db.Model):
+    __tablename__ = 'keynotes'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    file_path = db.Column(db.String(255), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    
+    def __repr__(self):
+        return f"<Keynote {self.id}: {self.title}>"

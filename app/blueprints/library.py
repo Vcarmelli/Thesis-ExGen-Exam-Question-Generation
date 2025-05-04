@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from .. import db
-from ..schema import QuestionSet, Question
+from ..schema import QuestionSet, Question, Keynote
 from sqlalchemy import func
 import json
 
@@ -18,8 +18,9 @@ def get_bloom_counts():
 @library.route('/library')
 def library_page():
     question_sets = QuestionSet.query.all()
+    keynotes = Keynote.query.all()
     counts = get_bloom_counts()
-    return render_template('library.html', question_sets=question_sets, counts=counts) 
+    return render_template('library.html', question_sets=question_sets, keynotes=keynotes, counts=counts) 
 
 
 @library.route('/library/<int:setId>', methods=['GET', 'POST'])
@@ -91,4 +92,33 @@ def retrieve_question():
         return jsonify({'question': question_data})
     else:
         return render_template('404.html', message="Question set not found."), 404
+
+# Add new route for viewing keynote content
+@library.route('/library/keynote/<int:keynoteId>')
+def view_keynote(keynoteId):
+    keynote = Keynote.query.get(keynoteId)
+    if not keynote:
+        return render_template('404.html', message="Keynote not found."), 404
     
+    return render_template('keynote_view.html', 
+                          keynote=keynote,
+                          content=keynote.content,
+                          filename=keynote.title)
+
+
+# Add new route for deleting keynote
+@library.route('/library/keynote/delete', methods=['POST'])
+def delete_keynote():
+    try:
+        data = json.loads(request.data)
+        keynoteId = data.get('keynoteId')
+        
+        keynote = Keynote.query.get(keynoteId)
+        if keynote:
+            db.session.delete(keynote)
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Keynote deleted successfully'})
+        else:
+            return jsonify({'success': False, 'message': 'Keynote not found'}), 404
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
