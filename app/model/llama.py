@@ -51,8 +51,8 @@ def exam_generate_questions(question, text):
         - **Analyzing (VERY_HARD):** Examine, Break down, Infer  
 
         **Format:**  
-        Question [#]: [Full question here] 
-        Answer: [Exact term]""",  
+        Question [#]: [Full specific question here] 
+        Answer: [Single word answer]""",  
 
         'TOF': """Generate {number_of_questions} true/false statements at the {bloom_level} level of Bloom's Taxonomy.  
 
@@ -91,7 +91,7 @@ def exam_generate_questions(question, text):
         **Format:**  
         Scenario [#]: [Brief real-world situation]  
         Question: [Full question here] 
-        Model Response: [3-5 sentence answer demonstrating the level]""",  
+        """,  
 
         'ESS': """Generate {number_of_questions} essay questions at the {bloom_level} level of Bloom's Taxonomy.  
 

@@ -4,6 +4,7 @@
     color: #ffffff;
     padding: 1rem 2rem;
     padding-top: 2rem;
+    border-radius: 12px;
 }
 
 /* Header Styles */
@@ -49,12 +50,14 @@
 }
 
 .primary {
-    background-color: #D45084;
+    background: #D45084;
+    background: linear-gradient(145deg, rgba(212, 80, 132, 1) 0%, rgba(29, 21, 56, 1) 100%);
     color: white;
 }
 
 .secondary {
-    background-color: #8B2279;
+    background: #48228b;
+    background: linear-gradient(145deg, rgba(72, 34, 139, 1) 0%, rgba(14, 14, 35, 1) 100%);
     color: white;
 }
 

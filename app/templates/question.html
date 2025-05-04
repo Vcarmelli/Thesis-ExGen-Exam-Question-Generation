@@ -11,7 +11,7 @@
     <body>
         {% block content %}
 <div class="upload-container">
-    <a class="back-btn" href="{{ url_for('preview.preview_page')}}"><span class="material-symbols-outlined">arrow_back</span></a>
+    <a class="back-btn" href="#" onclick="confirmGoBack(event)"><span class="material-symbols-outlined">arrow_back</span></a>
     <h1>Generated Questions</h1>
     
     {% if error %}
@@ -87,6 +87,13 @@
 </div>
 
 <script>
+    function confirmGoBack(event) {
+        event.preventDefault();
+        if (confirm("Are you sure you want to go back? Any unsaved questions will be lost.")) {
+            window.location.href = "{{ url_for('preview.preview_page')}}";
+        }
+    }
+
     function saveSet() {
         const title = document.getElementById('title').value; 
         
