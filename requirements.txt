@@ -12,5 +12,6 @@ chromadb>=0.4.0
 langchain-chroma>=0.1.0
 transformers>=4.0.0
 sqlalchemy>=1.4.0
+flask_sqlalchemy>=3.0.0
 pytz>=2021.1
 requests>=2.25.0

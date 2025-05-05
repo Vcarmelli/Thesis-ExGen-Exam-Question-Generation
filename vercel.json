@@ -1,6 +1,11 @@
 {
     "builds": [
-      { "src": "main.py", "use": "@vercel/python" }
+    {   "src": "main.py", 
+        "use": "@vercel/python",
+        "config": {
+            "excludeFiles": "{app/**/__pycache__/**,blueprints/**/__pycache__/**,app/chroma_db/**}"
+        }
+    }
     ],
     "routes": [
       { "src": "/(.*)", "dest": "/main.py" }
