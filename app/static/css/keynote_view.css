@@ -1,0 +1,396 @@
+.keynote-view-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    color: #fff;
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container {
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333356;
+    color: #fff;
+}
+
+.header-top-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e0e0ff;
+    text-decoration: none;
+    width: auto;
+    height: 48px;
+    padding: 0 16px;
+    background-color: #1E1E3D;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    background-color: #282845;
+    transform: translateX(-5px);
+}
+
+.back-btn .material-symbols-outlined {
+    font-size: 24px;
+    margin-right: 0;
+}
+
+.header-container h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    color: #a8b2d1;
+    font-size: 0.95em;
+    margin: 5px 0;
+    gap: 30px;
+}
+
+.meta-info p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.meta-info p::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #D45084;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+}
+
+.keynote-content {
+    background: #242442;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    color: #e0e0ff;
+    line-height: 1.7;
+    border-left: 5px solid #D45084;
+    font-size: 1.05rem;
+    letter-spacing: 0.01rem;
+    max-width: 100%;
+    overflow-x: auto;
+    flex-grow: 1;
+}
+
+/* Style all text elements within keynote content */
+.keynote-content p, 
+.keynote-content li, 
+.keynote-content span, 
+.keynote-content div {
+    color: #e0e0ff !important; /* Use !important to override any inline styles */
+    margin-bottom: 1.2em;
+}
+
+.keynote-content h1, 
+.keynote-content h2, 
+.keynote-content h3, 
+.keynote-content h4, 
+.keynote-content h5, 
+.keynote-content h6 {
+    color: #ffffff !important;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    font-weight: 600;
+}
+
+.keynote-content h1 { font-size: 1.8rem; }
+.keynote-content h2 { font-size: 1.5rem; }
+.keynote-content h3 { font-size: 1.3rem; }
+
+/* Target specifically highlighted elements if they exist */
+.keynote-content .highlight,
+.keynote-content [style*="background"] {
+    color: #fff !important;
+    background-color: #3a3a67 !important; /* Slightly lighter highlight for better contrast */
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+/* Add styling for links in content */
+.keynote-content a {
+    color: #ff80bf !important;
+    text-decoration: none;
+    border-bottom: 1px dotted #ff80bf;
+}
+
+.keynote-content a:hover {
+    color: #ffaed9 !important;
+    border-bottom: 1px solid #ffaed9;
+}
+
+/* Style lists properly */
+.keynote-content ul, 
+.keynote-content ol {
+    padding-left: 2em;
+    margin-bottom: 1.2em;
+}
+
+.keynote-content li {
+    margin-bottom: 0.5em;
+}
+
+/* Style tables if present */
+.keynote-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    display: block;
+}
+
+.keynote-content th {
+    background-color: #1E1E3D;
+    color: #fff !important;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.keynote-content td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #333356;
+}
+
+.keynote-content tr:nth-child(even) {
+    background-color: #2a2a4a;
+}
+
+/* Style code blocks if present */
+.keynote-content pre,
+.keynote-content code {
+    background-color: #1a1a2e;
+    color: #d4d4ff !important;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.keynote-content pre {
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
+    padding-top: 30px;
+    margin-bottom: 20px;
+}
+
+.export-btn, .delete-btn {
+    display: flex;
+    align-items: center;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.export-btn {
+    background: linear-gradient(145deg, #1E1E3D 0%, #1E1E3D 100%);
+    color: white;
+    border: none;
+    flex: 1;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(212, 80, 132, 0.3);
+}
+
+.export-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(212, 80, 132, 0.4);
+}
+
+.export-btn:active {
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background-color: #282836;
+    color: #f44336;
+    border: 1px solid #f44336;
+    box-shadow: 0 4px 10px rgba(244, 67, 54, 0.2);
+}
+
+.delete-btn:hover {
+    background-color: #f44336;
+    color: white;
+    box-shadow: 0 8px 20px rgba(244, 67, 54, 0.3);
+}
+
+.export-btn .material-symbols-outlined,
+.delete-btn .material-symbols-outlined {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.material-symbols-outlined {
+    margin-right: 8px;
+}
+
+.section-title {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #fff;
+    border-bottom: 2px solid #282836;
+    padding-bottom: 8px;
+}
+
+.export-footer {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(145deg, #1E1E3D 0%, #282845 100%);
+    padding: 15px 20px;
+    border-radius: 0 0 12px 12px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    z-index: 100;
+    border-top: 3px solid #D45084;
+}
+
+.export-controls {
+    display: flex;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+    justify-content: center;
+}
+
+.export-control-btn {
+    background: linear-gradient(145deg, #282845 0%, #a61b8f 100%);
+    border: none;
+    color: #e0e0ff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 600;
+    flex: 1;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.export-control-btn:hover {
+    background: linear-gradient(145deg, #a61b8f 0%, #a61b8f 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.export-control-btn .material-symbols-outlined {
+    font-size: 20px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .keynote-view-container {
+        padding: 20px 15px;
+    }
+    
+    .export-footer {
+        padding: 12px 15px;
+    }
+    
+    .export-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .export-control-btn {
+        padding: 10px 15px;
+        min-width: 140px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .keynote-view-container {
+        padding: 15px 10px;
+    }
+    
+    .keynote-content {
+        padding: 20px 15px;
+        font-size: 1rem;
+    }
+    
+    .header-container h1 {
+        font-size: 1.5rem;
+    }
+    
+    .back-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .export-controls {
+        flex-direction: column;
+    }
+    
+    .export-control-btn {
+        width: 100%;
+    }
+    
+    .meta-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Accessibility improvements */
+.keynote-content:focus {
+    outline: 2px solid #D45084;
+}
+
+*:focus-visible {
+    outline: 2px solid #D45084;
+    outline-offset: 2px;
+}

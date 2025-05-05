@@ -122,18 +122,19 @@
             </div>
         </div>
 
-        <!-- Two-column layout for Continue Learning and Recent Activity -->
         <div class="two-column-section">
-            <!-- Continue Learning Section - Limited to 3 items -->
-            {% if question_sets %}
+            {% if question_sets or keynote_sets %}
             <div class="recent-sets">
                 <h2>Continue Learning</h2>
                 <div class="continue-card-container">
-                    {% for set in question_sets[:3] %}
+                    {% for set in question_sets[:2] %}
                     <div class="continue-card" data-set-id="{{ set.id }}">
                         <div class="set-info">
                             <h3>{{ set.title }}</h3>
-                            <span class="question-count">{{ set.question_count() }} questions</span>
+                            <span class="question-count">
+                                <i class="fa-solid fa-file-lines"></i>
+                                {{ set.question_count() }} questions
+                            </span>
                         </div>
                         <div class="set-actions">
                             <a href="{{ url_for('library.library_questions', setId=set.id) }}" class="continue-btn">
@@ -143,34 +144,61 @@
                         </div>
                     </div>
                     {% endfor %}
+                    
+                    {% for keynote in keynote_sets[:1] %}
+                    <div class="continue-card" data-keynote-id="{{ keynote.id }}">
+                        <div class="set-info">
+                            <h3>{{ keynote.title }}</h3>
+                            <span class="keynote-info">
+                                <i class="fa-solid fa-key"></i>
+                                Keynotes
+                            </span>
+                        </div>
+                        <div class="set-actions">
+                            <a href="{{ url_for('library.view_keynote', keynoteId=keynote.id) }}" class="continue-btn">
+                                Continue
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}
-
-            <!-- Recent Activity Section -->
-            <div class="recent-activity">
-                <h2>Recent Activity</h2>
-                <div class="activity-list">
-                    {% if recent_exams %}
-                        {% for exam in recent_exams %}
-                        <div class="activity-item">
-                            <div class="activity-icon">
+        
+    <div class="recent-activity">
+        <h2>Recent Activity</h2>
+        <div class="activity-list">
+            {% if recent_exams or recent_keynotes %}
+                {% set combined = (recent_exams + recent_keynotes)|sort(attribute='created_at', reverse=True) %}
+                {% for item in combined %}
+                    {% if loop.index <= 5 %}
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            {% if item.__class__.__name__ == 'QuestionSet' %}
                                 <i class="fa-solid fa-file-lines"></i>
-                            </div>
-                            <div class="activity-details">
-                                <div class="activity-title">{{ exam.title }}</div>
-                                <div class="activity-time">Generated {{ exam.created_at.strftime('%b %d, %I:%M %p') }}</div>
+                            {% else %}
+                                <i class="fa-solid fa-key"></i>
+                            {% endif %}
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">{{ item.title }}</div>
+                            <div class="activity-time">
+                                Generated {{ item.created_at.strftime('%b %d, %I:%M %p') }}
+                                {% if item.__class__.__name__ == 'Keynote' %}
+                                (Keynote)
+                                {% endif %}
                             </div>
                         </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="empty-state">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                            <p>No recent exams generated</p>
-                        </div>
+                    </div>
                     {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <p>No recent activity</p>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 
