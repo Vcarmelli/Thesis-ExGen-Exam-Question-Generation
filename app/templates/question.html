@@ -86,7 +86,30 @@
     {% endif %}
 </div>
 
+<!-- Modal after Saving questions -->
+<div id="saveAppendModal" class="modal">
+    <div class="modal-content">
+        <div class="red-line"></div>
+        <h2>All Set! Your questions are saved.</h2>
+        <p>Would you like to generate more questions using the previous file?</p>
+        <div class="edit-btn-container">
+            <button type="button" id="generateMoreBtn" onclick="generateMore()">Generate More</button>
+            <button type="button" onclick="redirectLibrary()">Go to Library</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    function generateMore() {
+        const setId = document.getElementById("generateMoreBtn").dataset.setId;
+        window.location.href = `/preview/${setId}`;
+    }
+
+    function redirectLibrary() {
+        window.location.href = "{{ url_for('library.library_page') }}";
+    }
+
+
     function confirmGoBack(event) {
         event.preventDefault();
         if (confirm("Are you sure you want to go back? Any unsaved questions will be lost.")) {
@@ -116,9 +139,12 @@
             return response.json();
         })
         .then(data => {
-            alert(data.message);
-            // Optionally redirect to the library page
-            // window.location.href = '/library';
+            //alert(data.message);
+            // OPEN MODAL
+            const modal = document.getElementById('saveAppendModal');
+            modal.style.display = "block";
+            document.getElementById("generateMoreBtn").setAttribute("data-set-id", data.setId);
+
         })
         .catch(error => {
             console.error('Error:', error);

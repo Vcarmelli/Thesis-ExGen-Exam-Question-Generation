@@ -97,7 +97,10 @@ def save_questions():
                 db.session.add(new_question)
         db.session.commit()
 
-        return jsonify({'message': 'Questions saved successfully.'}), 201
+        return jsonify({
+            'setId': new_set.id,
+            'message': 'Questions saved successfully.'
+        }), 201
     
     except Exception as e:
         db.session.rollback()
