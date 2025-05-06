@@ -13,14 +13,6 @@
 <div class="upload-container">
     <a class="back-btn" href="#" onclick="confirmGoBack(event)"><span class="material-symbols-outlined">arrow_back</span></a>
     <h1>Generated Questions</h1>
-    
-    {% if error %}
-    <div class="error-message">
-        <p>{{ error }}</p>
-        <a href="{{ url_for('preview.preview_page')}}" class="btn btn-primary">Go Back</a>
-    </div>
-    {% endif %}
-    
     <div class="preview-container-setting publish">
         <div class="savefile-container">
             <label for="title">Save to a New File</label>
@@ -47,9 +39,14 @@
 </div>
 
 <div class="page-thumbnail-container">
-    {% if generated_questions %}
+    {% if error %}
+        <div class="error-message">
+            <p>{{ error }}</p>
+            <a class="library-btn" href="{{ url_for('library.library_page')}}">Go to Library</a>
+        </div>
+    {% elif generated_questions %}
         {% for question_set in generated_questions %}
-            <div class="mb-4">
+            <div>
                 <h2 class="h4 text-primary">{{ question_set.type }} Questions:</h2>
                 <h4> Bloom's Taxonomy {{ bloom_level }} </h4>
                 
@@ -78,11 +75,6 @@
             </div>
         {% endfor %}
         <a class="library-btn" href="{{ url_for('library.library_page')}}">Go to Library</a>
-    {% else %}
-        {% if not error %}
-            <p class="text-center text-muted">No questions generated. Please go back and try again.</p>
-            <a href="{{ url_for('preview.preview_page')}}" class="btn btn-primary">Go Back</a>
-        {% endif %}
     {% endif %}
 </div>
 

@@ -5,6 +5,15 @@ from ..schema import QuestionSet
 
 UPLOAD_FOLDER = 'app/static/uploads'
 THUMBNAIL_FOLDER = 'app/static/thumbnails'
+ALLOWED_EXTENSIONS = {'pdf'}  # Modified to only allow PDF files
+
+# Ensure directories exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(THUMBNAIL_FOLDER, exist_ok=True)
+
+def allowed_file(filename):
+    # Check if the file has a .pdf extension (case-insensitive)
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
 
 # Generate thumbnails from PDF
 def convert_file_to_thumbnail(file_path, start_page=0, end_page=1, size=(256, 256)):

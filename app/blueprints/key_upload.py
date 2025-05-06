@@ -1,22 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 import os
 from werkzeug.utils import secure_filename
+from ..model.functions import allowed_file,  UPLOAD_FOLDER
+
 
 # Configure the Blueprint
 key_upload = Blueprint('key_upload', __name__)
 
-# Define folders and allowed file types
-UPLOAD_FOLDER = 'app/static/uploads'
-THUMBNAIL_FOLDER = 'app/static/thumbnails'
-ALLOWED_EXTENSIONS = {'pdf'}
-
-# Ensure directories exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(THUMBNAIL_FOLDER, exist_ok=True)
-
-# Check if the file type is allowed
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'pdf'
 
 @key_upload.route('/key_upload', methods=['GET', 'POST'])
 def key_upload_page():

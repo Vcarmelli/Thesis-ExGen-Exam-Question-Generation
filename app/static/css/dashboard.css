@@ -59,9 +59,8 @@ body{
 }
 
 .main-content{
-    margin: 30px 0 0 300px;
-    width: 100%;
-    padding: 0 20px;
+    width: -webkit-fill-available;
+    padding: 30px 0 0 300px;
     h1{
         margin: 0;
     }
@@ -315,12 +314,28 @@ body{
     }
 }
 
+.dashboard-container {
+    background-color: #0E0E23;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    width: 90%;
+    border-radius: 12px;
+    margin-left: 4em;
+}
 
 /* Library page */
 .my-library-container{
-    display: flex;  
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #0E0E23;
+    display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
     .btn-container{
         margin: 20px 0;
@@ -383,7 +398,7 @@ body{
 .modal{
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 99999;
     left: 0;
     top: 0;
     width: 100%;
@@ -494,32 +509,32 @@ body{
 .bloom.remember,
 .bloom-option.remember,
 .red-line.remember {
-    background-color: #B33951;
+    background-color: #B33951 !important;
 }
 .bloom.understand,
 .bloom-option.understand,
 .red-line.understand {
-    background-color: #D86F45;
+    background-color: #D86F45 !important;
 }
 .bloom.apply,
 .bloom-option.apply,
 .red-line.apply {
-    background-color: #D9B23D;
+    background-color: #D9B23D !important;
 }
 .bloom.analyze,
 .bloom-option.analyze,
 .red-line.analyze {
-    background-color: #4C9A2A;
+    background-color: #4C9A2A !important;
 }
 .bloom.evaluate,
 .bloom-option.evaluate,
 .red-line.evaluate {
-    background-color: #2D74DA;
+    background-color: #2D74DA !important;
 }
 .bloom.create,
 .bloom-option.create,
 .red-line.create {
-    background-color: #5C4D9D;
+    background-color: #5C4D9D !important;
 }     
 
 .activity-list {

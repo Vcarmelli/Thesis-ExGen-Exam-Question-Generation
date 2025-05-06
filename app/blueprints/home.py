@@ -1,8 +1,5 @@
 from flask import Blueprint, render_template, session
 from ..schema import QuestionSet, Question, Keynote  # Add Keynote import
-from .. import db
-from sqlalchemy import func
-from datetime import datetime
 import pytz
 
 home = Blueprint('home', __name__)

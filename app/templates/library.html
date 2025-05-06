@@ -3,7 +3,8 @@
 {% block title %}Library{% endblock %}
 
 {% block content%}
-    <div class="my-library-container">
+<div class="dashboard-container">
+    <header class="my-library-container">
         <h1>My Library</h1>
         <div class="btn-container">
             <a class="btn primary" href="{{ url_for('upload.upload_page')}}">
@@ -11,7 +12,7 @@
             <a class="btn secondary" href="{{ url_for('key_upload.key_upload_page')}}">
                 <i class="fa-solid fa-key"></i>Generate Keynotes</a>
         </div>
-    </div>
+    </header>
 
     <div class="continue-card-container">
         
@@ -51,7 +52,7 @@
                     <h3>{{ set.title }}</h3>
                     <span class="question-count">{{ set.question_count() }} questions</span>
                 </div>
-                {% endfor %}  
+                {% endfor %}                 
             </div>
             <div class="recent-sets">
                 <h2>Keynotes</h2>
@@ -134,7 +135,7 @@
     <div id="analyzeModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="red-line analyz"></div>
+                <div class="red-line analyze"></div>
                 <div><button onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button></div>
             </div>
             <div>
@@ -192,7 +193,7 @@
             </div>
         </div>
     </div>
-
+</div>
     
 
 

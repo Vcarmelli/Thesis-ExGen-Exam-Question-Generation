@@ -20,13 +20,8 @@ loaderContainer.innerHTML = `
 // Define loading messages specific to keynotes generation
 const loadingMessages = [
     "Studies reveal that active recall is 50% more effective than passive review when learning new material.",
-    "Spaced repetition is one of the most effective learning patterns, using intervals of time to reinforce memory retention.",
-    "Sleep plays a vital role in learning patterns, as the brain consolidates new information during the REM sleep stage.",
-    "The 10-minute rule suggests that attention spans wane after about 10 minutes of lecture, making it crucial to break up lessons with engaging activities.",
-    "Gamification of learning, using game elements like points or levels, can increase motivation and engagement, especially in younger learners.",
     "Research shows that students learn better when information is presented in both visual and verbal formats, leveraging dual coding theory.",
     "The Feynman technique, which involves teaching a concept to someone else, is an effective way to reinforce learning and identify gaps in understanding.",
-    "Mind mapping is a powerful tool for organizing information visually, making it easier to understand complex concepts and see connections between ideas.",
     "Chunking involves breaking down information into smaller, manageable chunks, making it easier to remember and process.",
     "Inquiry-based learning, where students ask questions and explore answers, fosters critical thinking and deeper understanding.",
     "Finalizing text generation..."
@@ -92,15 +87,15 @@ form.addEventListener('submit', function(e) {
             // After transition is complete, hide the old element
             setTimeout(() => {
                 currentElement.style.visibility = 'hidden';
-            }, 1000);
+            }, 3000);
         });
 
         currentTextIndex = nextIndex;
     }
 
     // Calculate timings
-    const messageInterval = 120; // 12 seconds per message   ////////////// NAG MINUS 2 ZEROES ME
-    const totalDuration = 1200; // 2 minutes total
+    const messageInterval = 3000; // 12 seconds per message  
+    const totalDuration = 15000; // 2 minutes total
     
     // Start text rotation
     const textInterval = setInterval(showNextText, messageInterval);
