@@ -1,116 +1,120 @@
-#from langchain_ollama import OllamaLLM
+# Import necessary libraries
 from .summ import summarize
 import requests, json, time
 import re
 
+# Generate prompt functions for each question type
+def generate_mcq_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} multiple-choice questions at the {bloom_level} level of Bloom's Taxonomy.
 
-#API CALL IMPLEMENTATION
+**Bloom's Levels:**
+- **EASY:** Questions that test recall of specific facts or basic concepts
+- **MEDIUM:** Questions that test comprehension and interpretation
+- **HARD:** Questions requiring application of knowledge or analysis
+- **VERY_HARD:** Questions demanding evaluation or creation of perspectives
+
+**Format each question as:**
+Question {{num}}: [Clear, specific question text]
+a) [Option text]
+b) [Option text]
+c) [Option text]
+d) [Option text]
+Correct: [letter only]
+"""
+
+def generate_idn_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} identification questions at the {bloom_level} level of Bloom's Taxonomy.
+
+**Bloom's Levels:**
+- **EASY:** Questions asking to identify specific terms or concepts
+- **MEDIUM:** Questions requiring explanation of concepts
+- **HARD:** Questions requiring application to new situations
+- **VERY_HARD:** Questions demanding deeper analysis
+
+**Format each question as:**
+Question {{num}}: [Clear identification question]
+Answer: [Brief, precise answer]
+"""
+
+def generate_tof_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} true/false statements at the {bloom_level} level of Bloom's Taxonomy.
+
+**Bloom's Levels:**
+- **EASY:** Statements testing recall of basic facts
+- **MEDIUM:** Statements requiring comprehension of relationships
+- **HARD:** Statements requiring application or analysis
+- **VERY_HARD:** Statements requiring evaluation of information
+
+**Format each statement as:**
+Statement {{num}}: [Clear true or false statement]
+a) True
+b) False
+Correct: [letter only]
+"""
+
+def generate_sha_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} short-answer questions at the {bloom_level} level of Bloom's Taxonomy.
+
+**Bloom's Levels:**
+- **EASY:** Questions requiring brief explanation
+- **MEDIUM:** Questions requiring application to specific situations
+- **HARD:** Questions requiring analysis of relationships
+- **VERY_HARD:** Questions requiring evaluation or creation
+
+**Format each question as:**
+Question {{num}}: [Short answer question text]
+Model Answer: [2-4 sentence response]
+"""
+
+def generate_sbq_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} scenario-based questions at the {bloom_level} level of Bloom's Taxonomy.
+
+**Bloom's Levels:**
+- **EASY:** Simple application of concepts to situations
+- **MEDIUM:** Analysis of relationships in realistic contexts
+- **HARD:** Evaluation of solutions in complex scenarios
+- **VERY_HARD:** Creation of novel approaches to challenging situations
+
+**Format each question as:**
+Scenario {{num}}: [Brief situation related to content]
+Question: [Specific question about the scenario]
+Answer: [3-5 sentence answer about the situation]
+"""
+
+def generate_ess_prompt(number_of_questions, bloom_level):
+    return f"""Generate {number_of_questions} essay questions at the {bloom_level} level of Bloom's Taxonomy.
+
+**Bloom's Levels:**
+- **ANALYZING:** Break down concepts and examine relationships
+- **EVALUATING:** Assess ideas against criteria and make judgments
+- **CREATING:** Synthesize information to develop original solutions
+
+**Format each question as:**
+Essay Question {{num}}: [Open-ended question requiring extended response]
+Full answer: [Full answer to the question]
+"""
+
+# Main function to generate exam questions
 def exam_generate_questions(question, text):
     api_url = "https://ollama-y2elcua3ga-uc.a.run.app/api/generate"
     headers = {
-        "Content-Type": "application/json",
-        # "Authorization": "Bearer YOUR_API_KEY",  # Uncomment if the API requires an authorization key
+        "Content-Type": "application/json"
     }
 
-    # Start the timer
+    # Start the timer for summarization
     sum_start_time = time.time()
     
-    summary = summarize(text)  # Summarize the text before passing to the generation model
-    # End the timer
+    # Summarize the text before passing to the generation model
+    summary = summarize(text)
+    
+    # End the timer and calculate elapsed time
     sum_end_time = time.time()
-    # Calculate the elapsed time in minutes
     summary_time_minutes = (sum_end_time - sum_start_time) / 60
     print(f"\nTotal Time Taken of summary: {summary_time_minutes:.2f} minutes\n")
 
-    # Start the timer
+    # Start the timer for question generation
     start_time = time.time()
-    # Prompts for each type of question
-    question_prompts = {
-        'MCQ': """Generate {number_of_questions} multiple-choice questions at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Remembering (EASY):** Define, List, Recall, Identify  
-        - **Understanding (MEDIUM):** Explain, Compare, Summarize, Interpret  
-        - **Applying/Analyzing (HARD):** Apply, Solve, Analyze, Differentiate  
-        - **Evaluating/Creating (VERY_HARD):** Justify, Critique, Design, Propose  
-
-        **Format:**  
-        Question [#]:[Full question here] 
-        a) [Short Option]  
-        b) [Short Option]  
-        c) [Short Option]  
-        d) [Short Option]  
-        Correct: [letter]""",  
-
-        'IDN': """Generate {number_of_questions} identification questions at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Remembering (EASY):** Name, Identify, Label, Match  
-        - **Understanding (MEDIUM):** Describe, Classify, Exemplify  
-        - **Applying (HARD):** Use, Demonstrate, Modify  
-        - **Analyzing (VERY_HARD):** Examine, Break down, Infer  
-
-        **Format:**  
-        Question [#]: [Full specific question here] 
-        Answer: [Single word answer]""",  
-
-        'TOF': """Generate {number_of_questions} true/false statements at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Remembering (EASY):** Recall, Recognize  
-        - **Understanding (MEDIUM):** Summarize, Interpret  
-        - **Applying/Analyzing (HARD):** Apply, Investigate  
-        - **Evaluating (VERY_HARD):** Judge, Defend  
-
-        **Format:**  
-        Statement [#]: [Full statement here]
-        a) True  
-        b) False  
-        Correct: [letter]""",  
-
-        'SHA': """Generate {number_of_questions} short-answer questions at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Understanding (EASY):** Explain, Paraphrase  
-        - **Applying (MEDIUM):** Solve, Demonstrate  
-        - **Analyzing (HARD):** Compare, Contrast  
-        - **Evaluating/Creating (VERY_HARD):** Argue, Propose  
-
-        **Format:**  
-        Question [#]: [Full question here] 
-        Model Answer: [2-3 sentence response demonstrating the level]""",  
-
-        'SBQ': """Generate {number_of_questions} scenario-based questions at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Applying (EASY):** Implement, Operate  
-        - **Analyzing (MEDIUM):** Examine, Categorize  
-        - **Evaluating (HARD):** Justify, Assess  
-        - **Creating (VERY_HARD):** Design, Construct  
-
-        **Format:**  
-        Scenario [#]: [Brief real-world situation]  
-        Question: [Full question here] 
-        """,  
-
-        'ESS': """Generate {number_of_questions} essay questions at the {bloom_level} level of Bloom's Taxonomy.  
-
-        **Bloom's Level & Key Verbs:**  
-        - **Analyzing:** Compare, Investigate  
-        - **Evaluating:** Critique, Defend  
-        - **Creating:** Develop, Formulate  
-
-        **Format:**  
-        Essay question [#]: [Full question here] 
-        Key Skills: [Specific cognitive skill, e.g., "Compare theories (Analyzing)"]  
-        Evaluation Criteria:  
-        1) [Relevance to Bloom's level]  
-        2) [Depth of analysis/creativity]  
-        3) [Clarity & coherence]  
-        Expected Length: [Word range]  
-        Model Answer: [3-5 sentence exemplar]"""  
-    }
-
+    
     # Get the question type abbreviation
     question_type = exam_abbreviate(question['type'])
     bloom_level = question['bloom']
@@ -118,18 +122,25 @@ def exam_generate_questions(question, text):
     
     print(f"Generating {required_count} {bloom_level} {question_type} questions...")
 
-    # Get the corresponding prompt for the question type
-    prompt_template = question_prompts.get(question_type)
-    if not prompt_template:
+    # Get the corresponding prompt based on question type
+    formatted_prompt = ""
+    if question_type == 'MCQ':
+        formatted_prompt = summary + "\n\n" + generate_mcq_prompt(required_count, bloom_level)
+    elif question_type == 'IDN':
+        formatted_prompt = summary + "\n\n" + generate_idn_prompt(required_count, bloom_level)
+    elif question_type == 'TOF':
+        formatted_prompt = summary + "\n\n" + generate_tof_prompt(required_count, bloom_level)
+    elif question_type == 'SHA':
+        formatted_prompt = summary + "\n\n" + generate_sha_prompt(required_count, bloom_level)
+    elif question_type == 'SBQ':
+        formatted_prompt = summary + "\n\n" + generate_sbq_prompt(required_count, bloom_level)
+    elif question_type == 'ESS':
+        formatted_prompt = summary + "\n\n" + generate_ess_prompt(required_count, bloom_level)
+    else:
         print(f"No prompt template found for question type: {question_type}")
         return []
 
-    # Format the prompt with the required number and bloom level
-    prompt = prompt_template.format(number_of_questions=required_count, bloom_level=bloom_level)
-
-    # Combine the text with the prompt
-    formatted_prompt = summary + "\n\n" + prompt  # WITH SUMMARY
-    print("formatted_prompt:", formatted_prompt)
+    print("Using formatted prompt:", formatted_prompt)
 
     # Prepare the API payload
     payload = {
@@ -163,102 +174,30 @@ def exam_generate_questions(question, text):
         if len(all_generated_questions) < required_count:
             print(f"Warning: Generated only {len(all_generated_questions)} of {required_count} requested questions")
 
-        # End the timer
+        # End the timer and calculate elapsed time
         end_time = time.time()
-        # Calculate the elapsed time in minutes
         elapsed_time_minutes = (end_time - start_time) / 60
         print(f"\nTotal Time Taken: {elapsed_time_minutes:.2f} minutes\n")
         print(f"Generated {len(all_generated_questions)} questions")
-        print("Generated Questions:", all_generated_questions)
+        print(full_response)
+        
     except Exception as e:
         print(f"Error generating {question_type} questions: {e}")
         all_generated_questions = []
 
     return all_generated_questions
 
-#OLLAMA IMPLEMENTATION
-# def exam_generate_questions(questions, text):
-#     llm = OllamaLLM(model="llama3.1")
-#     all_generated_questions = []
-    
-#     summary = summarize(text) # Summarize the text before passing to the generation model
-#     # Prompts for each type of question
-#     question_prompts = {
-#         'MCQ': """
-#             You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} multiple-choice questions. Each question should have four options (a, b, c, d), with the correct answer specified at the end. The questions should not be overly simplistic. Follow this format:
+# Keep the existing helper functions
+def exam_abbreviate(q_type):
+    return {
+        'identification': 'IDN',
+        'multiple_choice': 'MCQ',
+        'true_false': 'TOF',
+        'situation_based_questions': 'SBQ',
+        'essay': 'ESS',
+        'short_answer': 'SHA',
+    }.get(q_type.lower(), 'TOF')  # default true or false
 
-#             Question: Write the question here, ensuring it is clear, specific, and not too common.
-#             a) Option A
-#             b) Option B
-#             c) Option C
-#             d) Option D
-
-#             Answer: [Correct answer letter, e.g., "a"] (Provide 1-2 words max.)
-
-#              NOTE:(Do not add unnecessary text like this: 
-#                 Here are two true or false questions based on the text:
-#                 Let me know if you need anything else!)
-#             """,
-
-#         'TOF': """
-#             You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} true or false questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
-
-#             Question: Write the true or false statement here.
-#             a) True
-#             b) False
-
-#             Answer: [Correct answer letter, e.g., "a"] (1-2 words max.)
-#             NOTE:(Do not add unnecessary text like this: 
-#                 Here are two true or false questions based on the text:
-#                 Let me know if you need anything else!)
-#             """,
-
-#         'IDN': """
-#             You are a teacher and you have to generate an exam for your students based on the provided topic. The exam should include {number_of_questions} {difficulty} identification questions. Each question should be clear, specific, and not overly simplistic. Specify the correct answer at the end. Use this format:
-
-#             Question: Write the identification question here, ensuring clarity and relevance.
-
-#             Answer: [Correct answer] (not too long answer, Limit to 1-2 words.)
-#              NOTE:(Do not add unnecessary text like this: 
-#                 Here are two true or false questions based on the text:
-#                 Let me know if you need anything else!)
-#             """
-#     }
-#     # Loop through each selected question type and corresponding number of questions
-#     for question in questions:
-#         question_type = question.get('type')
-#         question_type = exam_abbreviate(question_type)
-
-#         num_questions = question.get('quantity')
-#         question_difficulty = question.get('difficulty')
-#         print(f"Generating {num_questions} {question_difficulty} {question_type} questions...")
-
-#         # Get the corresponding prompt for the current question type
-#         prompt_template = question_prompts.get(question_type)
-#         if prompt_template:
-#             # Format the prompt with the number of questions
-#             prompt = prompt_template.format(number_of_questions=num_questions, difficulty=question_difficulty)
-
-#             # Combine the text with the prompt
-#             formatted_prompt = summary  + prompt # WITH SUMMARY
-#             #formatted_prompt = text  + prompt  # NORMAL FEEDING
-
-#             # Invoke the LLM (LangChain model) to generate questions
-#             result = llm.invoke(formatted_prompt)
-
-#             # Split the generated result into individual questions and answers
-#             question_list = parse_questions_and_answers(result)
-
-#             # Append the result to the list
-#             all_generated_questions.append({
-#                 'type': question_type,
-#                 'questions': question_list
-#             })
-
-#     return all_generated_questions
-
-
-#parsing depends on the question type
 def parse_questions_and_answers(result):
     """
     Process the LLM result text and extract questions, options, and answers based on question type.
@@ -274,7 +213,7 @@ def parse_questions_and_answers(result):
         current_type = "MCQ"
     elif "a) True" in result and "b) False" in result:
         current_type = "TOF"
-    elif "Essay Prompt" in result:
+    elif "Essay Question" in result:
         current_type = "ESS"
     elif "Scenario" in result:
         current_type = "SBQ"
@@ -288,7 +227,7 @@ def parse_questions_and_answers(result):
         "standard": r"^(?:Question\s*\d*:|^\d+\.\s*Question:|^\d+\.)",
         "mcq": r"^(?:Question\s*\d*:|^\d+\.\s*Question:|^\d+\.)",
         "tof": r"^(?:Statement\s*\d*:|^\d+\.\s*Statement:|^\d+\.)",
-        "essay": r"^(?:Essay Prompt\s*\d*:|^\d+\.\s*Essay Prompt:|^\d+\.)",
+        "essay": r"^(?:Essay Question\s*\d*:|^\d+\.\s*Essay Question:|^\d+\.)",
         "scenario": r"^(?:Scenario\s*\d*:|^\d+\.\s*Scenario:|^\d+\.)"
     }
 
@@ -324,16 +263,56 @@ def parse_questions_and_answers(result):
             else:
                 current_question['question'] = line.split(".", 1)[1].strip()
                 
-        elif current_type == "ESS" and (line.startswith("Essay Prompt") or re.match(r"^\d+\.", line)):
+        elif current_type == "ESS" and (line.startswith("Essay Question") or re.match(r"^\d+\.", line)):
             if current_question and 'question' in current_question:
                 questions_and_answers.append(current_question)
-            current_question = {'question': '', 'options': {}, 'answer': ''}
-            
-            # Extract question text
+
+            current_question = {
+                'question': '',
+                'options': {},
+                'answer': ''
+            }
+
+            # Start collecting question text
+            question_lines = []
+
             if ":" in line:
-                current_question['question'] = line.split(":", 1)[1].strip()
+                question_lines.append(line.split(":", 1)[1].strip())
             else:
-                current_question['question'] = line.split(".", 1)[1].strip()
+                question_lines.append(line.split(".", 1)[1].strip())
+
+            i += 1
+            # Move through lines to find 'Full answer:' section
+            while i < len(lines):
+                subline = lines[i].strip()
+
+                if subline.startswith("Essay Question") or re.match(r"^\d+\.", subline):
+                    i -= 1  # step back for next iteration
+                    break
+
+                if subline.startswith("Full answer:"):
+                    i += 1
+                    break  # move to collecting the answer
+
+                # Continue gathering question text
+                question_lines.append(subline)
+                i += 1
+
+            # Collect full answer
+            full_answer_lines = []
+            while i < len(lines):
+                subline = lines[i].strip()
+                if subline.startswith("Essay Question") or re.match(r"^\d+\.", subline):
+                    i -= 1  # prepare for next
+                    break
+                full_answer_lines.append(subline)
+                i += 1
+
+            current_question['question'] = "\n".join(question_lines).strip()
+            current_question['answer'] = "\n".join(full_answer_lines).strip()
+            questions_and_answers.append(current_question)
+
+
                 
         elif current_type == "SBQ" and (line.startswith("Scenario") or re.match(r"^\d+\.", line)):
             if current_question and 'question' in current_question:
@@ -397,7 +376,7 @@ def parse_questions_and_answers(result):
                 while i < len(lines) and not (
                     lines[i].startswith("Question") or 
                     lines[i].startswith("Statement") or
-                    lines[i].startswith("Essay Prompt") or
+                    lines[i].startswith("Essay Question") or
                     lines[i].startswith("Scenario") or
                     re.match(r"^\d+\.", lines[i])
                 ):
@@ -413,13 +392,3 @@ def parse_questions_and_answers(result):
         questions_and_answers.append(current_question)
 
     return questions_and_answers
-
-def exam_abbreviate(q_type):
-    return {
-        'identification': 'IDN',
-        'multiple_choice': 'MCQ',
-        'true_false': 'TOF',
-        'situation_based_questions': 'SBQ',
-        'essay': 'ESS',
-        'short_answer': 'SHA',
-        }.get(q_type.lower(), 'TOF') # default true or false
