@@ -27,3 +27,4 @@ beautifulsoup4
 pillow
 pdf2image
 pymupdf
+torch
