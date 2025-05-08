@@ -22,7 +22,8 @@ requests
 pydantic
 typing-extensions
 python-docx
-pypd
+pypdf
+fpdf2
 beautifulsoup4
 pillow
 pdf2image
