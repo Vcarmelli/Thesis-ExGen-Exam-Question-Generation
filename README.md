@@ -24,7 +24,7 @@ _An Innovative Web-based System Approach to Automated Examination Design Using R
 <img width="1468" height="2550" alt="image" src="https://github.com/user-attachments/assets/8792bea8-1425-4511-9c01-347b5b05fc69" />
 
 ### Dashboard
-<img width="983" height="656" alt="image" src="https://github.com/user-attachments/assets/c52ce62b-9a60-4142-aeae-2393b7e075f3" />
+<img width="1045" height="683" alt="image" src="https://github.com/user-attachments/assets/e6049f70-8fc1-4a93-b00e-0528d9746a33" />
 
 ### File Selection
 <img width="1018" height="648" alt="image" src="https://github.com/user-attachments/assets/389ff54d-9ea1-4c61-8f27-c437ce753929" />
